@@ -2,8 +2,8 @@
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
 from collections import deque
-from domain.reader import load_corpus
-import config
+from domain.reader import load_corpus_model
+import domain.config as config
 from domain.util import segment
 from domain.util import segment_pos
 from domain.util import get_logger
@@ -13,14 +13,11 @@ logger = get_logger(__name__)
 
 
 class QA:
-    def __init__(self, last_txt_len=10, train_file_path=None):
+    def __init__(self, last_txt_len=10, train_file_path=None, train_model_path=None, emb_model_path=None):
         self.last_txt = deque([], last_txt_len)
-        self.load_data(train_file_path)
+        self.data, self.vec_model = load_corpus_model(train_model_path, emb_model_path, train_file_path)
 
-    def load_data(self, data_path):
-        self.data, self.vec_model = load_corpus(data_path)
-
-    def max_similarity_score(self, sentence, similarity_score_threshold=0.1, similarity_type='word'):
+    def max_similarity_score(self, sentence, similarity_score_threshold=0.4, similarity_type='word'):
         """
         get the most similar question with input sentence
         :param sentence:
@@ -48,7 +45,7 @@ class QA:
             return 'sorry, not understand your question.'
         return max_similarity['answer']
 
-    def answer(self, sentence, similarity_type='word'):
+    def answer(self, sentence, similarity_type='vector'):
         """
         answer the question
         :param sentence:
@@ -60,8 +57,8 @@ class QA:
 
         if similarity_type == 'all':
             for type in ['word', 'word_pos', 'vector']:
-                out = 'similarity_type:\t' + self.max_similarity_score(sentence, similarity_type=type)
-                print(out)
+                out = 'similarity_type:' + type + ' => ' + self.max_similarity_score(sentence, similarity_type=type)
+                logger.info(out)
             return ''
         else:
             out = self.max_similarity_score(sentence, similarity_type=similarity_type)
@@ -69,7 +66,9 @@ class QA:
 
 
 if __name__ == '__main__':
-    qa = QA(train_file_path=config.train_file_path)
-    q = 'how to 坚持减肥？'
-    answer = qa.answer(q, 'word')
+    qa = QA(train_file_path=config.train_file_path, emb_model_path=config.emb_model_path,
+            train_model_path=config.train_model_path)
+    q = '如何去坚持减肥？'
+    # q = 'nihao如何 '
+    answer = qa.answer(q, 'all')
     print('question:', q, '\tanswer', answer)

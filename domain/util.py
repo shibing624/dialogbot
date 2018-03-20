@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
+
 import logging
+import os
+import pickle
+
+import jieba
+from jieba import posseg
 
 
 def get_logger(name, log_file=None):
@@ -17,10 +23,10 @@ def get_logger(name, log_file=None):
         handle = logging.StreamHandler()
     else:
         handle = logging.FileHandler(log_file)
-    handle.setFormatter(formatter)
+    # handle.setFormatter(formatter)
     logger = logging.getLogger(name)
     logger.addHandler(handle)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
     return logger
 
 
@@ -30,7 +36,6 @@ def segment(sentence):
     :param sentence:
     :return: list
     """
-    import jieba
     jieba.default_logger.setLevel(logging.ERROR)
     return jieba.lcut(sentence)
 
@@ -41,7 +46,30 @@ def segment_pos(sentence):
     :param sentence:
     :return: list
     """
-    import jieba
-    from jieba import posseg
     jieba.default_logger.setLevel(logging.ERROR)
     return posseg.lcut(sentence)
+
+
+def load_pkl(pkl_path):
+    """
+    加载词典文件
+    :param pkl_path:
+    :return:
+    """
+    with open(pkl_path, 'rb') as f:
+        result = pickle.load(f)
+    return result
+
+
+def dump_pkl(vocab, pkl_path, overwrite=True):
+    """
+    存储文件
+    :param pkl_path:
+    :param overwrite:
+    :return:
+    """
+    if os.path.exists(pkl_path) and not overwrite:
+        return
+    with open(pkl_path, 'wb') as f:
+        # pickle.dump(vocab, f, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(vocab, f, protocol=0)

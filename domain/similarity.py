@@ -7,8 +7,8 @@ from domain.pos import POS_WEIGHT
 def word_pos_similarity(l1, l2, similarity_type='word', pos_weight=None, embedding=None):
     """
     get similarity score by text vector and pos vector
-    :param l1:
-    :param l2:
+    :param l1: input sentence list
+    :param l2: sentence list which to be compared
     :param similarity_type:
     :param pos_weight:
     :param embedding:
@@ -19,7 +19,7 @@ def word_pos_similarity(l1, l2, similarity_type='word', pos_weight=None, embeddi
     pos_weight = pos_weight or POS_WEIGHT
     if similarity_type == 'word':
         # simple word name overlapping coefficient
-        return len(set(l1) & set(l2)) / len(set(l1))
+        return len(set(l1) & set(l2)) / len(set(l2))
     elif similarity_type == 'word_pos':
         # word and pos overlapping coefficient
         sim_weight = 0
@@ -35,7 +35,7 @@ def word_pos_similarity(l1, l2, similarity_type='word', pos_weight=None, embeddi
             if word not in embedding.index2word:
                 continue
             cur_weight = pos_weight.get(pos, 1)
-            max_word_sim = max(embedding.similarity(word_l2, word) for word_l2 in l2)
+            max_word_sim = max([embedding.similarity(word_l2, word) for word_l2 in l2])
             sim_weight += cur_weight * max_word_sim
             total_weight += cur_weight
         return sim_weight / total_weight if total_weight > 0 else 0

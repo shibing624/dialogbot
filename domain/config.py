@@ -3,4 +3,9 @@
 # Brief: 
 
 train_file_path = '../data/reduce_weight.txt'
-train_seg_path = '../data/reduce_weight_seg.txt'
+train_model_path = '../data/reduce_weight.pkl'
+emb_model_path = '../data/reduce_weight.bin'
+
+# word2vec param
+min_count = 3
+num_workers = 4

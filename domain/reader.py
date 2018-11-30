@@ -6,11 +6,8 @@ import os
 
 import gensim
 
-import domain.config as config
-from domain.util import dump_pkl
-from domain.util import load_pkl
-from domain.util import segment
-from domain.util import segment_pos
+import config
+from domain.util import dump_pkl, load_pkl, segment, segment_pos
 
 
 def _load_corpus(data_path=None, emb_model_path=None, vec_model=None):

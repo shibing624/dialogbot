@@ -3,10 +3,8 @@
 # Brief: 
 from collections import deque
 from domain.reader import load_corpus_model
-import domain.config as config
-from domain.util import segment
-from domain.util import segment_pos
-from domain.util import get_logger
+import config
+from domain.util import segment, segment_pos, get_logger
 from domain.similarity import word_pos_similarity
 
 logger = get_logger(__name__)

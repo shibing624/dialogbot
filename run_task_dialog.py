@@ -267,6 +267,8 @@ performance_records['ave_reward'] = {}
 def save_model(path, agt, success_rate, agent, best_epoch, cur_epoch):
     filename = 'agt_%s_%s_%s_%.5f.p' % (agt, best_epoch, cur_epoch, success_rate)
     filepath = os.path.join(path, filename)
+    if not os.path.exists(path):
+        os.mkdir(path)
     checkpoint = {}
     if agt == 9: checkpoint['model'] = copy.deepcopy(agent.dqn.model)
     checkpoint['params'] = params

@@ -287,7 +287,7 @@ def save_performance_records(path, agt, records):
     filename = 'agt_%s_performance_records.json' % (agt)
     filepath = os.path.join(path, filename)
     try:
-        json.dump(records, open(filepath, "wb", encoding='utf-8'))
+        json.dump(records, open(filepath, "w", encoding='utf-8'))
         print('saved model in %s' % (filepath,))
     except Exception as e:
         print('Error: Writing model fails: %s' % (filepath,))

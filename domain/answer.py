@@ -3,7 +3,6 @@
 # Brief: 
 from collections import deque
 from domain.reader import load_corpus_model
-import config
 from domain.util import segment, segment_pos, get_logger
 from domain.similarity import word_pos_similarity
 
@@ -15,7 +14,7 @@ class QA:
         self.last_txt = deque([], last_txt_len)
         self.data, self.vec_model = load_corpus_model(train_model_path, emb_model_path, train_file_path)
 
-    def max_similarity_score(self, sentence, similarity_score_threshold=0.4, similarity_type='word'):
+    def max_similarity_score(self, sentence, similarity_score_threshold=0.4, similarity_type='vector'):
         """
         get the most similar question with input sentence
         :param sentence:
@@ -41,32 +40,28 @@ class QA:
 
         if max_similarity['similarity_score'] < similarity_score_threshold:
             return 'sorry, not understand your question.'
+        logger.debug("max_similarity: %s" % max_similarity)
         return max_similarity['answer']
 
-    def answer(self, sentence, similarity_type='vector'):
+    def answer(self, sentence):
         """
         answer the question
         :param sentence:
-        :param similarity_type:
         :return:
         """
+        out = ""
         if not sentence:
-            return ''
+            return out
 
-        if similarity_type == 'all':
-            for type in ['word', 'word_pos', 'vector']:
-                out = 'similarity_type:' + type + ' => ' + self.max_similarity_score(sentence, similarity_type=type)
-                logger.info(out)
-            return ''
-        else:
-            out = self.max_similarity_score(sentence, similarity_type=similarity_type)
+        out = self.max_similarity_score(sentence)
         return out
 
 
 if __name__ == '__main__':
-    qa = QA(train_file_path=config.train_file_path, emb_model_path=config.emb_model_path,
-            train_model_path=config.train_model_path)
+    qa = QA(train_file_path="../data/reduce_weight.txt",
+            emb_model_path="../data/reduce_weight_emb.bin",
+            train_model_path="../data/reduce_weight_model.pkl")
     q = '如何去坚持减肥？'
     # q = 'nihao如何 '
-    answer = qa.answer(q, 'all')
+    answer = qa.answer(q)
     print('question:', q, '\tanswer', answer)

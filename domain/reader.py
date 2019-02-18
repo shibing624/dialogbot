@@ -6,7 +6,6 @@ import os
 
 import gensim
 
-import config
 from domain.util import dump_pkl, load_pkl, segment, segment_pos
 
 
@@ -40,21 +39,23 @@ def load_corpus_model(train_model_path=None, emb_model_path=None, train_data_pat
         train_data = _load_corpus(train_data_path)
         sentences = [v['question_segment'] + v['answer_segment'] for v in train_data.values()]
         w2v = gensim.models.Word2Vec(sg=1, sentences=sentences,
-                                     size=256, window=5, min_count=config.min_count,
-                                     workers=config.num_workers, iter=40)
+                                     size=256, window=5, min_count=3, iter=40)
         # save w2v model
         w2v.wv.save_word2vec_format(emb_model_path, binary=False)
     vec_model = gensim.models.KeyedVectors.load_word2vec_format(emb_model_path, binary=False)
+    corpus = None
     if os.path.exists(train_model_path):
         corpus = load_pkl(train_model_path)
     elif os.path.exists(train_data_path):
         corpus = _load_corpus(train_data_path, emb_model_path, vec_model)
         # save train model
         dump_pkl(corpus, train_model_path)
+    else:
+        print("must has train_model_path or train_data_path")
     return corpus, vec_model
 
 
 if __name__ == '__main__':
-    load_corpus_model(train_model_path=config.train_model_path,
-                      emb_model_path=config.emb_model_path,
-                      train_data_path=config.train_file_path)
+    load_corpus_model(train_model_path="../data/reduce_weight_model.pkl",
+                      emb_model_path="../data/reduce_weight_emb.bin",
+                      train_data_path="../data/reduce_weight.txt")

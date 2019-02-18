@@ -6,6 +6,9 @@
 
 from py2neo import Graph
 from config import host, kg_port, user, password, answer_num_limit
+from domain.util import get_logger
+
+logger = get_logger(__name__)
 
 
 class AnswerSearcher:
@@ -24,9 +27,10 @@ class AnswerSearcher:
         :return:
         """
         final_answers = []
-        for sql_ in sqls:
-            question_type = sql_['question_type']
-            queries = sql_['sql']
+        logger.debug("input sqls: %s" % sqls)
+        for sql_dict in sqls:
+            question_type = sql_dict['question_type']
+            queries = sql_dict['sql']
             answers = []
             for query in queries:
                 ress = self.g.run(query).data()
@@ -34,8 +38,8 @@ class AnswerSearcher:
             final_answer = self.answer_prettify(question_type, answers)
             if final_answer:
                 final_answers.append(final_answer)
+        logger.debug("cypher result: %s" % final_answers)
         return final_answers
-
 
     def answer_prettify(self, question_type, answers):
         """
@@ -44,9 +48,10 @@ class AnswerSearcher:
         :param answers: 回答
         :return:
         """
-        final_answer = []
+        final_answer = ""
         if not answers:
-            return ''
+            return final_answer
+        logger.debug("original answer: %s" % answers)
         if question_type == 'disease_symptom':
             desc = [i['n.name'] for i in answers]
             subject = answers[0]['m.name']
@@ -141,9 +146,5 @@ class AnswerSearcher:
             desc = [i['m.name'] for i in answers]
             subject = answers[0]['n.name']
             final_answer = '通常可以通过{0}检查出来的疾病有{1}'.format(subject, '；'.join(list(set(desc))[:self.num_limit]))
-
+        logger.debug("apply template answer: %s" % final_answer)
         return final_answer
-
-
-if __name__ == '__main__':
-    searcher = AnswerSearcher()

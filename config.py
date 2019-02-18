@@ -13,11 +13,9 @@ answer_num_limit = 20
 
 
 # word2vec param
-train_file_path = '../data/reduce_weight.txt'
-train_model_path = '../data/reduce_weight.pkl'
-emb_model_path = '../data/reduce_weight.bin'
-min_count = 3
-num_workers = 4
+train_file_path = 'data/reduce_weight.txt'
+train_model_path = 'data/reduce_weight_model.pkl'
+emb_model_path = 'data/reduce_weight_emb.bin'
 
 # mongodb
 mongo_host = 'localhost'

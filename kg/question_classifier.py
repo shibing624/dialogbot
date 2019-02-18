@@ -70,14 +70,15 @@ class QuestionClassifier:
         """
         data = {}
         medical_dict = self.check_medical(question)
+        logger.debug("medical dict: %s" % medical_dict)
         if not medical_dict:
             return {}
         data['args'] = medical_dict
         # 收集问句当中所涉及到的实体类型
         types = []
-        for type_ in medical_dict.values():
-            types += type_
-        question_type = 'others'
+        for t in medical_dict.values():
+            # values 是list类型
+            types += t
 
         question_types = []
 
@@ -173,6 +174,7 @@ class QuestionClassifier:
         # 将多个分类结果进行合并处理，组装成一个字典
         data['question_types'] = question_types
 
+        logger.debug("data info: %s" % data)
         return data
 
     def build_wdtype_dict(self):

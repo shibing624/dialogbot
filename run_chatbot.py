@@ -31,8 +31,9 @@ class ChatBotGraph:
 
 if __name__ == '__main__':
     handler = ChatBotGraph()
-    print("eg：百日咳什么症状？")
+    print("eg：百日咳什么症状？ 或 百日咳要治疗多久？ 或 百日咳不能吃啥？ 或 百日咳可以吃啥？ 或 "
+          "介绍一下百日咳 或 百日咳用啥药物？或 百日咳怎么检查？或 百日咳的预防措施有哪些？")
     while 1:
         question = input('query:')
         answer = handler.chat_main(question)
-        print('answer:', answer)
+        print('answer: %s' % answer)

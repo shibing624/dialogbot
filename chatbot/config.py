@@ -48,6 +48,7 @@ corpus_tfidf_path = os.path.join(pwd_path, "data/order/corpus_tfidf.txt")
 vocab_path = os.path.join(pwd_path, "output", "vocab.txt")
 log_file = os.path.join(pwd_path, 'output/log.txt')
 
+search_model = 'bm25'
 # seq2seq dialog
 model_path = os.path.join(pwd_path, 'output/models')
 dialog_mode = 'single'

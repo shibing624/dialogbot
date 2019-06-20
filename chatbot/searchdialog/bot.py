@@ -37,7 +37,15 @@ class SearchBot:
             self.qa_search_inst = OneHotModel(question_answer_path, word2id=self.word2id)
             self.cr_search_inst = OneHotModel(context_response_path, word2id=self.word2id)
 
-    def search(self, query, mode="qa", filter_pattern=None):
+    def answer(self, query, mode="qa", filter_pattern=None):
+        """
+        Answer query by search mode
+        :param query: str,
+        :param mode: qa or cr, 单轮对话或者多轮对话
+        :param filter_pattern:
+        :return: response, score
+        """
+        self.last_txt.append(query)
         original_tokens = Tokenizer.tokenize(query, filter_punctuations=True)
         tokens = [w for w in original_tokens if w in self.word2id]
         search_inst = self.qa_search_inst if mode == "qa" else self.cr_search_inst
@@ -62,4 +70,5 @@ class SearchBot:
         elif score > 0.7:
             return response, score
         response, score = "亲爱哒，还有什么小妹可以帮您呢~", 2.0
+        self.last_txt.append(response)
         return response, score

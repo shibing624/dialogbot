@@ -25,3 +25,11 @@ def get_logger(name, log_file=None):
     logger.addHandler(handle)
     logger.setLevel(logging.DEBUG)
     return logger
+
+
+def log_print(text, log_file=None):
+    from chatbot import config
+    log_file = log_file if log_file else config.log_file
+    logger = get_logger(__name__, log_file)
+    print(text)
+    logger.info(text)

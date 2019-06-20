@@ -13,15 +13,9 @@ import tensorflow as tf
 from chatbot import config
 from chatbot.reader.data_helper import load_dataset, get_batches
 from chatbot.seq2seqdialog.seq2seqmodel import Seq2SeqModel
-from chatbot.util.logger import get_logger
+from chatbot.util.logger import log_print
 
-logger = get_logger(__name__, log_file=config.log_file)
 Params = config.Params
-
-
-def log_print(text):
-    print(text)
-    logger.info(text)
 
 
 def train(model_path, vocab_path,

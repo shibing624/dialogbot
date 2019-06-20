@@ -11,9 +11,7 @@ import tensorflow as tf
 from chatbot import config
 from chatbot.reader.data_helper import load_dataset, sentence2enco
 from chatbot.seq2seqdialog.seq2seqmodel import Seq2SeqModel
-from chatbot.util.logger import get_logger
-
-logger = get_logger(__name__, log_file=config.log_file)
+from chatbot.util.logger import log_print
 
 word2id, id2word = load_dataset(config.vocab_path, vocab_size=config.Params.vocab_size)
 Params = config.Params
@@ -26,9 +24,14 @@ def get_infer_model(dialog_mode):
     model_path = os.path.join(config.model_path, dialog_mode)
     with tf.variable_scope("Model"):
         model = Seq2SeqModel(sess, "decode", Params, word2id)
-    ckpt = tf.train.get_checkpoint_state(model_path)
+    try:
+        ckpt = tf.train.get_checkpoint_state(model_path)
+    except AttributeError as e:
+        log_print('error. file error: %s' % model_path)
+        log_print(e)
+        ckpt = None
     model.saver.restore(model.sess, ckpt.model_checkpoint_path)
-    print("Load seq2seq model from %s done." % model_path)
+    log_print("Load seq2seq model from %s done." % model_path)
     return model
 
 

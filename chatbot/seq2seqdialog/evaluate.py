@@ -6,7 +6,6 @@
 
 from codecs import open
 
-from chatbot import config
 from chatbot.seq2seqdialog.infer import predict
 from chatbot.util.bleu import bleu
 
@@ -63,11 +62,10 @@ def evaluate(model, dialog_mode, result_path, question_answer_path=None, context
 
 if __name__ == '__main__':
     from chatbot.seq2seqdialog.infer import get_infer_model
-
+    from chatbot import config
     seq2seq_inst = get_infer_model(dialog_mode=config.dialog_mode)
     user_msgs = '你好 苹果 怎么 卖 ？'
     response = predict(seq2seq_inst, user_msgs, 1)
-    print(response)
+    print('response:', response)
     bleu_score = evaluate(seq2seq_inst, config.dialog_mode, config.predict_result_path,
-                          config.question_answer_path,
-                          config.context_response_path)
+                          config.question_answer_path, config.context_response_path)

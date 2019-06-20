@@ -4,9 +4,8 @@
 
 import os
 
-import gensim
-
-from domain.util import dump_pkl, load_pkl, segment, segment_pos
+from ..util.io import dump_pkl, load_pkl
+from ..util.tokenizer import  segment, segment_pos
 
 
 def _load_corpus(data_path=None, emb_model_path=None, vec_model=None):
@@ -34,7 +33,18 @@ def _add_embedding(emb_model_path, corpus, vec_model):
     return corpus
 
 
-def load_corpus_model(train_model_path=None, emb_model_path=None, train_data_path=None):
+def load_corpus_model(train_data_path=None, train_model_path='train_model.pkl', emb_model_path='train_emb.pkl'):
+    """
+    load corpus
+    :param train_model_path:
+    :param emb_model_path:
+    :param train_data_path:
+    :return: dict(), embedding
+    dict : {'answer': a, 'question_segment': segment(q), 'answer_segment': segment(a),
+            'question_segment_pos': segment_pos(q), 'answer_segment_pos': segment_pos(a), 'question_vector': None}
+
+    """
+    import gensim
     if not os.path.exists(emb_model_path):
         train_data = _load_corpus(train_data_path)
         sentences = [v['question_segment'] + v['answer_segment'] for v in train_data.values()]
@@ -53,9 +63,3 @@ def load_corpus_model(train_model_path=None, emb_model_path=None, train_data_pat
     else:
         print("must has train_model_path or train_data_path")
     return corpus, vec_model
-
-
-if __name__ == '__main__':
-    load_corpus_model(train_model_path="../data/reduce_weight_model.pkl",
-                      emb_model_path="../data/reduce_weight_emb.bin",
-                      train_data_path="../data/reduce_weight.txt")

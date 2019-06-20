@@ -5,8 +5,8 @@
 """
 
 from py2neo import Graph
-from config import host, kg_port, user, password, answer_num_limit
-from domain.util import get_logger
+from chatbot.config import host, kg_port, user, password, answer_num_limit
+from chatbot.util.logger import get_logger
 
 logger = get_logger(__name__)
 
@@ -20,7 +20,7 @@ class AnswerSearcher:
             password=password)
         self.num_limit = answer_num_limit
 
-    def search_main(self, sqls):
+    def search(self, sqls):
         """
         执行cypher查询，并返回相应结果
         :param sqls:

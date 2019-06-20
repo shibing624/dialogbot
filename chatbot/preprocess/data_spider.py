@@ -5,13 +5,12 @@
 # Date: 18-10-3
 
 
-import urllib.parse
-import urllib.request
+from urllib import request
 
 import pymongo
 from lxml import etree
 
-from config import mongo_host, mongo_port
+from chatbot.config import mongo_host, mongo_port
 
 
 class MedicalSpider:
@@ -30,8 +29,8 @@ class MedicalSpider:
         """
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
                                  'Chrome/51.0.2704.63 Safari/537.36'}
-        req = urllib.request.Request(url=url, headers=headers)
-        res = urllib.request.urlopen(req)
+        req = request.Request(url=url, headers=headers)
+        res = request.urlopen(req)
         html = res.read().decode('gbk')
         return html
 

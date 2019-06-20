@@ -1,3 +1,5 @@
 jieba
 gensim
-pyahocorasick
+py2neo
+pymongo
+lxml

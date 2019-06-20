@@ -7,7 +7,7 @@ import ahocorasick
 import os
 from codecs import open
 
-from domain.util import get_logger
+from chatbot.util.logger import get_logger
 
 logger = get_logger(__name__)
 

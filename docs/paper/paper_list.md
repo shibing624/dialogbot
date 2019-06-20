@@ -1,5 +1,6 @@
 1、A Network-based End-to-End Trainable Task-oriented Dialogue System
 Wen T H, Vandyke D, Mrksic N, et al. A Network-based End-to-End Trainable Task-oriented Dialogue System[J]. 2016.
+
 当前构建一个诸如宾馆预订或技术支持服务的 task-oriented 的对话系统很难，主要是因为难以获取训练数据。现有两种方式解决问题：
 •	将这个问题看做是 partially observable Markov Decision Process (POMDP)，利用强化学习在线与真实用户交互。但是语言理解和语言生成模块仍然需要语料去训练。而且为了让 RL 能运作起来，state 和 action space 必须小心设计，这就限制了模型的表达能力。同时 rewad function 很难设计，运行时也难以衡量
 •	利用 seq2seq 来做，这又需要大量语料训练。同时，这类模型无法做到与数据库交互以及整合其他有用的信息，从而生成实用的相应。

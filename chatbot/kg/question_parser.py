@@ -3,7 +3,7 @@
 # File: question_parser.py
 # Author: XuMing（xuming624@qq.com),lhy<lhy_in_blcu@126.com>
 
-from domain.util import get_logger
+from chatbot.util.logger import get_logger
 
 logger = get_logger(__name__)
 
@@ -22,7 +22,7 @@ class QuestionPaser:
 
         return entity_dict
 
-    def parser_main(self, res_classify):
+    def parser(self, res_classify):
         """
         解析主函数
         :param res_classify:
@@ -221,7 +221,3 @@ class QuestionPaser:
                 "MATCH (m:Disease)-[r:need_check]->(n:Check) where n.name = '{0}' return m.name, r.name, n.name".format(
                     i) for i in entities]
         return sql
-
-
-if __name__ == '__main__':
-    handler = QuestionPaser()

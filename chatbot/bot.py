@@ -53,11 +53,9 @@ class ChatBot:
         else:
             mode = "qa"
         search_response, sim_score = self.search_bot.answer(msg, mode=mode)
-        logger.info("search_response=%s" % search_response)
 
         # Seq2seq response.
         seq2seq_response = self.seq2seq_bot.answer(msg)
-        logger.info("seq2seq_response=%s" % seq2seq_response)
 
         if task_response:
             response = task_response

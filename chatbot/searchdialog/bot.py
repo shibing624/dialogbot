@@ -71,5 +71,6 @@ class SearchBot:
         elif score > 0.7:
             return response, score
         response, score = "亲爱哒，还有什么小妹可以帮您呢~", 2.0
+        logger.debug("search_response=%s" % response)
         self.last_txt.append(response)
         return response, score

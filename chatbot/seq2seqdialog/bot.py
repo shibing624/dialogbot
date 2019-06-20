@@ -27,6 +27,6 @@ class Seq2SeqBot:
         logger.debug('-' * 20)
         logger.debug("init_query=%s" % query)
         response = predict(self.model, query, beam_size=1)
-        logger.debug("generate_model=seq2seq, response=%s" % response)
+        logger.debug("seq2seq_response=%s" % response)
         self.last_txt.append(response)
         return response

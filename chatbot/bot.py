@@ -41,7 +41,6 @@ class ChatBot:
         :param use_task: bool,
         :return: response
         """
-        self.context.append(msg)
         task_response = None
         if use_task:
             task_response = None
@@ -91,6 +90,7 @@ def start_dialog():
             print("Chatbot: %s\n\n" % "感谢您的支持，我们下次再见呢~, 拜拜亲爱哒")
             exit()
         else:
+            bot.context.append(msg)
             response = bot.answer(msg, use_task=True)
             print("output%d: %s\n\n" % (len(bot.context) / 2, response), end="")
             print("input%d: " % (len(bot.context) / 2 + 1), end="")

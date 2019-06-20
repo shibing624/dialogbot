@@ -61,6 +61,7 @@ class SearchBot:
                     new_answers.append(ans)
             docs, answers = new_docs, new_answers
 
+        logger.debug('-' * 20)
         logger.debug("init_query=%s, filter_query=%s" % (query, "".join(tokens)))
         response, score = answers[0], sim_items[0][1]
         logger.debug(

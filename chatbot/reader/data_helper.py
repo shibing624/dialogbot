@@ -105,8 +105,8 @@ def sentence2enco(sentence, word2id):
         tokens = Tokenizer.tokenize(sentence, True)
     else:
         tokens = sentence
-    wordIds = [word2id[w] for w in tokens if w in word2id]
-    batch = create_batch([[wordIds, []]])
+    word_ids = [word2id[w] for w in tokens if w in word2id]
+    batch = create_batch([[word_ids, []]])
     return batch
 
 

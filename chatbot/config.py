@@ -31,12 +31,8 @@ train_path = os.path.join(pwd_path, 'data/taobao/dev.txt')
 dev_path = os.path.join(pwd_path, 'data/taobao/dev.txt')
 test_path = os.path.join(pwd_path, 'data/taobao/test.txt')
 
-question_answer_path = os.path.join(pwd_path, 'data/taobao/question_answer.txt')
-context_response_path = os.path.join(pwd_path, 'data/taobao/context_response.txt')
-
-word2vec_path = os.path.join(pwd_path, "data/taobao/v1.w2v_sgns_win2_d128.w2v")
-similarity_index_path = os.path.join(pwd_path, "data/taobao/similarity_index.txt")
-sent_emb_index_path = os.path.join(pwd_path, "data/taobao/sent_emb_index.txt")
+question_answer_path = os.path.join(pwd_path, 'output/question_answer.txt')
+context_response_path = os.path.join(pwd_path, 'output/context_response.txt')
 
 # Tokenize config file
 punctuations_path = os.path.join(pwd_path, "data/punctuations.txt")
@@ -49,19 +45,24 @@ order_info_path = os.path.join(pwd_path, "data/order/order.txt")
 corpus_dict_path = os.path.join(pwd_path, "data/order/corpus_dict.txt")
 corpus_tfidf_path = os.path.join(pwd_path, "data/order/corpus_tfidf.txt")
 
-vocab_path = os.path.join(pwd_path, "data", "taobao/vocab.txt")
+vocab_path = os.path.join(pwd_path, "output", "vocab.txt")
+log_file = os.path.join(pwd_path, 'output/log.txt')
+
+# seq2seq dialog
+model_path = os.path.join(pwd_path, 'output/models')
+dialog_mode = 'single'
+predict_result_path = os.path.join(pwd_path,'output/predict_result.txt')
 
 
-# dialog
-class Params(object):
+class Params:
     rnn_size = 256
     num_layers = 1
     embedding_size = 300
     vocab_size = 10000
     learning_rate = 0.001
     batch_size = 80
-    numEpochs = 15
-    steps_per_checkpoint = 300
+    epochs = 15
+    save_steps = 300
     model_name = "chatbot.ckpt"
     beam_size = 10
     max_gradient_norm = 5.0

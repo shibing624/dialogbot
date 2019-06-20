@@ -8,6 +8,9 @@ import time
 from codecs import open
 
 from gensim import corpora, models, similarities
+from chatbot.util.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class TfidfModel:
@@ -19,7 +22,7 @@ class TfidfModel:
         self._train_model()
         self.corpus_mm = self.tfidf_model[self.corpus]
         self.index = similarities.MatrixSimilarity(self.corpus_mm)
-        print("Time to build tfidf model by %s: %2.f seconds." % (corpus_file, time.time() - time_s))
+        logger.debug("Time to build tfidf model by %s: %2.f seconds." % (corpus_file, time.time() - time_s))
 
     @staticmethod
     def load_corpus_file(corpus_file, word2id, size):

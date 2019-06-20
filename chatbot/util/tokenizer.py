@@ -178,7 +178,7 @@ class Tokenizer:
             return new_tokens
         except Exception as e:
             print("text=%s, errmsg=%s" % (text, e))
-            return [text]
+        return [text]
 
     @classmethod
     def get_tfidf(cls, words):

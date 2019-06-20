@@ -4,7 +4,10 @@
 import time
 from codecs import open
 
-from .bm25 import BM25
+from chatbot.searchdialog.bm25 import BM25
+from chatbot.util.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class BM25Model:
@@ -13,7 +16,7 @@ class BM25Model:
         size = 500000 if DEBUG_MODE else 10000000
         self.contexts, self.responses = self.load_corpus_file(corpus_file, word2id, size)
         self.bm25_inst = BM25(self.contexts)
-        print("Time to build bm25 model by %s : %2.f seconds." % (corpus_file, time.time() - time_s))
+        logger.debug("Time to build bm25 model by %s : %2.f seconds." % (corpus_file, time.time() - time_s))
 
     @staticmethod
     def load_corpus_file(corpus_file, word2id, size):

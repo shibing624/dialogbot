@@ -3,3 +3,4 @@ gensim
 py2neo
 pymongo
 lxml
+pyemd

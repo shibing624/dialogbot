@@ -52,6 +52,8 @@ search_model = 'bm25'
 # seq2seq dialog
 model_path = os.path.join(pwd_path, 'output/models')
 dialog_mode = 'single'
+seq2seq_model_path =os.path.join(model_path, dialog_mode)
+
 predict_result_path = os.path.join(pwd_path,'output/predict_result.txt')
 
 

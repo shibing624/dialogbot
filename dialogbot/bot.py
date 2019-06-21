@@ -14,18 +14,18 @@ logger = get_logger(__name__)
 
 class Bot:
     def __init__(self, vocab_path,
-                 dialog_mode='single',
+                 seq2seq_model_path=None,
                  search_model='bm25',
                  question_answer_path=None,
                  context_response_path=None,
                  context=None):
         self.context = context if context else []
-
-        self.seq2seq_bot = Seq2SeqBot(vocab_path=vocab_path, dialog_mode=dialog_mode)
-        self.search_bot = SearchBot(question_answer_path, context_response_path, vocab_path=vocab_path,
+        self.search_bot = SearchBot(question_answer_path, context_response_path,
+                                    vocab_path=vocab_path,
                                     search_model=search_model)
+        self.seq2seq_bot = Seq2SeqBot(vocab_path, seq2seq_model_path)
 
-    def set_context(self, v=None):
+    def set_context(self, v):
         if isinstance(v, list):
             self.context = v
         elif isinstance(v, str):

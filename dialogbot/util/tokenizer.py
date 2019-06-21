@@ -3,10 +3,10 @@
 @author:XuMing（xuming624@qq.com)
 @description: 
 """
-import codecs
 import copy
 import logging
 import re
+from codecs import open
 
 import jieba
 import jieba.analyse
@@ -67,7 +67,7 @@ def segment_file(in_file, out_file, word_sep=' ', pos_sep='/', is_pos=True):
 
 
 def _load_words(file_path):
-    with codecs.open(file_path, "r", "utf-8") as rfd:
+    with open(file_path, "r", "utf-8") as rfd:
         words_set = set(rfd.read().splitlines())
     return words_set
 

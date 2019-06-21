@@ -7,7 +7,7 @@ from dialogbot import config
 from dialogbot.bot import Bot
 
 bot = Bot(vocab_path=config.vocab_path,
-          dialog_mode=config.dialog_mode,
+          seq2seq_model_path=config.seq2seq_model_path,
           search_model=config.search_model,
           question_answer_path=config.question_answer_path,
           context_response_path=config.context_response_path)

@@ -7,19 +7,16 @@
 from dialogbot import config
 from dialogbot.searchdialog.bot import SearchBot
 
-tfidfbot = SearchBot(question_answer_path=config.question_answer_path,
-                     context_response_path=config.context_response_path,
-                     vocab_path=config.vocab_path,
-                     search_model="tfidf")
+tfidfbot = SearchBot(search_model="tfidf")
 onehotbot = SearchBot(question_answer_path=config.question_answer_path,
                       context_response_path=config.context_response_path,
                       vocab_path=config.vocab_path,
                       search_model="onehot")
 
 bm25bot = SearchBot(question_answer_path=config.question_answer_path,
-                      context_response_path=config.context_response_path,
-                      vocab_path=config.vocab_path,
-                      search_model="bm25")
+                    context_response_path=config.context_response_path,
+                    vocab_path=config.vocab_path,
+                    search_model="bm25")
 vectorbot = SearchBot(question_answer_path=config.question_answer_path,
                       context_response_path=config.context_response_path,
                       vocab_path=config.vocab_path,

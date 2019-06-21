@@ -12,7 +12,7 @@ import tensorflow as tf
 
 from dialogbot import config
 from dialogbot.reader.data_helper import load_dataset, get_batches
-from dialogbot.seq2seqdialog.seq2seqmodel import Seq2SeqModel
+from dialogbot.seq2seqdialog.seq2seq import Seq2SeqModel
 from dialogbot.util.logger import log_print
 
 Params = config.Params

@@ -5,3 +5,5 @@
 """
 from dialogbot.kg import question_parser
 handler = question_parser.QuestionPaser()
+
+print(handler)

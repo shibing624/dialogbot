@@ -36,7 +36,7 @@ Let's run chat bot:
 import dialogbot
 
 # answer question
-response = smartbot.answer('亲 吃了吗？')
+response = dialogbot.answer('亲 吃了吗？')
 print(response)
 
 ```

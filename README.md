@@ -3,8 +3,8 @@
 [![PyPI version](https://badge.fury.io/py/dialogbot.svg)](https://badge.fury.io/py/dialogbot)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![License Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/deepmipt/DeepPavlov/blob/master/LICENSE)
-[![Language](https://img.shields.io/badge/Language-Python-blue.svg)]
-[![Python3](https://img.shields.io/badge/Python-3.X-red.svg)]
+![Language](https://img.shields.io/badge/Language-Python-blue.svg)
+![Python3](https://img.shields.io/badge/Python-3.X-red.svg)
 
 # dialogbot
 dialogbot, provide complete dialogue model technology. Combining task-based dialogue model, search-based dialogue model and generative dialogue model, output the optimal dialogue response.
@@ -106,6 +106,6 @@ MILABOT 能够与人类就流行的闲聊话题进行语音和文本交流。该
 真实用户使用 A/B 测试对该系统进行评估，其性能大大优于竞争系统。由于其机器学习架构，该系统的性能在额外数据的帮助下还有可能继续提升。
 
 
-## [License](/LICENSE)
+# [License](/LICENSE)
 
 The Apache License 2.0

@@ -6,8 +6,8 @@
 
 from codecs import open
 
-from chatbot.seq2seqdialog.infer import predict
-from chatbot.util.bleu import bleu
+from dialogbot.seq2seqdialog.infer import predict
+from dialogbot.util.bleu import bleu
 
 
 def _process_gen_msg(text):
@@ -61,8 +61,8 @@ def evaluate(model, dialog_mode, result_path, question_answer_path=None, context
 
 
 if __name__ == '__main__':
-    from chatbot.seq2seqdialog.infer import get_infer_model
-    from chatbot import config
+    from dialogbot.seq2seqdialog.infer import get_infer_model
+    from dialogbot import config
     seq2seq_inst = get_infer_model(dialog_mode=config.dialog_mode)
     user_msgs = '你好 苹果 怎么 卖 ？'
     response = predict(seq2seq_inst, user_msgs, 1)

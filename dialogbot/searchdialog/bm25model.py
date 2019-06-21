@@ -4,8 +4,8 @@
 import time
 from codecs import open
 
-from chatbot.searchdialog.bm25 import BM25
-from chatbot.util.logger import get_logger
+from dialogbot.searchdialog.bm25 import BM25
+from dialogbot.util.logger import get_logger
 
 logger = get_logger(__name__)
 

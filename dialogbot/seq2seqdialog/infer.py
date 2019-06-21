@@ -8,10 +8,10 @@ import os
 import numpy as np
 import tensorflow as tf
 
-from chatbot import config
-from chatbot.reader.data_helper import load_dataset, sentence2enco
-from chatbot.seq2seqdialog.seq2seqmodel import Seq2SeqModel
-from chatbot.util.logger import log_print
+from dialogbot import config
+from dialogbot.reader.data_helper import load_dataset, sentence2enco
+from dialogbot.seq2seqdialog.seq2seqmodel import Seq2SeqModel
+from dialogbot.util.logger import log_print
 
 word2id, id2word = load_dataset(config.vocab_path, vocab_size=config.Params.vocab_size)
 Params = config.Params
@@ -30,6 +30,7 @@ def get_infer_model(dialog_mode):
         log_print('error. file error: %s' % model_path)
         log_print(e)
         ckpt = None
+        raise ValueError('error. file error: %s' % model_path)
     model.saver.restore(model.sess, ckpt.model_checkpoint_path)
     log_print("Load seq2seq model from %s done." % model_path)
     return model

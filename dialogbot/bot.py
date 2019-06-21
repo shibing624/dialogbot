@@ -4,15 +4,15 @@
 @description: chat bot main process.
 """
 
-from chatbot.searchdialog.bot import SearchBot
-from chatbot.seq2seqdialog.bot import Seq2SeqBot
-from chatbot.util.chinese_text import ch_count
-from chatbot.util.logger import get_logger
+from dialogbot.searchdialog.bot import SearchBot
+from dialogbot.seq2seqdialog.bot import Seq2SeqBot
+from dialogbot.util.chinese_text import ch_count
+from dialogbot.util.logger import get_logger
 
 logger = get_logger(__name__)
 
 
-class ChatBot:
+class Bot:
     def __init__(self, vocab_path,
                  dialog_mode='single',
                  search_model='bm25',
@@ -68,12 +68,12 @@ class ChatBot:
 
 
 def start_dialog():
-    from chatbot import config
-    bot = ChatBot(vocab_path=config.vocab_path,
-                  dialog_mode=config.dialog_mode,
-                  search_model=config.search_model,
-                  question_answer_path=config.question_answer_path,
-                  context_response_path=config.context_response_path)
+    from dialogbot import config
+    bot = Bot(vocab_path=config.vocab_path,
+              dialog_mode=config.dialog_mode,
+              search_model=config.search_model,
+              question_answer_path=config.question_answer_path,
+              context_response_path=config.context_response_path)
 
     print("\nChatbot: %s\n" % "您好，我是可爱的对话机器人小智，有问题都可以向我提问哦~")
     print("input1: ", end="")

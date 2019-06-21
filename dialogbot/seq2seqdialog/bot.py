@@ -5,9 +5,9 @@
 """
 from collections import deque
 
-from chatbot.reader.data_helper import load_dataset
-from chatbot.seq2seqdialog.infer import get_infer_model, predict
-from chatbot.util.logger import get_logger
+from dialogbot.reader.data_helper import load_dataset
+from dialogbot.seq2seqdialog.infer import get_infer_model, predict
+from dialogbot.util.logger import get_logger
 
 logger = get_logger(__name__)
 

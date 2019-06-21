@@ -5,8 +5,8 @@
 """
 from time import time
 
-from chatbot import config
-from chatbot.util.tokenizer import segment_file
+from dialogbot import config
+from dialogbot.util.tokenizer import segment_file
 
 start_time = time()
 # 切词

@@ -14,7 +14,7 @@ from gensim import corpora
 from gensim import models
 from jieba import posseg
 
-from chatbot import config
+from dialogbot import config
 
 jieba.default_logger.setLevel(logging.ERROR)
 

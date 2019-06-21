@@ -3,13 +3,13 @@
 # Brief: 
 from collections import deque
 
-from chatbot.util.logger import get_logger
-from chatbot.util.tokenizer import Tokenizer
-from .bm25model import BM25Model
-from .onehotmodel import OneHotModel
-from .tfidfmodel import TfidfModel
-from .vectormodel import VectorModel
-from ..reader.data_helper import load_dataset
+from dialogbot.reader.data_helper import load_dataset
+from dialogbot.searchdialog.bm25model import BM25Model
+from dialogbot.searchdialog.onehotmodel import OneHotModel
+from dialogbot.searchdialog.tfidfmodel import TfidfModel
+from dialogbot.searchdialog.vectormodel import VectorModel
+from dialogbot.util.logger import get_logger
+from dialogbot.util.tokenizer import Tokenizer
 
 logger = get_logger(__name__)
 

@@ -3,7 +3,7 @@
 # File: chatbot_graph.py
 # Author: XuMing（xuming624@qq.com),lhy<lhy_in_blcu@126.com>
 
-from chatbot.kg.bot import KGBot
+from dialogbot.kg.bot import KGBot
 
 if __name__ == '__main__':
     handler = KGBot()

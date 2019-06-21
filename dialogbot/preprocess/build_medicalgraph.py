@@ -7,7 +7,7 @@ import os
 import json
 from py2neo import Graph, Node
 from codecs import open
-from chatbot.config import host, kg_port, user, password, answer_num_limit
+from dialogbot.config import host, kg_port, user, password, answer_num_limit
 
 
 class MedicalGraph:

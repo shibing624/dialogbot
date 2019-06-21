@@ -36,6 +36,6 @@ def build_dict(train_path, single_path, multi_path, vocab_path):
 
 
 if __name__ == '__main__':
-    from chatbot import config
+    from dialogbot import config
 
     build_dict(config.train_path, config.question_answer_path, config.context_response_path, config.vocab_path)

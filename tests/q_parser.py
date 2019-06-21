@@ -3,5 +3,5 @@
 @author:XuMing（xuming624@qq.com)
 @description: 
 """
-from chatbot.kg import question_parser
+from dialogbot.kg import question_parser
 handler = question_parser.QuestionPaser()

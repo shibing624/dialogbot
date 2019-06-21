@@ -4,9 +4,9 @@
 @description: 
 """
 
-from  chatbot.kg.answer_searcher import AnswerSearcher
-from chatbot.kg.question_classifier import QuestionClassifier
-from  chatbot.kg.question_parser import QuestionPaser
+from  dialogbot.kg.answer_searcher import AnswerSearcher
+from dialogbot.kg.question_classifier import QuestionClassifier
+from  dialogbot.kg.question_parser import QuestionPaser
 
 
 class KGBot:

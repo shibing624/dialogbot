@@ -4,8 +4,8 @@
 @description: 
 """
 
-from chatbot import config
-from chatbot.searchdialog.bot import SearchBot
+from dialogbot import config
+from dialogbot.searchdialog.bot import SearchBot
 
 tfidfbot = SearchBot(question_answer_path=config.question_answer_path,
                      context_response_path=config.context_response_path,

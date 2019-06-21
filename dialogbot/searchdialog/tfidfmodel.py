@@ -8,7 +8,7 @@ import time
 from codecs import open
 
 from gensim import corpora, models, similarities
-from chatbot.util.logger import get_logger
+from dialogbot.util.logger import get_logger
 
 logger = get_logger(__name__)
 

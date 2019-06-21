@@ -5,8 +5,8 @@
 """
 
 from py2neo import Graph
-from chatbot.config import host, kg_port, user, password, answer_num_limit
-from chatbot.util.logger import get_logger
+from dialogbot.config import host, kg_port, user, password, answer_num_limit
+from dialogbot.util.logger import get_logger
 
 logger = get_logger(__name__)
 

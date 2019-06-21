@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
-from chatbot.searchdialog.bot import QABot
-from chatbot import config
+from dialogbot.searchdialog.bot import QABot
+from dialogbot import config
 import os
 
 # cur_dir = os.path.abspath(os.path.dirname(__file__))

@@ -10,7 +10,7 @@ from urllib import request
 import pymongo
 from lxml import etree
 
-from chatbot.config import mongo_host, mongo_port
+from dialogbot.config import mongo_host, mongo_port
 
 
 class MedicalSpider:

@@ -28,7 +28,7 @@ def get_logger(name, log_file=None):
 
 
 def log_print(text, log_file=None):
-    from chatbot import config
+    from dialogbot import config
     log_file = log_file if log_file else config.log_file
     logger = get_logger(__name__, log_file)
     print(text)

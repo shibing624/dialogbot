@@ -1,5 +1,72 @@
-# smart-chatbot
-smart-chatbot, base on semantic analysis, knowledge graph, neo4j and spider.
+![alt text](docs/public/logo.svg)
+
+[![PyPI version](https://badge.fury.io/py/dialogbot.svg)](https://badge.fury.io/py/dialogbot)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![License Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/deepmipt/DeepPavlov/blob/master/LICENSE)
+[![Language](https://img.shields.io/badge/Language-Python-blue.svg)]
+[![Python3](https://img.shields.io/badge/Python-3.X-red.svg)]
+
+# dialogbot
+dialogbot, provide complete dialogue model technology. Combining task-based dialogue model, search-based dialogue model and generative dialogue model, output the optimal dialogue response.
+
+Base on **semantic analysis(tensorflow)**, **knowledge graph(neo4j)** and **data mining(spider)**.
+
+---
+
+# Feature
+
+
+# Quick Start
+
+### Requirements and Installation
+
+The project is based on Tensorflow 1.12.0+ and Python 3.6+, because method signatures and type hints are beautiful.
+If you do not have Python 3.6, install it first. [Here is how for Ubuntu 16.04](https://vsupalov.com/developing-with-python3-6-on-ubuntu-16-04/).
+Then, in your favorite virtual environment, simply do:
+
+```
+pip3 install dialogbot
+```
+
+### Example Usage
+
+Let's run chat bot:
+
+```python
+import dialogbot
+
+# answer question
+response = smartbot.answer('亲 吃了吗？')
+print(response)
+
+```
+
+Done!
+
+This should print:
+
+```console
+query: "亲 吃了吗？"
+
+answer: "吃了的，你好呀"
+```
+
+
+
+## Contact
+
+Please email your questions or comments to [xuming(shibing624)](http://www.borntowin.cn/).
+
+## Contributing
+
+Thanks for your interest in contributing! There are many ways to get involved;
+start with our [contributor guidelines](CONTRIBUTING.md) and then
+check these [open issues](https://github.com/shibing624/dialogbot/issues) for specific tasks.
+
+For contributors looking to get deeper into the API we suggest cloning the repository and checking out the unit
+tests for examples of how to call methods. Nearly all classes and methods are documented, so finding your way around
+the code should hopefully be easy.
+
 
 # reference
 
@@ -39,3 +106,6 @@ MILABOT 能够与人类就流行的闲聊话题进行语音和文本交流。该
 真实用户使用 A/B 测试对该系统进行评估，其性能大大优于竞争系统。由于其机器学习架构，该系统的性能在额外数据的帮助下还有可能继续提升。
 
 
+## [License](/LICENSE)
+
+The Apache License 2.0

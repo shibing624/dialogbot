@@ -4,20 +4,15 @@
 @description: 
 """
 
-# test evaluate
+# test seq2seq model
 from dialogbot import config
 
 from dialogbot.seq2seqdialog.model import Model
 
 seq2seq_inst = Model(config.vocab_path, config.seq2seq_model_path)
-user_msgs = '你好 苹果 怎么 卖 ？'
+user_msgs = '这个金额是否达到包邮条件?'
 response = seq2seq_inst.predict(user_msgs)
 print('response:', response)
-b_score = seq2seq_inst.evaluate(config.dialog_mode, config.predict_result_path, config.question_answer_path)
-print(b_score)
-# c_score = seq2seq_inst.evaluate(config.dialog_mode, config.predict_result_path, config.context_response_path)
-# print(c_score)
-
 
 
 # test Seq2SeqBot

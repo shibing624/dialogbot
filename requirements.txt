@@ -1,7 +1,8 @@
 jieba
 gensim
-py2neo
-pymongo
+pyahocorasick
 lxml
 pyemd
 nltk
+py2neo
+pymongo

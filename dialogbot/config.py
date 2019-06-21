@@ -33,6 +33,8 @@ test_path = os.path.join(pwd_path, 'data/taobao/test.txt')
 
 question_answer_path = os.path.join(pwd_path, 'output/question_answer.txt')
 context_response_path = os.path.join(pwd_path, 'output/context_response.txt')
+demo_question_answer_path = os.path.join(pwd_path, 'data/taobao/demo_question_answer.txt')
+demo_context_response_path = os.path.join(pwd_path, 'data/taobao/demo_context_response.txt')
 
 # Tokenize config file
 punctuations_path = os.path.join(pwd_path, "data/punctuations.txt")
@@ -52,9 +54,9 @@ search_model = 'bm25'
 # seq2seq dialog
 model_path = os.path.join(pwd_path, 'output/models')
 dialog_mode = 'single'
-seq2seq_model_path =os.path.join(model_path, dialog_mode)
+seq2seq_model_path = os.path.join(model_path, dialog_mode)
 
-predict_result_path = os.path.join(pwd_path,'output/predict_result.txt')
+predict_result_path = os.path.join(pwd_path, 'output/predict_result.txt')
 
 
 class Params:

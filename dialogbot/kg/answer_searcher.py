@@ -5,6 +5,7 @@
 """
 
 from py2neo import Graph
+import py2neo
 from dialogbot.config import host, kg_port, user, password, answer_num_limit
 from dialogbot.util.logger import get_logger
 
@@ -13,11 +14,14 @@ logger = get_logger(__name__)
 
 class AnswerSearcher:
     def __init__(self):
-        self.g = Graph(
-            host=host,
-            http_port=kg_port,
-            user=user,
-            password=password)
+        try:
+            self.g = Graph(
+                host=host,
+                http_port=kg_port,
+                user=user,
+                password=password)
+        except Exception as e:
+            logger.error('service down. please open neo4j service. %s' % e)
         self.num_limit = answer_num_limit
 
     def search(self, sqls):

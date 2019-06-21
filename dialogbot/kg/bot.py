@@ -4,9 +4,9 @@
 @description: 
 """
 
-from  dialogbot.kg.answer_searcher import AnswerSearcher
+from dialogbot.kg.answer_searcher import AnswerSearcher
 from dialogbot.kg.question_classifier import QuestionClassifier
-from  dialogbot.kg.question_parser import QuestionPaser
+from dialogbot.kg.question_parser import QuestionPaser
 
 
 class KGBot:
@@ -24,7 +24,6 @@ class KGBot:
             return answer
         res_sql = self.parser.parser(res_classify)
         final_answers = self.searcher.search(res_sql)
-        if not final_answers:
-            return answer
-        else:
+        if final_answers:
             return '\n'.join(final_answers)
+        return answer

@@ -10,5 +10,5 @@ from dialogbot.util.tokenizer import segment_file
 
 start_time = time()
 # 切词
-segment_file(config.train_file_path, config.train_seg_file_path, pos=True)
+segment_file(config.train_path, 'seg.txt', is_pos=False)
 print("spend time:", time() - start_time)

@@ -47,7 +47,7 @@ order_info_path = os.path.join(pwd_path, "data/order/order.txt")
 corpus_dict_path = os.path.join(pwd_path, "data/order/corpus_dict.txt")
 corpus_tfidf_path = os.path.join(pwd_path, "data/order/corpus_tfidf.txt")
 
-vocab_path = os.path.join(pwd_path, "output", "vocab.txt")
+vocab_path = os.path.join(pwd_path, "output/vocab.txt")
 log_file = os.path.join(pwd_path, 'output/log.txt')
 
 search_model = 'bm25'
@@ -55,7 +55,6 @@ search_model = 'bm25'
 model_path = os.path.join(pwd_path, 'output/models')
 dialog_mode = 'single'
 seq2seq_model_path = os.path.join(model_path, dialog_mode)
-
 predict_result_path = os.path.join(pwd_path, 'output/predict_result.txt')
 
 

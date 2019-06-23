@@ -108,7 +108,7 @@ tf.flags.DEFINE_string(
     'File to write evaluation set results to.')
 tf.flags.DEFINE_string(
     'weights_save_path',
-    '../output/task_models/',
+    '../output/task_models/memn2n',
     'File to save model weights to.')
 tf.flags.DEFINE_integer(
     'save_epochs',

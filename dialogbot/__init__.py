@@ -3,6 +3,7 @@
 @author:XuMing（xuming624@qq.com)
 @description: 
 """
+from . import config
 from .bot import Bot
 from .kg.bot import KGBot
 from .searchdialog.bot import SearchBot

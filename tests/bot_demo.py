@@ -17,3 +17,4 @@ for msg in msgs:
     response = bot.answer(msg, use_task=True)
     print("query:", msg)
     print("response:", response)
+

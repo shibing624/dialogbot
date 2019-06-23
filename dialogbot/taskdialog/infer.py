@@ -66,15 +66,15 @@ tf.flags.DEFINE_boolean(
     'use match type features')
 tf.flags.DEFINE_boolean(
     'cache_match_type',
-    False,
+    True,
     'cache match type answers')
 tf.flags.DEFINE_boolean(
     'cache_vectorized',
-    False,
+    True,
     'cache vectorized data')
 tf.flags.DEFINE_boolean(
     'use_oov',
-    False,
+    True,
     'use OOV test set')
 tf.flags.DEFINE_string(
     'data_dir',

@@ -3,8 +3,7 @@
 @author:XuMing（xuming624@qq.com)
 @description: chat bot main process.
 """
-import os
-
+from dialogbot import config
 from dialogbot.searchdialog.bot import SearchBot
 from dialogbot.seq2seqdialog.bot import Seq2SeqBot
 from dialogbot.utils.chinese_text import ch_count
@@ -12,16 +11,14 @@ from dialogbot.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-pwd_path = os.path.abspath(os.path.dirname(__file__))
-
 
 class Bot:
     def __init__(self,
-                 vocab_path=os.path.join(pwd_path, '../output/vocab.txt'),
-                 question_answer_path=os.path.join(pwd_path, '../output/question_answer.txt'),
-                 context_response_path=os.path.join(pwd_path, '../output/context_response.txt'),
-                 seq2seq_model_path=None,
-                 search_model='bm25',
+                 vocab_path=config.vocab_path,
+                 search_model=config.search_model,
+                 question_answer_path=config.question_answer_path,
+                 context_response_path=config.context_response_path,
+                 seq2seq_model_path=config.seq2seq_model_path,
                  context=None):
         self.context = context if context else []
         self.search_bot = SearchBot(question_answer_path, context_response_path,
@@ -72,7 +69,6 @@ class Bot:
 
 
 def start_dialog():
-    from dialogbot import config
     bot = Bot(vocab_path=config.vocab_path,
               seq2seq_model_path=config.seq2seq_model_path,
               search_model=config.search_model,

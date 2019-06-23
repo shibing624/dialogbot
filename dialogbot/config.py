@@ -52,7 +52,7 @@ log_file = os.path.join(pwd_path, 'output/log.txt')
 
 search_model = 'bm25'
 # seq2seq dialog
-model_path = os.path.join(pwd_path, 'output/gen_models')
+model_path = os.path.join(pwd_path, 'output/models')
 dialog_mode = 'single'
 seq2seq_model_path = os.path.join(model_path, dialog_mode)
 

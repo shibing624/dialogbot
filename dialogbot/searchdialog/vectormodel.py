@@ -7,7 +7,7 @@ import time
 from gensim.models import Word2Vec, Doc2Vec
 from gensim.models.doc2vec import TaggedDocument
 
-from dialogbot.util.logger import get_logger
+from dialogbot.utils.logger import get_logger
 
 logger = get_logger(__name__)
 

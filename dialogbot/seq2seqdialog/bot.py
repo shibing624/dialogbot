@@ -6,7 +6,7 @@
 from collections import deque
 
 from dialogbot.seq2seqdialog.model import Model
-from dialogbot.util.logger import get_logger
+from dialogbot.utils.logger import get_logger
 
 logger = get_logger(__name__)
 

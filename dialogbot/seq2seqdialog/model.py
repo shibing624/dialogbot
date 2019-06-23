@@ -3,14 +3,14 @@
 @author:XuMing（xuming624@qq.com)
 @description:
 """
-from dialogbot.util.bleu import bleu
+from dialogbot.utils.bleu import bleu
 import numpy as np
 import tensorflow as tf
 from codecs import open
 from dialogbot import config
 from dialogbot.reader.data_helper import load_dataset, sentence2enco
 from dialogbot.seq2seqdialog.seq2seq import Seq2SeqModel
-from dialogbot.util.logger import log_print
+from dialogbot.utils.logger import log_print
 
 Params = config.Params
 Params.beam_search = True

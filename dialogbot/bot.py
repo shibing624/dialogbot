@@ -7,8 +7,8 @@ import os
 
 from dialogbot.searchdialog.bot import SearchBot
 from dialogbot.seq2seqdialog.bot import Seq2SeqBot
-from dialogbot.util.chinese_text import ch_count
-from dialogbot.util.logger import get_logger
+from dialogbot.utils.chinese_text import ch_count
+from dialogbot.utils.logger import get_logger
 
 logger = get_logger(__name__)
 

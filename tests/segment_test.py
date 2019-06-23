@@ -6,7 +6,7 @@
 from time import time
 
 from dialogbot import config
-from dialogbot.util.tokenizer import segment_file
+from dialogbot.utils.tokenizer import segment_file
 
 start_time = time()
 # 切词

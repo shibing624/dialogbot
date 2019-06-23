@@ -9,8 +9,8 @@ from dialogbot.searchdialog.bm25model import BM25Model
 from dialogbot.searchdialog.onehotmodel import OneHotModel
 from dialogbot.searchdialog.tfidfmodel import TfidfModel
 from dialogbot.searchdialog.vectormodel import VectorModel
-from dialogbot.util.logger import get_logger
-from dialogbot.util.tokenizer import Tokenizer
+from dialogbot.utils.logger import get_logger
+from dialogbot.utils.tokenizer import Tokenizer
 
 logger = get_logger(__name__)
 

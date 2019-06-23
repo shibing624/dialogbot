@@ -9,7 +9,7 @@ from codecs import open
 import numpy as np
 from gensim import models
 
-from dialogbot.util.tokenizer import Tokenizer
+from dialogbot.utils.tokenizer import Tokenizer
 
 padToken, goToken, eosToken, unknownToken = 0, 1, 2, 3
 max_seq_len = 60

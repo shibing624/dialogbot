@@ -3,7 +3,7 @@
 # File: question_parser.py
 # Author: XuMing（xuming624@qq.com),lhy<lhy_in_blcu@126.com>
 
-from dialogbot.util.logger import get_logger
+from dialogbot.utils.logger import get_logger
 
 logger = get_logger(__name__)
 

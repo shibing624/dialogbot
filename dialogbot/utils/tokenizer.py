@@ -16,7 +16,7 @@ from jieba import posseg
 
 from dialogbot import config
 
-jieba.default_logger.setLevel(logging.ERROR)
+jieba.logger.setLevel(logging.ERROR)
 
 
 def segment(sentence):
@@ -25,7 +25,7 @@ def segment(sentence):
     :param sentence:
     :return: list
     """
-    return jieba.lcut(sentence)
+    return jieba.cut(sentence)
 
 
 def segment_pos(sentence):
@@ -34,7 +34,7 @@ def segment_pos(sentence):
     :param sentence:
     :return: list
     """
-    return posseg.lcut(sentence)
+    return posseg.cut(sentence)
 
 
 def segment_file(in_file, out_file, word_sep=' ', pos_sep='/', is_pos=True):
@@ -146,7 +146,7 @@ class Tokenizer:
             text = cls.digit_pattern.sub("[数字x]", text)
             if normalize_url:
                 text = cls.url_pattern.sub("URL", text)
-            tokens = jieba.lcut(text)
+            tokens = list(jieba.cut(text))
             text = " ".join(tokens)
             for s in cls.bracket_pattern.findall(text):
                 text = text.replace(s, s.replace(" ", ""))
@@ -195,7 +195,7 @@ class Tokenizer:
 
     @classmethod
     def get_keywords(cls, text, size=3, way=None):
-        if way == None or way == "tfidf":
+        if way is None or way == "tfidf":
             tokens = cls.tokenize(text)
             tfidf = cls.get_tfidf(tokens)
             ret_tokens = [x[0] for x in tfidf[:size]]

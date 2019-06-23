@@ -7,7 +7,7 @@ import ahocorasick
 import os
 from codecs import open
 
-from dialogbot.util.logger import get_logger
+from dialogbot.utils.logger import get_logger
 
 logger = get_logger(__name__)
 

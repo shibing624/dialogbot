@@ -33,10 +33,10 @@ pip3 install dialogbot
 Let's run chat bot:
 
 ```python
-import dialogbot
+import dialogbot import Bot
 
-# answer question
-response = dialogbot.answer('亲 吃了吗？')
+bot = Bot()
+response = bot.answer('亲 吃了吗？')
 print(response)
 
 ```

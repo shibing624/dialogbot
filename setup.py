@@ -14,7 +14,6 @@ from dialogbot import __version__
 if sys.version_info < (3,):
     sys.exit('Sorry, Python3 is required for dialogbot.')
 
-
 with open('README.md') as f:
     readme = f.read()
 
@@ -54,7 +53,7 @@ setup(
     package_data={
         'dialogbot': ['*.*', 'LICENSE', 'README.*', 'data/*', 'data/medical_dict/*',
                       'data/order/*', 'data/taobao/*', 'kg/*', 'preprocess/*', 'reader/*', 'searchdialog/*',
-                      'seq2seqdialog/*', 'util/*'],
+                      'seq2seqdialog/*', 'util/*', 'output/*.txt'],
     },
     test_suite='tests',
 )

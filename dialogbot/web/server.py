@@ -3,10 +3,12 @@
 @author:XuMing（xuming624@qq.com)
 @description: 
 """
+import sys
 
+sys.path.append('../..')
 from flask import Flask, render_template, request
 
-from dialogbot import Bot
+from dialogbot.bot import Bot
 from dialogbot.utils.logger import start_heartbeat
 
 app = Flask(__name__)

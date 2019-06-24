@@ -69,11 +69,7 @@ class Bot:
 
 
 def start_dialog():
-    bot = Bot(vocab_path=config.vocab_path,
-              seq2seq_model_path=config.seq2seq_model_path,
-              search_model=config.search_model,
-              question_answer_path=config.question_answer_path,
-              context_response_path=config.context_response_path)
+    bot = Bot()
 
     print("\nChatbot: %s\n" % "您好，我是可爱的对话机器人小智，有问题都可以向我提问哦~")
     print("input1: ", end="")

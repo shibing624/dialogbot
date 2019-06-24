@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/static/style.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>智能对话</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="keywords" content="智能对话"/>
+    <meta name="description" content="智能对话,对话机器人"/>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-select/1.12.4/css/bootstrap-select.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../static/logo.ico"/>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
     <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 </head>
 <body>
@@ -15,28 +23,34 @@
         <input id="textInput" type="text" name="msg" placeholder="Message">
         <input id="buttonInput" type="submit" value="Send">
     </div>
-    <script>
-        function getBotResponse() {
-            var rawText = $("#textInput").val();
-            var userHtml = '<p class="userText"><span>' + rawText + '</span></p>';
-            $("#textInput").val("");
-            $("#chatbox").append(userHtml);
-            document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
-            $.get("/get", {msg: rawText}).done(function (data) {
-                var botHtml = '<p class="botText"><span>' + data + '</span></p>';
-                $("#chatbox").append(botHtml);
-                document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
-            });
-        }
-        $("#textInput").keypress(function (e) {
-            if (e.which == 13) {
-                getBotResponse();
-            }
-        });
-        $("#buttonInput").click(function () {
-            getBotResponse();
-        })
-    </script>
+
+</div>
+<div id="footer">
+    <p class="text-center">
+        对话机器人项目 &copy;2018-2019 | Powered by xuming
+    </p>
 </div>
 </body>
+<script>
+    function getBotResponse() {
+        var rawText = $("#textInput").val();
+        var userHtml = '<p class="userText"><span>' + rawText + '</span></p>';
+        $("#textInput").val("");
+        $("#chatbox").append(userHtml);
+        document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+        $.get("/get", {msg: rawText}).done(function (data) {
+            var botHtml = '<p class="botText"><span>' + data + '</span></p>';
+            $("#chatbox").append(botHtml);
+            document.getElementById('userInput').scrollIntoView({block: 'start', behavior: 'smooth'});
+        });
+    }
+    $("#textInput").keypress(function (e) {
+        if (e.which == 13) {
+            getBotResponse();
+        }
+    });
+    $("#buttonInput").click(function () {
+        getBotResponse();
+    })
+</script>
 </html>

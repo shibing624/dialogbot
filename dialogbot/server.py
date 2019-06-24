@@ -23,8 +23,8 @@ def home():
 
 @app.route("/get")
 def get_bot_response():
-    userText = request.args.get('msg')
-    return str(bot.answer(userText))
+    user_text = request.args.get('msg')
+    return str(bot.answer(user_text))
 
 
 if __name__ == "__main__":

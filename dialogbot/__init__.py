@@ -8,8 +8,5 @@ from .bot import Bot
 from .kg.bot import KGBot
 from .searchdialog.bot import SearchBot
 from .seq2seqdialog.bot import Seq2SeqBot
-from .utils.logger import get_logger
 
-__version__ = "0.0.1"
-
-logger = get_logger("dialogbot" + __version__)
+__version__ = "0.0.2"

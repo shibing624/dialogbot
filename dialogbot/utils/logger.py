@@ -27,9 +27,35 @@ def get_logger(name, log_file=None):
     return logger
 
 
-def log_print(text, log_file=None):
+def log_print(text, log_file=None, level='INFO'):
     from dialogbot import config
     log_file = log_file if log_file else config.log_file
     logger = get_logger(__name__, log_file)
     print(text)
-    logger.info(text)
+    level = level.upper()
+    if level == 'INFO':
+        logger.info(text)
+    elif level == 'ERROR':
+        logger.error(text)
+    elif level == 'DEBUG':
+        logger.debug(text)
+    elif level == 'WARNING' or level == 'WARN':
+        logger.warning(text)
+    else:
+        logger.info(text)
+
+
+def start_heartbeat(interval=60, logger=None):
+    import time
+    import threading
+
+    def print_time():
+        t = time.strftime('%Y-%m-%d %H:%M:%S - heartbeat', time.localtime(time.time()))
+        print(t)
+        if logger:
+            logger.info(t)
+        timer = threading.Timer(interval, print_time)
+        timer.start()
+
+    timer = threading.Timer(interval, print_time)
+    timer.start()

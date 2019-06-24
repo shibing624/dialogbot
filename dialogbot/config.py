@@ -16,12 +16,6 @@ user = "neo4j"
 password = "123456"
 answer_num_limit = 20
 
-# word2vec param
-# train_file_path = os.path.join(pwd_path, 'data/reduce_weight/reduce_weight.txt')
-# train_seg_file_path = os.path.join(pwd_path, 'data/reduce_weight/reduce_weight_seg.txt')
-# train_model_path = os.path.join(pwd_path, 'data/reduce_weight/reduce_weight_model.pkl')
-# emb_model_path = os.path.join(pwd_path, 'data/reduce_weight/reduce_weight_emb.bin')
-
 # mongodb
 mongo_host = 'localhost'
 mongo_port = 27017
@@ -72,3 +66,12 @@ class Params:
     max_gradient_norm = 5.0
     use_attention = True
     bidirectional_rnn = False
+
+
+class Web:
+    """
+    前端
+    """
+    host = "0.0.0.0"
+    port = "8820"
+    url = "http://" + host + ":" + port

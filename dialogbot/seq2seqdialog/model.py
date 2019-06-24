@@ -3,13 +3,15 @@
 @author:XuMing（xuming624@qq.com)
 @description:
 """
-from dialogbot.utils.bleu import bleu
+from codecs import open
+
 import numpy as np
 import tensorflow as tf
-from codecs import open
+
 from dialogbot import config
 from dialogbot.reader.data_helper import load_dataset, sentence2enco
 from dialogbot.seq2seqdialog.seq2seq import Seq2SeqModel
+from dialogbot.utils.bleu import bleu
 from dialogbot.utils.logger import log_print
 
 Params = config.Params
@@ -27,9 +29,14 @@ class Model:
         sess = tf.Session()
         with tf.variable_scope("Model"):
             model = Seq2SeqModel(sess, "decode", Params, word2id)
-        log_print("Load seq2seq model from %s done." % model_dir_path)
+        log_print("Load seq2seq model from %s" % model_dir_path)
         ckpt = tf.train.get_checkpoint_state(model_dir_path)
-        model.saver.restore(model.sess, ckpt.model_checkpoint_path)
+        try:
+            model.saver.restore(model.sess, ckpt.model_checkpoint_path)
+        except AttributeError as e:
+            log_print('load seq2seq model error, not found model, check model path:%s, train seq2seq to generate it.'
+                      % model_dir_path, level='ERROR')
+            model = None
         return model
 
     def _predict_ids_to_seq(self, predict_ids, beam_size=5):
@@ -43,13 +50,19 @@ class Model:
         return predicts
 
     def predicts(self, context, beam_size=5):
+        result = []
         batch = sentence2enco(context, self.word2id)
-        predicted_ids = self.model.infer(batch)
-        result = self._predict_ids_to_seq(predicted_ids, beam_size)
+        if self.model:
+            predicted_ids = self.model.infer(batch)
+            result = self._predict_ids_to_seq(predicted_ids, beam_size)
         return result
 
     def predict(self, context):
-        return self.predicts(context)[0]
+        answer = ''
+        answers = self.predicts(context)
+        if answers:
+            answer = answers[0]
+        return answer
 
     def predict_sent_emb(self, context):
         batch = sentence2enco(context, self.word2id)

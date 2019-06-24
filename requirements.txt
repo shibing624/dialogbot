@@ -7,3 +7,5 @@ nltk
 py2neo
 pymongo
 tqdm
+Flask
+SQLAlchemy

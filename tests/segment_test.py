@@ -4,7 +4,9 @@
 @description: 
 """
 from time import time
+import sys
 
+sys.path.append('..')
 from dialogbot import config
 from dialogbot.utils.tokenizer import segment_file
 

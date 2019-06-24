@@ -3,7 +3,9 @@
 @author:XuMing（xuming624@qq.com)
 @description: 
 """
+import sys
 
+sys.path.append('..')
 from dialogbot import config
 from dialogbot.searchdialog.bot import SearchBot
 

@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """
 @author:XuMing（xuming624@qq.com)
-@description: 
+@description:  test seq2seq model
 """
 
-# test seq2seq model
+import sys
+
+sys.path.append('..')
 from dialogbot import config
 
 from dialogbot.seq2seqdialog.model import Model

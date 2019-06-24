@@ -3,6 +3,9 @@
 @author:XuMing（xuming624@qq.com)
 @description: chat bot main process.
 """
+import sys
+
+sys.path.append('..')
 from dialogbot import config
 from dialogbot.searchdialog.bot import SearchBot
 from dialogbot.seq2seqdialog.bot import Seq2SeqBot

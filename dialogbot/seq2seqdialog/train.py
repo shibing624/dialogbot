@@ -6,10 +6,12 @@
 
 import math
 import os
+import sys
 import time
 
 import tensorflow as tf
 
+sys.path.append('../..')
 from dialogbot import config
 from dialogbot.reader.data_helper import load_dataset, get_batches
 from dialogbot.seq2seqdialog.seq2seq import Seq2SeqModel

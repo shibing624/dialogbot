@@ -3,11 +3,15 @@
 # File: MedicalGraph.py
 # Author: XuMing（xuming624@qq.com),lhy<lhy_in_blcu@126.com,https://huangyong.github.io>
 
-import os
 import json
-from py2neo import Graph, Node
+import os
+import sys
 from codecs import open
-from dialogbot.config import host, kg_port, user, password, answer_num_limit
+
+from py2neo import Graph, Node
+
+sys.path.append('../..')
+from dialogbot.config import host, kg_port, user, password
 
 
 class MedicalGraph:
@@ -25,29 +29,29 @@ class MedicalGraph:
         读取文件 共７类节点
         :return:
         """
-        drugs = []               # 药品
-        foods = []               # 食物
-        checks = []              # 检查
-        departments = []         # 科室
-        producers = []           # 药品大类
-        diseases = []            # 疾病
-        symptoms = []            # 症状
+        drugs = []  # 药品
+        foods = []  # 食物
+        checks = []  # 检查
+        departments = []  # 科室
+        producers = []  # 药品大类
+        diseases = []  # 疾病
+        symptoms = []  # 症状
 
-        disease_infos = []       # 疾病信息
+        disease_infos = []  # 疾病信息
 
         # 构建节点实体关系
-        rels_department = []      # 科室－科室关系
-        rels_noteat = []          # 疾病－忌吃食物关系
-        rels_doeat = []           # 疾病－宜吃食物关系
-        rels_recommandeat = []    # 疾病－推荐吃食物关系
-        rels_commonddrug = []     # 疾病－通用药品关系
-        rels_recommanddrug = []   # 疾病－热门药品关系
-        rels_check = []           # 疾病－检查关系
-        rels_drug_producer = []   # 厂商－药物关系
+        rels_department = []  # 科室－科室关系
+        rels_noteat = []  # 疾病－忌吃食物关系
+        rels_doeat = []  # 疾病－宜吃食物关系
+        rels_recommandeat = []  # 疾病－推荐吃食物关系
+        rels_commonddrug = []  # 疾病－通用药品关系
+        rels_recommanddrug = []  # 疾病－热门药品关系
+        rels_check = []  # 疾病－检查关系
+        rels_drug_producer = []  # 厂商－药物关系
 
-        rels_symptom = []         # 疾病症状关系
-        rels_acompany = []        # 疾病并发关系
-        rels_category = []        # 疾病与科室之间的关系
+        rels_symptom = []  # 疾病症状关系
+        rels_acompany = []  # 疾病并发关系
+        rels_category = []  # 疾病与科室之间的关系
 
         count = 0
         for data in open(self.data_path, encoding='utf-8'):
@@ -158,7 +162,6 @@ class MedicalGraph:
                disease_infos, rels_check, rels_recommandeat, rels_noteat, rels_doeat, rels_department, \
                rels_commonddrug, rels_drug_producer, rels_recommanddrug, rels_symptom, rels_acompany, rels_category
 
-
     def _create_node(self, label, nodes):
         """
         建立节点
@@ -174,7 +177,6 @@ class MedicalGraph:
             print(count, len(nodes))
         return
 
-
     def _create_diseases_nodes(self, disease_infos):
         """创建知识图谱中心疾病的节点"""
         count = 0
@@ -188,7 +190,6 @@ class MedicalGraph:
             count += 1
             print(count)
         return
-
 
     def create_graphnodes(self):
         """
@@ -212,7 +213,6 @@ class MedicalGraph:
         self._create_node('Symptom', Symptoms)
         return
 
-
     def create_graphrels(self):
         """
         创建实体关系边
@@ -232,7 +232,6 @@ class MedicalGraph:
         self._create_relationship('Disease', 'Symptom', rels_symptom, 'has_symptom', '症状')
         self._create_relationship('Disease', 'Disease', rels_acompany, 'acompany_with', '并发症')
         self._create_relationship('Disease', 'Department', rels_category, 'belongs_to', '所属科室')
-
 
     def _create_relationship(self, start_node, end_node, edges, rel_type, rel_name):
         """
@@ -262,7 +261,6 @@ class MedicalGraph:
                 print(rel_type, count, all)
             except Exception as e:
                 print(e)
-
 
     def export_data(self):
         """
@@ -295,7 +293,6 @@ class MedicalGraph:
         f_producer.close()
         f_symptom.close()
         f_disease.close()
-
 
 
 if __name__ == '__main__':

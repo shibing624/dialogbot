@@ -5,11 +5,13 @@
 # Date: 18-10-3
 
 
+import sys
 from urllib import request
 
 import pymongo
 from lxml import etree
 
+sys.path.append('../..')
 from dialogbot.config import mongo_host, mongo_port
 
 

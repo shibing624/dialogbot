@@ -3,7 +3,9 @@
 @author:XuMing（xuming624@qq.com)
 @description: 
 """
+import sys
 
+sys.path.append('..')
 from dialogbot import Bot
 
 bot = Bot()

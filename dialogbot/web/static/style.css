@@ -1,5 +1,9 @@
 body {
     font-family: Garamond;
+    min-height:100%;margin:0;padding:0;position:relative;
+}
+main{
+    padding-bottom:100px;
 }
 
 h1 {
@@ -74,8 +78,16 @@ h3 {
 }
 
 #tidbit {
-    position:absolute;
-    bottom:0;
-    right:0;
+    position: absolute;
+    bottom: 0;
+    right: 0;
     width: 300px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 20px;
+    background-color: #ffffff;
 }

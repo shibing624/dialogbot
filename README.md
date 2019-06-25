@@ -15,17 +15,43 @@ Base on **semantic analysis(tensorflow)**, **knowledge graph(neo4j)** and **data
 
 # Feature
 
+## Search dialog bot
+
+Compute questions similarity, use
+
+- TFIDF
+- BM25
+- OneHot
+- Query Vector
+
+## Task dialog bot
+
+- End to End Memory Network(memn2n)
+- BABi dataset
+
+## Generate dialog bot
+
+- Sequence To Sequence Model(seq2seq)
+- Taobao dataset
+
 
 # Quick Start
 
 ### Requirements and Installation
 
-The project is based on Tensorflow 1.12.0+ and Python 3.6+, because method signatures and type hints are beautiful.
-If you do not have Python 3.6, install it first. [Here is how for Ubuntu 16.04](https://vsupalov.com/developing-with-python3-6-on-ubuntu-16-04/).
-Then, in your favorite virtual environment, simply do:
+The project is based on Tensorflow 1.12.0+ and Python 3.6+.
+Then, simply do:
 
 ```
 pip3 install dialogbot
+```
+
+or
+
+```
+git clone https://github.com/shibing624/dialogbot.git
+cd dialogbot
+python3 setup.py install
 ```
 
 ### Example Usage
@@ -52,6 +78,9 @@ answer: "吃了的，你好呀"
 ```
 
 
+## Demo
+
+http://www.borntowin.cn:8821
 
 ## Contact
 

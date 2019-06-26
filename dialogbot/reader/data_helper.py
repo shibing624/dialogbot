@@ -36,9 +36,13 @@ def load_dataset(vocab_path, train_path=None, vocab_size=0):
         id2word = {0: "<pad>", 1: "<go>", 2: "<eos>", 3: "<unknown>"}
         cnt = 4
         vocab_data = rfd.read().splitlines()
-        vocab_data_user = vocab_data[:vocab_size] if vocab_size else vocab_data
+        vocab_data_user = vocab_data[:vocab_size] if vocab_size > 0 else vocab_data
         for line in vocab_data_user:
-            word, _ = line.strip().split("\t")
+            items = line.split("\t")
+            if len(items) != 2:
+                print('error', vocab_path, line)
+                continue
+            word = items[0]
             word2id[word] = cnt
             id2word[cnt] = word
             cnt += 1
@@ -129,14 +133,12 @@ def dump_word_embeddings(word2id, emb_size, word2vec_path, embeddings_path):
     np.save(embeddings_path, embeddings)
 
 
-def load_corpus_file(corpus_file, word2id, size):
+def load_corpus_file(corpus_file, word2id, size=-1):
     with open(corpus_file, "r", encoding="utf-8") as rfd:
-        data = [s.strip().split("\t") for s in rfd.readlines()[:size]]
+        data_all = rfd.readlines()
+        if size > 0:
+            data_all = data_all[: size]
+        data = [s.strip().split("\t") for s in data_all]
         contexts = [[w for w in s.split() if w in word2id] for s, _ in data]
         responses = [s.replace(" ", "") for _, s in data]
         return contexts, responses
-
-
-if __name__ == "__main__":
-    word2id, _ = load_dataset(vocab_path='../data/vocab.txt', vocab_size=20)
-    dump_word_embeddings(word2id)

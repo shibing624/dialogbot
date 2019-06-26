@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 bot = Bot()
 
-start_heartbeat(logger=bot.logger)
+start_heartbeat(60 * 10)
 
 
 @app.route("/")

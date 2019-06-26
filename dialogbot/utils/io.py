@@ -40,8 +40,7 @@ def dump_pkl(vocab, pkl_path, overwrite=True):
     if os.path.exists(pkl_path) and not overwrite:
         return
     with open(pkl_path, 'wb') as f:
-        # pickle.dump(vocab, f, protocol=pickle.HIGHEST_PROTOCOL)
-        pickle.dump(vocab, f, protocol=0)
+        pickle.dump(vocab, f)
 
 
 def download_unlicensed_file(url, sourcefile, destfile, totalsz=None):

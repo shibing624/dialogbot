@@ -3,7 +3,6 @@
 @author:XuMing（xuming624@qq.com)
 @description: 
 """
-
 import logging
 
 
@@ -14,35 +13,21 @@ def get_logger(name, log_file=None):
     :param log_file: 日志文件，如无则输出到标准输出
     :return:
     """
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
     formatter = logging.Formatter('[%(levelname)1.1s %(asctime)s %(module)s:%(lineno)d] %(message)s',
                                   datefmt='%m%d%Y %I:%M:%sS')
-    if not log_file:
-        handle = logging.StreamHandler()
-    else:
-        handle = logging.FileHandler(log_file)
+    if log_file:
+        f_handle = logging.FileHandler(log_file)
+        f_handle.setFormatter(formatter)
+        logger.addHandler(f_handle)
+    handle = logging.StreamHandler()
     handle.setFormatter(formatter)
-    logger = logging.getLogger(name)
     logger.addHandler(handle)
-    logger.setLevel(logging.DEBUG)
     return logger
 
 
-def log_print(text, log_file=None, level='INFO'):
-    from dialogbot import config
-    log_file = log_file if log_file else config.log_file
-    logger = get_logger(__name__, log_file)
-    print(text)
-    level = level.upper()
-    if level == 'INFO':
-        logger.info(text)
-    elif level == 'ERROR':
-        logger.error(text)
-    elif level == 'DEBUG':
-        logger.debug(text)
-    elif level == 'WARNING' or level == 'WARN':
-        logger.warning(text)
-    else:
-        logger.info(text)
+logger = get_logger(__name__, log_file=None)
 
 
 def start_heartbeat(interval=60, logger=None):

@@ -3,26 +3,16 @@
 # Brief: 
 import time
 
-from dialogbot.utils.logger import get_logger
+from dialogbot.reader.data_helper import load_corpus_file
+from dialogbot.utils.logger import logger
 
-logger = get_logger(__name__)
 
 
 class OneHotModel:
     def __init__(self, corpus_file, word2id):
         time_s = time.time()
-        self.contexts, self.responses = self.load_corpus_file(corpus_file, word2id)
-        logger.debug("Time to build onehot model by %s : %2.f seconds." % (corpus_file, time.time() - time_s))
-
-    @staticmethod
-    def load_corpus_file(corpus_file, word2id, size=0):
-        with open(corpus_file, "r", encoding="utf-8") as r:
-            all_data = r.readlines()
-            all_data = all_data[:size] if size > 0 else all_data
-            data = [s.strip().split("\t") for s in all_data]
-            contexts = [[w for w in s.split() if w in word2id] for s, _ in data]
-            responses = [s.replace(" ", "") for _, s in data]
-            return contexts, responses
+        self.contexts, self.responses = load_corpus_file(corpus_file, word2id)
+        logger("Time to build onehot model by %s : %2.f seconds." % (corpus_file, time.time() - time_s))
 
     def score(self, l1, l2):
         """

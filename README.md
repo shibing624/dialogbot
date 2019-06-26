@@ -15,7 +15,7 @@ Base on **semantic analysis(tensorflow)**, **knowledge graph(neo4j)** and **data
 
 # Feature
 
-## Search dialog bot
+### Retrieval Dialogue Bot
 
 Compute questions similarity, use
 
@@ -24,12 +24,12 @@ Compute questions similarity, use
 - OneHot
 - Query Vector
 
-## Task dialog bot
+### Goal Oriented Dialogue Bot
 
-- End to End Memory Network(memn2n)
+- End to End Memory Networks(memn2n)
 - BABi dataset
 
-## Generate dialog bot
+### Generative Dialogue Bot
 
 - Sequence To Sequence Model(seq2seq)
 - Taobao dataset
@@ -106,6 +106,10 @@ Wen T H, Vandyke D, Mrksic N, et al. A Network-based End-to-End Trainable Task-o
 •	利用 seq2seq 来做，这又需要大量语料训练。同时，这类模型无法做到与数据库交互以及整合其他有用的信息，从而生成实用的相应。
 本文提出了平衡两种方法的策略。
 - How NOT To Evaluate Your Dialogue System: An Empirical Study of Unsupervised Evaluation Metrics for Dialogue Response Generation
+
+- A. Bordes, Y. Boureau, J. Weston. Learning End-to-End Goal-Oriented Dialog 2016
+
+- [chatbot-MemN2N-tensorflow](https://github.com/vyraun/chatbot-MemN2N-tensorflow)
 
 - End-to-End Reinforcement Learning of Dialogue Agents for Information Access
 2016年卡耐基梅隆大学研究团队利用深度强化学习进行对话状态追踪和管理

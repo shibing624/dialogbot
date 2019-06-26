@@ -7,9 +7,8 @@ import time
 from gensim.models import Word2Vec, Doc2Vec
 from gensim.models.doc2vec import TaggedDocument
 
-from dialogbot.utils.logger import get_logger
-
-logger = get_logger(__name__)
+from dialogbot.reader.data_helper import load_corpus_file
+from dialogbot.utils.logger import logger
 
 
 class VectorModel:
@@ -17,19 +16,9 @@ class VectorModel:
                  word2id,
                  doc2vec_model_path='d2v.pkl'):
         time_s = time.time()
-        self.contexts, self.responses = self.load_corpus_file(corpus_file, word2id)
+        self.contexts, self.responses = load_corpus_file(corpus_file, word2id, size=500)
         self.doc_model = self.load_doc2vec_model(self.contexts, doc2vec_model_path)
-        logger.debug("Time to build vector model by %s : %2.f seconds." % (corpus_file, time.time() - time_s))
-
-    @staticmethod
-    def load_corpus_file(corpus_file, word2id, size=0):
-        with open(corpus_file, "r", encoding="utf-8") as r:
-            all_data = r.readlines()
-            all_data = all_data[:size] if size > 0 else all_data
-            data = [s.strip().split("\t") for s in all_data]
-            contexts = [[w for w in s.split() if w in word2id] for s, _ in data]
-            responses = [s.replace(" ", "") for _, s in data]
-            return contexts, responses
+        logger.info("Time to build vector model by %s : %2.f seconds." % (corpus_file, time.time() - time_s))
 
     @staticmethod
     def load_doc2vec_model(texts, model_path):

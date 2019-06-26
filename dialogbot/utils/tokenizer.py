@@ -19,24 +19,6 @@ from dialogbot import config
 jieba.default_logger.setLevel(logging.ERROR)
 
 
-def segment(sentence):
-    """
-    切词
-    :param sentence:
-    :return: list
-    """
-    return jieba.lcut(sentence)
-
-
-def segment_pos(sentence):
-    """
-    切词
-    :param sentence:
-    :return: list
-    """
-    return posseg.lcut(sentence)
-
-
 def segment_file(in_file, out_file, word_sep=' ', pos_sep='/', is_pos=True):
     """
     segment input file to output file
@@ -54,11 +36,11 @@ def segment_file(in_file, out_file, word_sep=' ', pos_sep='/', is_pos=True):
             in_line = line.strip()
             seg_line = ''
             if is_pos:
-                words = segment_pos(in_line)
+                words = posseg.lcut(in_line)
                 for word, pos in words:
                     seg_line += word + pos_sep + pos + word_sep
             else:
-                words = segment(in_line)
+                words = jieba.lcut(in_line)
                 for word in words:
                     seg_line += word + word_sep
             fout.write(seg_line + "\n")

@@ -5,32 +5,21 @@
 """
 
 import time
-from codecs import open
 
 from gensim import corpora, models, similarities
-from dialogbot.utils.logger import get_logger
-
-logger = get_logger(__name__)
+from dialogbot.utils.logger import logger
+from dialogbot.reader.data_helper import load_corpus_file
 
 
 class TfidfModel:
-    def __init__(self, corpus_file, word2id, DEBUG_MODE=True):
+    def __init__(self, corpus_file, word2id):
         time_s = time.time()
-        size = 1000 if DEBUG_MODE else 10000000
-        self.contexts, self.responses = self.load_corpus_file(corpus_file, word2id, size)
+        self.contexts, self.responses = load_corpus_file(corpus_file, word2id, size=50000)
 
         self._train_model()
         self.corpus_mm = self.tfidf_model[self.corpus]
         self.index = similarities.MatrixSimilarity(self.corpus_mm)
-        logger.debug("Time to build tfidf model by %s: %2.f seconds." % (corpus_file, time.time() - time_s))
-
-    @staticmethod
-    def load_corpus_file(corpus_file, word2id, size):
-        with open(corpus_file, "r", encoding="utf-8") as rfd:
-            data = [s.strip().split("\t") for s in rfd.readlines()[:size]]
-            contexts = [[w for w in s.split() if w in word2id] for s, _ in data]
-            responses = [s.replace(" ", "") for _, s in data]
-            return contexts, responses
+        logger.info("Time to build tfidf model by %s: %2.f seconds." % (corpus_file, time.time() - time_s))
 
     def _train_model(self, min_freq=1):
         # Create tfidf model.
@@ -40,7 +29,7 @@ class TfidfModel:
                         self.dct.dfs.items() if freq <= min_freq]
         self.dct.filter_tokens(low_freq_ids)
         self.dct.compactify()
-        # Build tfidf-model.
+        # Build tfidf model.
         self.corpus = [self.dct.doc2bow(s) for s in self.contexts]
         self.tfidf_model = models.TfidfModel(self.corpus)
 

@@ -10,7 +10,6 @@ from dialogbot import config
 from dialogbot.searchdialog.bot import SearchBot
 from dialogbot.seq2seqdialog.bot import Seq2SeqBot
 from dialogbot.utils.chinese_text import ch_count
-from dialogbot.utils.logger import get_logger
 
 
 class Bot:
@@ -20,14 +19,12 @@ class Bot:
                  question_answer_path=config.question_answer_path,
                  context_response_path=config.context_response_path,
                  seq2seq_model_path=config.seq2seq_model_path,
-                 context=None,
-                 **kwargs):
+                 context=None):
         self.context = context if context else []
         self.search_bot = SearchBot(question_answer_path, context_response_path,
                                     vocab_path=vocab_path,
                                     search_model=search_model)
         self.seq2seq_bot = Seq2SeqBot(vocab_path, seq2seq_model_path)
-        self.logger = kwargs.get('logger', get_logger(__name__))
 
     def set_context(self, v):
         if isinstance(v, list):

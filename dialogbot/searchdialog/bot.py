@@ -9,10 +9,8 @@ from dialogbot.searchdialog.bm25model import BM25Model
 from dialogbot.searchdialog.onehotmodel import OneHotModel
 from dialogbot.searchdialog.tfidfmodel import TfidfModel
 from dialogbot.searchdialog.vectormodel import VectorModel
-from dialogbot.utils.logger import get_logger
+from dialogbot.utils.logger import logger
 from dialogbot.utils.tokenizer import Tokenizer
-
-logger = get_logger(__name__)
 
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 
@@ -27,9 +25,9 @@ class SearchBot:
         self.last_txt = deque([], last_txt_len)
         self.search_model = search_model
         if not os.path.exists(vocab_path):
-            logger.error('file not found, file:%s, please run "python3 preprocess/deal_taobao_data.py"' % vocab_path)
+            logger.error('file not found, file:%s, please run "python3 data/qa/process.py"' % vocab_path)
             raise ValueError('err. file not found, file:%s' % vocab_path)
-        self.word2id, _ = load_dataset(vocab_path)
+        self.word2id, _ = load_dataset(vocab_path, vocab_size=20000)
 
         if search_model == "tfidf":
             self.qa_search_inst = TfidfModel(question_answer_path, word2id=self.word2id)
@@ -71,8 +69,8 @@ class SearchBot:
         logger.debug('-' * 20)
         logger.debug("init_query=%s, filter_query=%s" % (query, "".join(tokens)))
         response, score = answers[0], sim_items[0][1]
-        logger.debug(
-            "search_model=%s, %s_search_sim_doc=%s, score=%.4f" % (self.search_model, mode, "".join(docs[0]), score))
+        logger.debug("search_model=%s, %s_search_sim_doc=%s, score=%.4f"
+                  % (self.search_model, mode, "".join(docs[0]), score))
         if self.search_model == 'bm25' and score > 1.0:
             return response, score
         elif score > 0.7:

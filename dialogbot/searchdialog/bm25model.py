@@ -2,29 +2,17 @@
 
 
 import time
-from codecs import open
 
+from dialogbot.reader.data_helper import load_corpus_file
 from dialogbot.searchdialog.bm25 import BM25
-from dialogbot.utils.logger import get_logger
-
-logger = get_logger(__name__)
-
+from dialogbot.utils.logger import logger
 
 class BM25Model:
-    def __init__(self, corpus_file, word2id, DEBUG_MODE=True):
+    def __init__(self, corpus_file, word2id):
         time_s = time.time()
-        size = 500000 if DEBUG_MODE else 10000000
-        self.contexts, self.responses = self.load_corpus_file(corpus_file, word2id, size)
+        self.contexts, self.responses = load_corpus_file(corpus_file, word2id)
         self.bm25_inst = BM25(self.contexts)
-        logger.debug("Time to build bm25 model by %s : %2.f seconds." % (corpus_file, time.time() - time_s))
-
-    @staticmethod
-    def load_corpus_file(corpus_file, word2id, size):
-        with open(corpus_file, "r", encoding="utf-8") as rfd:
-            data = [s.strip().split("\t") for s in rfd.readlines()[:size]]
-            contexts = [[w for w in s.split() if w in word2id] for s, _ in data]
-            responses = [s.replace(" ", "") for _, s in data]
-            return contexts, responses
+        logger.info("Time to build bm25 model by %s : %2.f seconds." % (corpus_file, time.time() - time_s))
 
     def similarity(self, query, size=10):
         return self.bm25_inst.similarity(query, size)

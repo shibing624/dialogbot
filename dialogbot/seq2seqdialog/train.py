@@ -15,7 +15,6 @@ sys.path.append('../..')
 from dialogbot import config
 from dialogbot.reader.data_helper import load_dataset, get_batches
 from dialogbot.seq2seqdialog.seq2seq import Seq2SeqModel
-from dialogbot.utils.logger import log_print
 
 Params = config.Params
 
@@ -25,8 +24,8 @@ def train(model_path, vocab_path,
           context_response_path=None,
           dialog_mode='single'):
     for name, value in vars(Params).items():
-        t = "%s\t%s\n" % (name, value)
-        log_print(t)
+        t = "%s\t%s" % (name, value)
+        print(t)
 
     if not os.path.exists(model_path):
         os.makedirs(model_path)
@@ -47,10 +46,10 @@ def train(model_path, vocab_path,
             seq2seq_model = Seq2SeqModel(sess, "train", Params, word2id)
         ckpt = tf.train.get_checkpoint_state(model_dir)
         if ckpt and tf.train.checkpoint_exists(ckpt.model_checkpoint_path):
-            log_print('Reloading model parameters..')
+            print('Reloading model parameters..')
             seq2seq_model.saver.restore(sess, ckpt.model_checkpoint_path)
         else:
-            log_print('Created new model parameters..')
+            print('Created new model parameters..')
             sess.run(tf.global_variables_initializer())
 
     with tf.name_scope("Eval"):
@@ -61,22 +60,22 @@ def train(model_path, vocab_path,
     current_step = 0
     for epoch in range(Params.epochs):
         time_s = time.time()
-        log_print("\nEpoch %d/%d" % (epoch + 1, Params.epochs))
+        print("\nEpoch %d/%d" % (epoch + 1, Params.epochs))
         batches = get_batches(samples, Params.batch_size)
         for next_batch in batches:
             loss, summary = seq2seq_model.train(next_batch)
             current_step += 1
             if current_step % Params.save_steps == 0:
                 perplexity = math.exp(float(loss)) if loss < 300 else float('inf')
-                log_print("step=%d, loss=%.2f, perplexity=%.2f, save=%s"
+                print("step=%d, loss=%.2f, perplexity=%.2f, save=%s"
                           % (current_step, loss, perplexity, checkpoint_path))
                 seq2seq_model.saver.save(seq2seq_model.sess, checkpoint_path)
 
-        log_print("epoch=%d, save." % epoch)
+        print("epoch=%d, save." % epoch)
         seq2seq_model.saver.save(seq2seq_model.sess, checkpoint_path)
 
         time_e = time.time()
-        log_print("Epoch %d training done, time=%.2f minutes" % (epoch + 1, (time_e - time_s) / 60))
+        print("Epoch %d training done, time=%.2f minutes" % (epoch + 1, (time_e - time_s) / 60))
 
 
 if __name__ == "__main__":

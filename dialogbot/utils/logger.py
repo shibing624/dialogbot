@@ -6,17 +6,18 @@
 import logging
 
 
-def get_logger(name, log_file=None):
+def get_logger(name, log_file=None, log_level='DEBUG'):
     """
     logger
     :param name: 模块名称
     :param log_file: 日志文件，如无则输出到标准输出
+    :param log_level: 日志级别
     :return:
     """
     logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('[%(levelname)1.1s %(asctime)s %(module)s:%(lineno)d] %(message)s',
-                                  datefmt='%m%d%Y %I:%M:%sS')
+    logger.setLevel(log_level)
+    formatter = logging.Formatter('[%(levelname)7s %(asctime)s %(module)s:%(lineno)d] %(message)s',
+                                  datefmt='%Y%m%d %I:%M:%S')
     if log_file:
         f_handle = logging.FileHandler(log_file)
         f_handle.setFormatter(formatter)
@@ -27,7 +28,11 @@ def get_logger(name, log_file=None):
     return logger
 
 
-logger = get_logger(__name__, log_file=None)
+logger = get_logger(__name__, log_file=None, log_level='DEBUG')
+
+
+def set_log_level(log_level):
+    logger.setLevel(log_level)
 
 
 def start_heartbeat(interval=60, logger=None):

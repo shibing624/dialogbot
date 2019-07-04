@@ -7,9 +7,7 @@ import ahocorasick
 import os
 from codecs import open
 
-from dialogbot.utils.logger import get_logger
-
-logger = get_logger(__name__)
+from dialogbot.utils.logger import logger
 
 
 class QuestionClassifier:

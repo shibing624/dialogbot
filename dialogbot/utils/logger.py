@@ -15,7 +15,7 @@ def get_logger(name, log_file=None, log_level='DEBUG'):
     :return:
     """
     logger = logging.getLogger(name)
-    logger.setLevel(log_level)
+    logger.setLevel(log_level.upper())
     formatter = logging.Formatter('[%(levelname)7s %(asctime)s %(module)s:%(lineno)d] %(message)s',
                                   datefmt='%Y%m%d %I:%M:%S')
     if log_file:
@@ -31,8 +31,8 @@ def get_logger(name, log_file=None, log_level='DEBUG'):
 logger = get_logger(__name__, log_file=None, log_level='DEBUG')
 
 
-def set_log_level(log_level):
-    logger.setLevel(log_level)
+def set_log_level(log_level='INFO'):
+    logger.setLevel(log_level.upper())
 
 
 def start_heartbeat(interval=60, logger=None):

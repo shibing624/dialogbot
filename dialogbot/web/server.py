@@ -10,13 +10,14 @@ sys.path.append('../..')
 from flask import Flask, render_template, request
 
 from dialogbot.bot import Bot
-from dialogbot.utils.logger import start_heartbeat
+from dialogbot.utils.logger import start_heartbeat, logger
 
 app = Flask(__name__)
 
 bot = Bot()
 
-start_heartbeat(60 * 10)
+# logger each 1 hour
+start_heartbeat(60 * 10 * 6, logger)
 
 
 @app.route("/")

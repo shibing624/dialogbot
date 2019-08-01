@@ -35,7 +35,7 @@ def set_log_level(log_level='INFO'):
     logger.setLevel(log_level.upper())
 
 
-def start_heartbeat(interval=60, logger=None):
+def start_heartbeat(interval=60 * 10, logger=None):
     import time
     import threading
 

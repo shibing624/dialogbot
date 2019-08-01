@@ -1,0 +1,1 @@
+nohup python3.6 web/server.py > log.txt 2>&1 &

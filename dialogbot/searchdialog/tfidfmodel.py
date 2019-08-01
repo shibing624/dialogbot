@@ -19,7 +19,7 @@ class TfidfModel:
         self._train_model()
         self.corpus_mm = self.tfidf_model[self.corpus]
         self.index = similarities.MatrixSimilarity(self.corpus_mm)
-        logger.info("Time to build tfidf model by %s: %2.f seconds." % (corpus_file, time.time() - time_s))
+        logger.debug("Time to build tfidf model by %s: %2.f seconds." % (corpus_file, time.time() - time_s))
 
     def _train_model(self, min_freq=1):
         # Create tfidf model.

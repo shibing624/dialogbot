@@ -5,6 +5,7 @@
 """
 import sys
 
+sys.path.append('..')
 sys.path.append('../..')
 from flask import Flask, render_template, request
 

@@ -6,6 +6,3 @@
 import sys
 
 sys.path.append('..')
-
-import chatterbot_corpus
-chatterbot_corpus

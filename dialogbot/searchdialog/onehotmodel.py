@@ -7,12 +7,11 @@ from dialogbot.reader.data_helper import load_corpus_file
 from dialogbot.utils.logger import logger
 
 
-
 class OneHotModel:
     def __init__(self, corpus_file, word2id):
         time_s = time.time()
         self.contexts, self.responses = load_corpus_file(corpus_file, word2id)
-        logger("Time to build onehot model by %s : %2.f seconds." % (corpus_file, time.time() - time_s))
+        logger.debug("Time to build onehot model by %s : %2.f seconds." % (corpus_file, time.time() - time_s))
 
     def score(self, l1, l2):
         """

@@ -14,13 +14,13 @@ from dialogbot import __version__
 if sys.version_info < (3,):
     sys.exit('Sorry, Python3 is required for dialogbot.')
 
-with open('README.md') as f:
+with open('README.md', 'r', encoding='utf-8') as f:
     readme = f.read()
 
-with open('LICENSE') as f:
+with open('LICENSE', 'r', encoding='utf-8') as f:
     license = f.read()
 
-with open('requirements.txt') as f:
+with open('requirements.txt', 'r', encoding='utf-8') as f:
     reqs = f.read()
 
 setup(
@@ -52,8 +52,8 @@ setup(
     package_dir={'dialogbot': 'dialogbot'},
     package_data={
         'dialogbot': ['*.*', 'LICENSE', 'README.*', 'data/*', 'data/medical_dict/*',
-                      'data/order/*', 'data/taobao/*', 'kg/*', 'preprocess/*', 'reader/*', 'searchdialog/*',
-                      'seq2seqdialog/*', 'util/*', 'output/*.txt'],
+                      'data/chat/*', 'data/taobao/*', 'kg/*', 'preprocess/*', 'reader/*', 'searchdialog/*',
+                      'seq2seqdialog/*', 'taskdialog/*', 'utils/*', 'web/*', 'web/static/*', 'web/templates/*'],
     },
     test_suite='tests',
 )

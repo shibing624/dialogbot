@@ -8,4 +8,7 @@ from .kg.bot import KGBot
 from .searchdialog.bot import SearchBot
 from .seq2seqdialog.bot import Seq2SeqBot
 
+bot = Bot()
+answer = bot.answer
+
 __version__ = "0.0.4"

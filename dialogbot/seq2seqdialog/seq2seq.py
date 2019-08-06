@@ -43,7 +43,7 @@ class Seq2SeqModel:
         return cell
 
     def build_model(self):
-        print("Building model...")
+        # print("Building model...")
         self.encoder_inputs = tf.placeholder(tf.int32, [None, None], name="encoder_inputs")
         self.encoder_inputs_length = tf.placeholder(tf.int32, [None], name="encoder_inputs_length")
 
@@ -87,7 +87,7 @@ class Seq2SeqModel:
             encoder_inputs_length = self.encoder_inputs_length
             if self.beam_search:
                 # If use beam_search, need to title_batch the outputs of encoder, just copy beam_size time.
-                print("Use beamsearch decoding..")
+                # print("Use beamsearch decoding..")
                 encoder_outputs = tf.contrib.seq2seq.tile_batch(encoder_outputs, multiplier=self.beam_size)
                 encoder_state = nest.map_structure(lambda s: tf.contrib.seq2seq.tile_batch(s, self.beam_size),
                                                    encoder_state)

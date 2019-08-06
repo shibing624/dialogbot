@@ -6,10 +6,7 @@
 import sys
 
 sys.path.append('..')
-from dialogbot import Bot
+import dialogbot
 
-bot = Bot()
-l = ['快递多少天到？', '苹果怎么卖？']
-for i in l:
-    c = bot.answer(i)
-    print("q:%s => a:%s" % (i, c))
+if __name__ == "__main__":
+    print(dialogbot.answer('这车怎么卖？'))

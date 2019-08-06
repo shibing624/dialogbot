@@ -32,4 +32,4 @@ def build_dict(train_paths, vocab_path):
 
 
 if __name__ == '__main__':
-    build_dict(['qingyun.tsv', 'chatterbot.tsv', 'xiaohuangji.tsv', 'taobao.tsv'], 'vocab.txt')
+    build_dict(['qa_all.tsv'], 'vocab.txt')

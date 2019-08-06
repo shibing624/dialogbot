@@ -4,6 +4,7 @@
 import os
 from collections import deque
 
+from dialogbot import config
 from dialogbot.reader.data_helper import load_dataset
 from dialogbot.searchdialog.bm25model import BM25Model
 from dialogbot.searchdialog.onehotmodel import OneHotModel
@@ -12,14 +13,11 @@ from dialogbot.searchdialog.vectormodel import VectorModel
 from dialogbot.utils.logger import logger
 from dialogbot.utils.tokenizer import Tokenizer
 
-pwd_path = os.path.abspath(os.path.dirname(__file__))
-
 
 class SearchBot:
-    def __init__(self,
-                 question_answer_path=os.path.join(pwd_path, '../output/question_answer.txt'),
-                 context_response_path=os.path.join(pwd_path, '../output/context_response.txt'),
-                 vocab_path=os.path.join(pwd_path, '../output/vocab.txt'),
+    def __init__(self, question_answer_path=config.question_answer_path,
+                 context_response_path=config.context_response_path,
+                 vocab_path=config.search_vocab_path,
                  search_model="bm25",
                  last_txt_len=100):
         self.last_txt = deque([], last_txt_len)
@@ -70,7 +68,7 @@ class SearchBot:
         logger.debug("init_query=%s, filter_query=%s" % (query, "".join(tokens)))
         response, score = answers[0], sim_items[0][1]
         logger.debug("search_model=%s, %s_search_sim_doc=%s, score=%.4f"
-                  % (self.search_model, mode, "".join(docs[0]), score))
+                     % (self.search_model, mode, "".join(docs[0]), score))
         if self.search_model == 'bm25' and score > 1.0:
             return response, score
         elif score > 0.7:

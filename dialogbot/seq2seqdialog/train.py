@@ -19,7 +19,8 @@ from dialogbot.seq2seqdialog.seq2seq import Seq2SeqModel
 Params = config.Params
 
 
-def train(model_path, vocab_path,
+def train(model_path,
+          vocab_path,
           question_answer_path=None,
           context_response_path=None,
           dialog_mode='single'):
@@ -67,8 +68,8 @@ def train(model_path, vocab_path,
             current_step += 1
             if current_step % Params.save_steps == 0:
                 perplexity = math.exp(float(loss)) if loss < 300 else float('inf')
-                print("step=%d, loss=%.2f, perplexity=%.2f, save=%s"
-                          % (current_step, loss, perplexity, checkpoint_path))
+                print("step=%d, loss=%.2f, perplexity=%.2f, save=%s" %
+                      (current_step, loss, perplexity, checkpoint_path))
                 seq2seq_model.saver.save(seq2seq_model.sess, checkpoint_path)
 
         print("epoch=%d, save." % epoch)

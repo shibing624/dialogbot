@@ -11,7 +11,8 @@ from gensim import models
 
 from dialogbot.utils.tokenizer import Tokenizer
 
-padToken, goToken, eosToken, unknownToken = 0, 1, 2, 3
+PAD_TOKEN, GO_TOKEN, EOS_TOKEN, UNK_TOKEN = '<pad>', '<go>', '<eos>', '<unk>'
+PAD_ID, GO_ID, EOS_ID, UNK_ID = 0, 1, 2, 3
 max_seq_len = 60
 
 
@@ -32,8 +33,11 @@ def load_dataset(vocab_path, train_path=None, vocab_size=0):
     :return: word2id, id2word, training_samples
     """
     with open(vocab_path, "r", "utf-8") as rfd:
-        word2id = {"<pad>": 0, "<go>": 1, "<eos>": 2, "<unknown>": 3}
-        id2word = {0: "<pad>", 1: "<go>", 2: "<eos>", 3: "<unknown>"}
+        word2id = {PAD_TOKEN: PAD_ID,
+                   GO_TOKEN: GO_ID,
+                   EOS_TOKEN: EOS_ID,
+                   UNK_TOKEN: UNK_ID}
+        id2word = {v: k for k, v in word2id.items()}
         cnt = 4
         vocab_data = rfd.read().splitlines()
         vocab_data_user = vocab_data[:vocab_size] if vocab_size > 0 else vocab_data
@@ -56,7 +60,7 @@ def load_dataset(vocab_path, train_path=None, vocab_size=0):
             training_samples.sort(key=lambda x: len(x[0]))
             training_samples = [item for item in training_samples if
                                 (len(item[0]) >= 1 and len(item[1]) >= 1)]
-        print("Load traindata form %s done." % train_path)
+        print("Load train data from %s done." % train_path)
         return word2id, id2word, training_samples
     else:
         return word2id, id2word
@@ -78,12 +82,12 @@ def create_batch(samples):
 
     for sample in samples:
         # source = list(reversed(sample[0]))
-        source = [goToken] + sample[0] + [eosToken]
-        pad = [padToken] * (max_source_length - len(source))
+        source = [GO_ID] + sample[0] + [EOS_ID]
+        pad = [PAD_ID] * (max_source_length - len(source))
         batch.encoder_inputs.append(pad + source)
 
-        target = [goToken] + sample[1] + [eosToken]
-        pad = [padToken] * (max_target_length - len(target))
+        target = [GO_ID] + sample[1] + [EOS_ID]
+        pad = [PAD_ID] * (max_target_length - len(target))
         batch.decoder_targets.append(target + pad)
 
     return batch

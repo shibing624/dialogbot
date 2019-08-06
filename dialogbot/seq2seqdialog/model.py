@@ -34,8 +34,8 @@ class Model:
         try:
             model.saver.restore(model.sess, ckpt.model_checkpoint_path)
         except AttributeError as e:
-            logger.error('load seq2seq model error, not found model, check model path:%s, train seq2seq to generate it.'
-                      % model_dir_path)
+            logger.error('load seq2seq model error, check model path:%s, train seq2seq to generate it.' %
+                         model_dir_path)
             model = None
         return model
 

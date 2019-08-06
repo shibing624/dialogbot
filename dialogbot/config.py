@@ -15,39 +15,27 @@ kg_port = 7474
 user = "neo4j"
 password = "123456"
 answer_num_limit = 20
-
 # mongodb
 mongo_host = 'localhost'
 mongo_port = 27017
 
-# preprocess
-train_path = os.path.join(pwd_path, 'data/taobao/dev.txt')
-dev_path = os.path.join(pwd_path, 'data/taobao/dev.txt')
-test_path = os.path.join(pwd_path, 'data/taobao/test.txt')
-
-question_answer_path = os.path.join(pwd_path, 'output/question_answer.txt')
-context_response_path = os.path.join(pwd_path, 'output/context_response.txt')
-demo_question_answer_path = os.path.join(pwd_path, 'data/taobao/demo_question_answer.txt')
-demo_context_response_path = os.path.join(pwd_path, 'data/taobao/demo_context_response.txt')
-
-# Tokenize config file
+# tokenize config file
 punctuations_path = os.path.join(pwd_path, "data/punctuations.txt")
 stopwords_path = os.path.join(pwd_path, "data/stopwords.txt")
 user_define_words_path = os.path.join(pwd_path, "data/user_define_words.txt")
 remove_words_path = os.path.join(pwd_path, "data/remove_words.txt")
-
-order_info_path = os.path.join(pwd_path, "data/order/order.txt")
-# Tfidf config file
-corpus_dict_path = os.path.join(pwd_path, "data/order/corpus_dict.txt")
-corpus_tfidf_path = os.path.join(pwd_path, "data/order/corpus_tfidf.txt")
-
-vocab_path = os.path.join(pwd_path, "output/vocab.txt")
 log_file = os.path.join(pwd_path, 'output/log.txt')
 
+# search dialog
 search_model = 'bm25'
+question_answer_path = os.path.join(pwd_path, 'data/chat/question_answer.tsv')
+context_response_path = os.path.join(pwd_path, 'data/taobao/context_response.txt')
+search_vocab_path =  os.path.join(pwd_path, 'data/chat/vocab.txt')
+
 # seq2seq dialog
-model_path = os.path.join(pwd_path, 'output/models')
 dialog_mode = 'single'
+vocab_path = os.path.join(pwd_path, "output/vocab.txt")
+model_path = os.path.join(pwd_path, 'output/models')
 seq2seq_model_path = os.path.join(model_path, dialog_mode)
 predict_result_path = os.path.join(pwd_path, 'output/predict_result.txt')
 

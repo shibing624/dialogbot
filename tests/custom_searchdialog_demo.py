@@ -8,15 +8,9 @@ import sys
 sys.path.append('..')
 from dialogbot.searchdialog.bot import SearchBot
 
-tfidfbot = SearchBot(question_answer_path='../dialogbot/data/qa/qa_all.tsv',
-                     vocab_path='../dialogbot/data/qa/vocab.txt',
-                     search_model="tfidf")
-onehotbot = SearchBot(question_answer_path='../dialogbot/data/qa/qa_all.tsv',
-                      vocab_path='../dialogbot/data/qa/vocab.txt',
-                      search_model="onehot")
-bm25bot = SearchBot(question_answer_path='../dialogbot/data/qa/qa_all.tsv',
-                    vocab_path='../dialogbot/data/qa/vocab.txt',
-                    search_model="bm25")
+tfidfbot = SearchBot(search_model="tfidf")
+onehotbot = SearchBot(search_model="onehot")
+bm25bot = SearchBot(search_model="bm25")
 msgs = ['明天晚上能发出来吗?',
         '有5元的东西吗? 哪种口味好吃',
         '这个金额是否达到包邮条件',
@@ -31,3 +25,5 @@ for msg in msgs:
 
     search_response, sim_score = bm25bot.answer(msg, mode='qa')
     print('bm25bot', msg, search_response, sim_score)
+
+

@@ -163,24 +163,5 @@ class Tokenizer:
         return [text]
 
     @classmethod
-    def get_tfidf(cls, words):
-        if cls.tfidf_model is None:
-            corpus_dict_path = config.corpus_dict_path
-            cls.corpus_dict = corpora.Dictionary.load(corpus_dict_path)
-            corpus_tfidf_path = config.corpus_tfidf_path
-            cls.tfidf_model = models.tfidfmodel.TfidfModel.load(corpus_tfidf_path)
-        bow = cls.corpus_dict.doc2bow(words)
-        tfidf = cls.tfidf_model[bow]
-        tfidf = [(cls.corpus_dict[x[0]], x[1]) for x in tfidf]
-        tfidf.sort(key=lambda x: x[1], reverse=True)
-        return tfidf
-
-    @classmethod
-    def get_keywords(cls, text, size=3, way=None):
-        if way == None or way == "tfidf":
-            tokens = cls.tokenize(text)
-            tfidf = cls.get_tfidf(tokens)
-            ret_tokens = [x[0] for x in tfidf[:size]]
-            return ret_tokens
-        elif way == "textrank":
-            return jieba.analyse.textrank(text, topK=size)
+    def get_keywords(cls, text, size=3):
+        return jieba.analyse.textrank(text, topK=size)

@@ -38,15 +38,14 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import sys
-
-sys.path.append('../..')
 import os
+import sys
 
 import numpy as np
 import tensorflow as tf
 from tqdm import tqdm
 
+sys.path.append('../..')
 from dialogbot.taskdialog.babi_dialog import BABI_Dialog
 from dialogbot.taskdialog.interactive_utils import interactive_loop
 from dialogbot.taskdialog.memn2n_dialogue import MemN2N_Dialog

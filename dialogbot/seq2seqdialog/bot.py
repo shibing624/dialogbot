@@ -10,8 +10,7 @@ from dialogbot.utils.logger import logger
 
 
 class Seq2SeqBot:
-    def __init__(self,
-                 vocab_path,
+    def __init__(self, vocab_path,
                  model_dir_path,
                  last_txt_len=100):
         self.last_txt = deque([], last_txt_len)

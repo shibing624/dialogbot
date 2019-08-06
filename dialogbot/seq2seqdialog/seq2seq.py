@@ -6,6 +6,8 @@
 import tensorflow as tf
 from tensorflow.python.util import nest
 
+from ..reader.data_helper import GO_TOKEN, EOS_TOKEN
+
 
 class Seq2SeqModel:
     def __init__(self, sess, mode, params, word_to_idx):
@@ -111,7 +113,7 @@ class Seq2SeqModel:
 
             if self.mode == "train":
                 ending = tf.strided_slice(self.decoder_targets, [0, 0], [self.batch_size, -1], [1, 1])
-                decoder_input = tf.concat([tf.fill([self.batch_size, 1], self.word_to_idx["<go>"]), ending], 1)
+                decoder_input = tf.concat([tf.fill([self.batch_size, 1], self.word_to_idx[GO_TOKEN]), ending], 1)
                 decoder_inputs_embedded = tf.nn.embedding_lookup(embedding, decoder_input)
 
                 sampling_prob = tf.Variable(0.4, dtype=tf.float32)
@@ -145,8 +147,8 @@ class Seq2SeqModel:
                 self.train_op = optimizer.apply_gradients(zip(clip_gradients, trainable_params))
 
             elif self.mode == "decode":
-                start_tokens = tf.ones([self.batch_size, ], tf.int32) * self.word_to_idx["<go>"]
-                end_token = self.word_to_idx["<eos>"]
+                start_tokens = tf.ones([self.batch_size, ], tf.int32) * self.word_to_idx[GO_TOKEN]
+                end_token = self.word_to_idx[EOS_TOKEN]
                 if self.beam_search:
                     inference_decoder = tf.contrib.seq2seq.BeamSearchDecoder(
                         cell=decoder_cell,

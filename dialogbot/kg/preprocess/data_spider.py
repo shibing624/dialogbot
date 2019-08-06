@@ -11,7 +11,7 @@ from urllib import request
 import pymongo
 from lxml import etree
 
-sys.path.append('../..')
+sys.path.append('../../..')
 from dialogbot.config import mongo_host, mongo_port
 
 

@@ -10,14 +10,14 @@ from codecs import open
 
 from py2neo import Graph, Node
 
-sys.path.append('../..')
+sys.path.append('../../..')
 from dialogbot.config import host, kg_port, user, password
 
 
 class MedicalGraph:
     def __init__(self):
         cur_dir = os.path.abspath(os.path.dirname(__file__))
-        self.data_path = os.path.join(cur_dir, 'data/medical_sample.json')
+        self.data_path = os.path.join(cur_dir, '../..', 'data/medical_sample.json')
         self.g = Graph(
             host=host,  # neo4j 搭载服务器的ip地址，ifconfig可获取到
             http_port=kg_port,  # neo4j 服务器监听的端口号

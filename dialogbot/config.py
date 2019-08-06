@@ -34,7 +34,7 @@ search_vocab_path =  os.path.join(pwd_path, 'data/chat/vocab.txt')
 
 # seq2seq dialog
 dialog_mode = 'single'
-vocab_path = os.path.join(pwd_path, "output/vocab.txt")
+vocab_path = os.path.join(pwd_path, "data/taobao/vocab.txt")
 model_path = os.path.join(pwd_path, 'output/models')
 seq2seq_model_path = os.path.join(model_path, dialog_mode)
 predict_result_path = os.path.join(pwd_path, 'output/predict_result.txt')

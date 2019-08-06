@@ -6,7 +6,8 @@
 import sys
 
 sys.path.append('..')
-import dialogbot
+from dialogbot import Bot
+bot = Bot()
 
 if __name__ == "__main__":
-    print(dialogbot.answer('这车怎么卖？'))
+    print(bot.answer('这车怎么卖？'))

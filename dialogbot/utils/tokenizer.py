@@ -10,13 +10,15 @@ import re
 
 import jieba
 import jieba.analyse
-from gensim import corpora
-from gensim import models
 from jieba import posseg
 
 from dialogbot import config
 
 jieba.default_logger.setLevel(logging.ERROR)
+
+
+def postag(text):
+    return posseg.cut(text)
 
 
 def segment_file(in_file, out_file, word_sep=' ', pos_sep='/', is_pos=True):

@@ -7,8 +7,9 @@
 import time
 
 from gensim import corpora, models, similarities
-from dialogbot.utils.logger import logger
+
 from dialogbot.reader.data_helper import load_corpus_file
+from dialogbot.utils.logger import logger
 
 
 class TfidfModel:

@@ -4,14 +4,13 @@
 import os
 from collections import deque
 
-from dialogbot import config
-from dialogbot.reader.data_helper import load_dataset
-from dialogbot.searchdialog.bm25model import BM25Model
-from dialogbot.searchdialog.onehotmodel import OneHotModel
-from dialogbot.searchdialog.tfidfmodel import TfidfModel
-from dialogbot.searchdialog.vectormodel import VectorModel
-from dialogbot.utils.logger import logger
-from dialogbot.utils.tokenizer import Tokenizer
+from .local.bm25model import BM25Model
+from .local.onehotmodel import OneHotModel
+from .local.tfidfmodel import TfidfModel
+from .. import config
+from ..reader.data_helper import load_dataset
+from ..utils.logger import logger
+from ..utils.tokenizer import Tokenizer
 
 
 class SearchBot:
@@ -33,9 +32,6 @@ class SearchBot:
         elif search_model == "bm25":
             self.qa_search_inst = BM25Model(question_answer_path, word2id=self.word2id)
             self.cr_search_inst = BM25Model(context_response_path, word2id=self.word2id)
-        elif search_model == "vector":
-            self.qa_search_inst = VectorModel(question_answer_path, word2id=self.word2id)
-            self.cr_search_inst = VectorModel(context_response_path, word2id=self.word2id)
         elif search_model == "onehot":
             self.qa_search_inst = OneHotModel(question_answer_path, word2id=self.word2id)
             self.cr_search_inst = OneHotModel(context_response_path, word2id=self.word2id)

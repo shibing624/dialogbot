@@ -4,8 +4,8 @@
 import time
 
 from dialogbot.reader.data_helper import load_corpus_file
-from dialogbot.searchdialog.bm25 import BM25
 from dialogbot.utils.logger import logger
+from .bm25 import BM25
 
 
 class BM25Model:

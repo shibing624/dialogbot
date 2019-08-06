@@ -5,7 +5,6 @@
 """
 
 from codecs import open
-
 import numpy as np
 from gensim import models
 

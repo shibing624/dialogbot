@@ -4,6 +4,7 @@
 @description: 对百度、Bing 的搜索摘要进行答案的检索
 """
 
+from collections import OrderedDict
 from urllib.request import quote
 
 from dialogbot.searchdialog.internet import html_crawler
@@ -14,15 +15,20 @@ baidu_url_prefix = 'https://www.bing.com/search?q='
 bing_url_prefix = 'https://www.baidu.com/s?wd='
 calendar_url = 'http://open.baidu.com/calendar'
 calculator_url = 'http://open.baidu.com/static/calculator/calculator.html'
+split_symbol = ["。", "?", ".", "_", "-", ":", "！", "？"]
+
+
+def split_2_short_text(sentence):
+    for i in split_symbol:
+        sentence = sentence.replace(i, i + '\t')
+    return sentence.split('\t')
 
 
 class Engine:
-    def __init__(self, query, topk = 10):
+    def __init__(self, topk=10):
         self.name = 'engine'
-        self.query = query
-        self.keywords = self.get_keywords(query)
         self.topk = topk
-        self.text = ''
+        self.contents = OrderedDict()
 
     @staticmethod
     def get_keywords(query):
@@ -35,390 +41,227 @@ class Engine:
                 keywords.append(k.word)
         return keywords
 
-    def search_baidu(self):
+    def search(self, query):
+        r = []
+        # 检索baidu
+        r, baidu_left_text = self.search_baidu(query)
+        if r:
+            self.contents[query] = r
+            return r
+
+        # 检索bing
+        r, bing_left_text = self.search_bing(query)
+        if r:
+            self.contents[query] = r
+            return r
+
+        # 检索baidu + bing 的摘要
+        r = self._search_other(query, baidu_left_text + bing_left_text)
+        if r:
+            self.contents[query] = r
+            return r
+        return r
+
+    def search_baidu(self, query):
+        """
+        通过baidu检索答案，包括百度知识图谱、百度诗词、百度万年历、百度计算器、百度知道
+        :param query:
+        :return: list, string
+        """
         answer = []
+        left_text = ''
         # 抓取百度前10条的摘要
-        soup_baidu = html_crawler.get_html_baidu(bing_url_prefix + quote(self.query))
-
+        soup_baidu = html_crawler.get_html_baidu(bing_url_prefix + quote(query))
+        if not soup_baidu:
+            return answer, left_text
         for i in range(1, self.topk):
-            if not soup_baidu:
-                break
             items = soup_baidu.find(id=i)
-
             if not items:
-                logger.debug("百度摘要找不到答案")
+                logger.debug("百度找不到答案")
                 break
             # 判断是否有mu,如果第一个是百度知识图谱的 就直接命中答案
             if ('mu' in items.attrs) and i == 1:
                 r = items.find(class_='op_exactqa_s_answer')
-                if not r:
-                    logger.debug("百度知识图谱找不到答案")
-                else:
-                    logger.debug(r.get_text().strip())
+                if r:
                     logger.debug("百度知识图谱找到答案")
                     answer.append(r.get_text().strip())
-                    flag = 1
-                    break
+                    return answer, left_text
 
             # 古诗词判断
             if ('mu' in items.attrs) and i == 1:
                 r = items.find(class_="op_exactqa_detail_s_answer")
-                if not r:
-                    logger.debug("百度诗词找不到答案")
-                else:
-                    logger.debug(r.get_text())
+                if r:
                     logger.debug("百度诗词找到答案")
                     answer.append(r.get_text().strip())
-                    flag = 1
-                    break
+                    return answer, left_text
 
             # 万年历 & 日期
             if ('mu' in items.attrs) and i == 1 and items.attrs['mu'].__contains__(calendar_url):
                 r = items.find(class_="op-calendar-content")
-                if not r:
-                    logger.debug("百度万年历找不到答案")
-                else:
+                if r:
                     logger.debug("百度万年历找到答案")
                     answer.append(r.get_text().strip().replace("\n", "").replace(" ", ""))
-                    flag = 1
-                    break
+                    return answer, left_text
 
             if ('tpl' in items.attrs) and i == 1 and items.attrs['tpl'].__contains__('calendar_new'):
                 r = items.attrs['fk'].replace("6018_", "")
                 logger.debug(r)
-                if not r:
-                    logger.debug("百度万年历新版找不到答案")
-                else:
+                if r:
                     logger.debug("百度万年历新版找到答案")
                     answer.append(r)
-                    flag = 1
-                    break
+                    return answer, left_text
 
             # 计算器
             if ('mu' in items.attrs) and i == 1 and items.attrs['mu'].__contains__(calculator_url):
-                # r = results.find('div').find_all('td')[1].find_all('div')[1]
-                r = items.find(class_="op_new_val_screen_result")
-                if not r:
-                    logger.debug("计算器找不到答案")
-                else:
+                r = items.find(class_="op_new_val_screen_result").get_text()
+                if r:
                     logger.debug("计算器找到答案")
-                    answer.append(r.get_text().strip())
-                    flag = 1
-                    break
+                    answer.append(r.strip())
+                    return answer, left_text
 
-            # 百度知道答案
+            # 百度知道
             if ('mu' in items.attrs) and i == 1:
                 r = items.find(class_='op_best_answer_question_link')
-                if not r:
-                    logger.debug("百度知道图谱找不到答案")
-                else:
-                    logger.debug("百度知道图谱找到答案")
-                    url = r['href']
-                    zhidao_soup = html_crawler.get_html_zhidao(url)
-                    r = zhidao_soup.find(class_='bd answer').find('pre')
+                if r:
+                    zhidao_soup = html_crawler.get_html_zhidao(r['href'])
+                    r = zhidao_soup.find(class_='bd answer').find('pre').get_text()
                     if not r:
-                        r = zhidao_soup.find(class_='bd answer').find(class_='line content')
-                    answer.append(r.get_text())
-                    flag = 1
-                    break
+                        r = zhidao_soup.find(class_='bd answer').find(class_='line content').get_text()
+                    if r:
+                        logger.debug("百度知道找到答案")
+                        answer.append(r.strip())
+                        return answer, left_text
 
             if items.find("h3"):
                 # 百度知道
-                if items.find("h3").find("a").get_text().__contains__(u"百度知道") and (i == 1 or i == 2):
+                if items.find("h3").find("a").get_text().__contains__("百度知道") and (i == 1 or i == 2):
                     url = items.find("h3").find("a")['href']
-                    if not url:
-                        logger.debug("百度知道图谱找不到答案")
-                        continue
-                    else:
-                        logger.debug("百度知道图谱找到答案")
+                    if url:
                         zhidao_soup = html_crawler.get_html_zhidao(url)
-
                         r = zhidao_soup.find(class_='bd answer')
-                        if not r:
-                            continue
-                        else:
-                            r = r.find('pre')
+                        if r:
+                            r = r.find('pre').get_text()
                             if not r:
-                                r = zhidao_soup.find(class_='bd answer').find(class_='line content')
-                        answer.append(r.get_text().strip())
-                        flag = 1
-                        break
+                                r = zhidao_soup.find(class_='bd answer').find(class_='line content').get_text()
+                            if r:
+                                logger.debug("百度知道找到答案")
+                                answer.append(r.strip())
+                                return answer, left_text
 
                 # 百度百科
-                if items.find("h3").find("a").get_text().__contains__(u"百度百科") and (i == 1 or i == 2):
+                if items.find("h3").find("a").get_text().__contains__("百度百科") and (i == 1 or i == 2):
                     url = items.find("h3").find("a")['href']
-                    if not url:
-                        logger.debug("百度百科找不到答案")
-                        continue
-                    else:
+                    if url:
                         logger.debug("百度百科找到答案")
                         baike_soup = html_crawler.get_html_baike(url)
 
                         r = baike_soup.find(class_='lemma-summary')
-                        if not r:
-                            continue
-                        else:
-                            r = r.get_text().replace("\n", "").strip()
-                        answer.append(r)
-                        flag = 1
-                        break
-            text += items.get_text()
+                        if r:
+                            r = r.get_text().replace("\n", "")
+                        if r:
+                            answer.append(r.strip())
+                            return answer, left_text
+            left_text += items.get_text()
+        return answer, left_text
 
-        if flag == 1:
-            return answer
+    def search_bing(self, query):
+        """
+        通过bing检索答案，包括bing知识图谱、bing网典
+        :param query:
+        :return: list, string
+        """
+        answer = []
+        left_text = ''
+        # 获取bing的摘要
+        soup_bing = html_crawler.get_html_bing(bing_url_prefix + quote(query))
+        # 判断是否在Bing的知识图谱中
+        r = soup_bing.find(class_="bm_box")
 
-
-
-def kwquery(query):
-    # 分词 去停用词 抽取关键词
-    keywords = []
-    words = postag(query)
-    for k in words:
-        # 只保留名词
-        if k.flag.__contains__("n"):
-            logger.debug(k.word)
-            keywords.append(k.word)
-
-    answer = []
-    text = ''
-    # 找到答案就置1
-    flag = 0
-
-    # 抓取百度前10条的摘要
-    soup_baidu = html_crawler.get_html_baidu(bing_url_prefix + quote(query))
-
-    for i in range(1, 10):
-        if not soup_baidu:
-            break
-        results = soup_baidu.find(id=i)
-
-        if not results:
-            logger.debug("百度摘要找不到答案")
-            break
-        # 判断是否有mu,如果第一个是百度知识图谱的 就直接命中答案
-        if ('mu' in results.attrs) and i == 1:
-            r = results.find(class_='op_exactqa_s_answer')
-            if not r:
-                logger.debug("百度知识图谱找不到答案")
-            else:
-                logger.debug(r.get_text().strip())
-                logger.debug("百度知识图谱找到答案")
-                answer.append(r.get_text().strip())
-                flag = 1
-                break
-
-        # 古诗词判断
-        if ('mu' in results.attrs) and i == 1:
-            r = results.find(class_="op_exactqa_detail_s_answer")
-            if not r:
-                logger.debug("百度诗词找不到答案")
-            else:
-                logger.debug(r.get_text())
-                logger.debug("百度诗词找到答案")
-                answer.append(r.get_text().strip())
-                flag = 1
-                break
-
-        # 万年历 & 日期
-        if ('mu' in results.attrs) and i == 1 and results.attrs['mu'].__contains__(calendar_url):
-            r = results.find(class_="op-calendar-content")
-            if not r:
-                logger.debug("百度万年历找不到答案")
-            else:
-                logger.debug("百度万年历找到答案")
-                answer.append(r.get_text().strip().replace("\n", "").replace(" ", ""))
-                flag = 1
-                break
-
-        if ('tpl' in results.attrs) and i == 1 and results.attrs['tpl'].__contains__('calendar_new'):
-            r = results.attrs['fk'].replace("6018_", "")
-            logger.debug(r)
-            if not r:
-                logger.debug("百度万年历新版找不到答案")
-            else:
-                logger.debug("百度万年历新版找到答案")
-                answer.append(r)
-                flag = 1
-                break
-
-        # 计算器
-        if ('mu' in results.attrs) and i == 1 and results.attrs['mu'].__contains__(calculator_url):
-            # r = results.find('div').find_all('td')[1].find_all('div')[1]
-            r = results.find(class_="op_new_val_screen_result")
-            if not r:
-                logger.debug("计算器找不到答案")
-            else:
-                logger.debug("计算器找到答案")
-                answer.append(r.get_text().strip())
-                flag = 1
-                break
-
-        # 百度知道答案
-        if ('mu' in results.attrs) and i == 1:
-            r = results.find(class_='op_best_answer_question_link')
-            if not r:
-                logger.debug("百度知道图谱找不到答案")
-            else:
-                logger.debug("百度知道图谱找到答案")
-                url = r['href']
-                zhidao_soup = html_crawler.get_html_zhidao(url)
-                r = zhidao_soup.find(class_='bd answer').find('pre')
-                if not r:
-                    r = zhidao_soup.find(class_='bd answer').find(class_='line content')
-                answer.append(r.get_text())
-                flag = 1
-                break
-
-        if results.find("h3"):
-            # 百度知道
-            if results.find("h3").find("a").get_text().__contains__(u"百度知道") and (i == 1 or i == 2):
-                url = results.find("h3").find("a")['href']
-                if not url:
-                    logger.debug("百度知道图谱找不到答案")
-                    continue
-                else:
-                    logger.debug("百度知道图谱找到答案")
-                    zhidao_soup = html_crawler.get_html_zhidao(url)
-
-                    r = zhidao_soup.find(class_='bd answer')
-                    if not r:
-                        continue
-                    else:
-                        r = r.find('pre')
-                        if not r:
-                            r = zhidao_soup.find(class_='bd answer').find(class_='line content')
-                    answer.append(r.get_text().strip())
-                    flag = 1
-                    break
-
-            # 百度百科
-            if results.find("h3").find("a").get_text().__contains__(u"百度百科") and (i == 1 or i == 2):
-                url = results.find("h3").find("a")['href']
-                if not url:
-                    logger.debug("百度百科找不到答案")
-                    continue
-                else:
-                    logger.debug("百度百科找到答案")
-                    baike_soup = html_crawler.get_html_baike(url)
-
-                    r = baike_soup.find(class_='lemma-summary')
-                    if not r:
-                        continue
-                    else:
-                        r = r.get_text().replace("\n", "").strip()
+        if r:
+            r = r.find_all(class_="b_vList")
+            if r and len(r) > 1:
+                r = r[1].find("li").get_text().strip()
+                if r:
                     answer.append(r)
-                    flag = 1
-                    break
-        text += results.get_text()
+                    logger.debug("Bing知识图谱找到答案")
+                    return answer, left_text
+        else:
+            r = soup_bing.find(id="b_results")
+            if r:
+                bing_list = r.find_all('li')
+                for bl in bing_list:
+                    temp = bl.get_text()
+                    if temp.__contains__(" - 必应网典"):
+                        logger.debug("查找Bing网典")
+                        url = bl.find("h2").find("a")['href']
+                        if url:
+                            bingwd_soup = html_crawler.get_html_bingwd(url)
+                            r = bingwd_soup.find(class_='bk_card_desc').find("p")
+                            if r:
+                                r = r.get_text().replace("\n", "").strip()
+                                if r:
+                                    logger.debug("Bing网典找到答案")
+                                    answer.append(r)
+                                    return answer, left_text
+                left_text += r.get_text()
+        return answer, left_text
 
-    if flag == 1:
-        return answer
-
-    # 获取bing的摘要
-    soup_bing = html_crawler.get_html_bing(bing_url_prefix + quote(query))
-    # 判断是否在Bing的知识图谱中
-    # bingbaike = soup_bing.find(class_="b_xlText b_emphText")
-    bingbaike = soup_bing.find(class_="bm_box")
-
-    if bingbaike:
-        if bingbaike.find_all(class_="b_vList")[1]:
-            if bingbaike.find_all(class_="b_vList")[1].find("li"):
-                logger.debug("Bing知识图谱找到答案")
-                answer.append(bingbaike.get_text())
-                return answer
-    else:
-        logger.debug("Bing知识图谱找不到答案")
-        results = soup_bing.find(id="b_results")
-        bing_list = results.find_all('li')
-        for bl in bing_list:
-            temp = bl.get_text()
-            if temp.__contains__(u" - 必应网典"):
-                logger.debug("查找Bing网典")
-                url = bl.find("h2").find("a")['href']
-                if not url:
-                    logger.debug("Bing网典找不到答案")
-                    continue
-                else:
-                    logger.debug("Bing网典找到答案")
-                    bingwd_soup = html_crawler.get_html_bingwd(url)
-
-                    r = bingwd_soup.find(class_='bk_card_desc').find("p")
-                    if not r:
-                        continue
-                    else:
-                        r = r.get_text().replace("\n", "").strip()
-                    answer.append(r)
-                    flag = 1
-                    break
-
-        if flag == 1:
-            return answer
-
-        text += results.get_text()
-
-    # 如果再两家搜索引擎的知识图谱中都没找到答案，那么就分析摘要
-    if flag == 0:
+    def _search_other(self, query, left_text):
+        """
+        如果 baidu + bing 知识图谱中都没找到答案，那么就分析摘要
+        :param query:
+        :return: list, string
+        """
+        answer = []
+        # 取核心词
+        keywords = self.get_keywords(query)
         # 分句
-        cutlist = [u"。", u"?", u".", u"_", u"-", u":", u"！", u"？"]
-        temp = ''
-        sentences = []
-        for i in range(0, len(text)):
-            if text[i] in cutlist:
-                if temp == '':
-                    continue
-                else:
-                    # logger.debug(temp
-                    sentences.append(temp)
-                temp = ''
-            else:
-                temp += text[i]
+        sentences = split_2_short_text(left_text.strip())
 
-        # 找到含有关键词的句子,去除无关的句子
-        key_sentences = {}
+        # 找到含有关键词的句子, 去除无关的句子
+        key_sentences = set()
         for s in sentences:
             for k in keywords:
                 if k in s:
-                    key_sentences[s] = 1
+                    key_sentences.add(k)
 
-        # 根据问题制定规则
+        # 根据问题提取答案
 
-        # 识别人名
+        # 提取人名
+        key_persons = self.key_items_by_pos(key_sentences)
+        # 候选队列
+        candidate_persons = []
+        for i, v in enumerate(key_persons):
+            # 去除问句中的关键词
+            if v[i] not in keywords:
+                candidate_persons.append(v)
+        if candidate_persons:
+            answer.extend(candidate_persons[:3])
+        return answer
+
+    @staticmethod
+    def key_items_by_pos(sentences, pos='nr'):
         target_dict = {}
-        for ks in key_sentences:
-            # logger.debug(ks
+        for ks in sentences:
             words = postag(ks)
             for w in words:
-                logger.debug("=====")
-                logger.debug(w.word)
-                if w.flag == "nr":
+                if w.flag == pos:
                     if w.word in target_dict:
                         target_dict[w.word] += 1
                     else:
                         target_dict[w.word] = 1
-
         # 找出最大词频
-        sorted_lists = sorted(target_dict, reverse=True)
-        # logger.debug(len(target_list)
-        # 去除问句中的关键词
-        sorted_lists2 = []
-        # 候选队列
-        for i, st in enumerate(sorted_lists):
-            # logger.debug(st[0]
-            if st[0] in keywords:
-                continue
-            else:
-                sorted_lists2.append(st)
-
-        logger.debug("返回前n个词频")
-        answer = []
-        for i, st in enumerate(sorted_lists2):
-            if i < 3:
-                answer.append(st[0])
-
-    return answer
+        sorted_list = sorted(target_dict.items(), key=lambda item: item[1], reverse=True)
+        return sorted_list
 
 
 if __name__ == '__main__':
-    query = "姚明老婆是谁"
-    ans = kwquery(query)
+    engine = Engine()
+    # ans = engine.search("貂蝉是谁")
+    # logger.debug(ans)
+    # ans = engine.search("西施是谁")
+    # logger.debug(ans)
+    ans = engine.search("你知道我是谁")
     logger.debug(ans)
+    context = engine.contents
+    print(context)

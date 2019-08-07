@@ -37,7 +37,6 @@ class Engine:
         for k in words:
             # 只保留名词
             if k.flag.__contains__("n"):
-                logger.debug(k.word)
                 keywords.append(k.word)
         return keywords
 
@@ -113,10 +112,10 @@ class Engine:
 
             # 计算器
             if ('mu' in items.attrs) and i == 1 and items.attrs['mu'].__contains__(calculator_url):
-                r = items.find(class_="op_new_val_screen_result").get_text()
+                r = items.find(class_="op_new_val_screen_result")
                 if r:
                     logger.debug("计算器找到答案")
-                    answer.append(r.strip())
+                    answer.append(r.get_text().strip())
                     return answer, left_text
 
             # 百度知道
@@ -124,12 +123,13 @@ class Engine:
                 r = items.find(class_='op_best_answer_question_link')
                 if r:
                     zhidao_soup = html_crawler.get_html_zhidao(r['href'])
-                    r = zhidao_soup.find(class_='bd answer').find('pre').get_text()
+                    r = zhidao_soup.find(class_='bd answer').find('pre')
                     if not r:
-                        r = zhidao_soup.find(class_='bd answer').find(class_='line content').get_text()
+                        r = zhidao_soup.find(class_='bd answer').find(class_='line content').find(
+                            class_="best-text mb-10")
                     if r:
                         logger.debug("百度知道找到答案")
-                        answer.append(r.strip())
+                        answer.append(r.get_text().strip().replace("展开全部", "").strip())
                         return answer, left_text
 
             if items.find("h3"):
@@ -140,12 +140,13 @@ class Engine:
                         zhidao_soup = html_crawler.get_html_zhidao(url)
                         r = zhidao_soup.find(class_='bd answer')
                         if r:
-                            r = r.find('pre').get_text()
+                            r = r.find('pre')
                             if not r:
-                                r = zhidao_soup.find(class_='bd answer').find(class_='line content').get_text()
+                                r = zhidao_soup.find(class_='bd answer').find(class_='line content').find(
+                                    class_="best-text mb-10")
                             if r:
                                 logger.debug("百度知道找到答案")
-                                answer.append(r.strip())
+                                answer.append(r.get_text().strip().replace("展开全部", "").strip())
                                 return answer, left_text
 
                 # 百度百科
@@ -157,14 +158,13 @@ class Engine:
 
                         r = baike_soup.find(class_='lemma-summary')
                         if r:
-                            r = r.get_text().replace("\n", "")
-                        if r:
-                            answer.append(r.strip())
+                            answer.append(r.get_text().replace("\n", "").strip())
                             return answer, left_text
             left_text += items.get_text()
         return answer, left_text
 
-    def search_bing(self, query):
+    @staticmethod
+    def search_bing(query):
         """
         通过bing检索答案，包括bing知识图谱、bing网典
         :param query:
@@ -226,7 +226,6 @@ class Engine:
                     key_sentences.add(k)
 
         # 根据问题提取答案
-
         # 提取人名
         key_persons = self.key_items_by_pos(key_sentences)
         # 候选队列

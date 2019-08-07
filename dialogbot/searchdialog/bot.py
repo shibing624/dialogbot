@@ -4,6 +4,7 @@
 import os
 from collections import deque
 
+from .internet.search_engine import Engine
 from .local.bm25model import BM25Model
 from .local.onehotmodel import OneHotModel
 from .local.tfidfmodel import TfidfModel
@@ -21,6 +22,11 @@ class SearchBot:
                  last_txt_len=100):
         self.last_txt = deque([], last_txt_len)
         self.search_model = search_model
+
+        # search engine
+        self.engine = Engine()
+
+        # local text similarity
         if not os.path.exists(vocab_path):
             logger.error('file not found, file:%s, please run "python3 data/qa/process.py"' % vocab_path)
             raise ValueError('err. file not found, file:%s' % vocab_path)
@@ -45,6 +51,14 @@ class SearchBot:
         :return: response, score
         """
         self.last_txt.append(query)
+
+        # search engine
+        engine_answers = self.engine.search(query)
+        if engine_answers:
+            response = engine_answers[0]
+            self.last_txt.append(response)
+            return response, 2.0
+
         original_tokens = Tokenizer.tokenize(query, filter_punctuations=True)
         tokens = [w for w in original_tokens if w in self.word2id]
         search_inst = self.qa_search_inst if mode == "qa" else self.cr_search_inst
@@ -65,10 +79,10 @@ class SearchBot:
         response, score = answers[0], sim_items[0][1]
         logger.debug("search_model=%s, %s_search_sim_doc=%s, score=%.4f"
                      % (self.search_model, mode, "".join(docs[0]), score))
-        if self.search_model == 'bm25' and score > 1.0:
+        if score >= 1.0:
+            self.last_txt.append(response)
             return response, score
-        elif score > 0.7:
-            return response, score
+
         response, score = "亲爱哒，还有什么小妹可以帮您呢~", 2.0
         logger.debug("search_response=%s" % response)
         self.last_txt.append(response)

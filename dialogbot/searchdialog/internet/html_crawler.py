@@ -47,7 +47,7 @@ def get_html_baidu(url):
     :return:
     """
     headers = {'User-Agent': 'Mozilla/5.0 (X11; U; Linux i686)Gecko/20071127 Firefox/2.0.0.11'}
-    return BeautifulSoup(requests.get(url=url, headers=headers).content.decode('utf-8'), "lxml")
+    return BeautifulSoup(requests.get(url=url, headers=headers).content, "lxml")
 
 
 def get_html_bing(url):
@@ -57,4 +57,4 @@ def get_html_bing(url):
     :return:
     """
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:22.0) Gecko/20100101 Firefox/22.0'}
-    return BeautifulSoup(requests.get(url=url, headers=headers).content.decode('utf-8'), "lxml")
+    return BeautifulSoup(requests.get(url=url, headers=headers).content, "lxml")

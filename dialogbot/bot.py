@@ -40,15 +40,16 @@ class Bot:
         :param use_task: bool,
         :return: response
         """
-        task_response = None
+        task_response = ''
         if use_task:
-            task_response = None
+            task_response = ''
 
         # Search response.
         if len(self.context) >= 3 and ch_count(msg) <= 4:
-            user_msgs = self.context[::2][-3:]
-            msg = "<s>".join(user_msgs)
-            mode = "cr"
+            # user_msgs = self.context[::2][-3:]
+            # msg = "<s>".join(user_msgs)
+            # mode = "cr"
+            mode = "qa"
         else:
             mode = "qa"
         search_response, sim_score = self.search_bot.answer(msg, mode=mode)

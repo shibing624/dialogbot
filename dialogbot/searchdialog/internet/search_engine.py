@@ -15,6 +15,7 @@ baidu_url_prefix = 'https://www.bing.com/search?q='
 bing_url_prefix = 'https://www.baidu.com/s?wd='
 calendar_url = 'http://open.baidu.com/calendar'
 calculator_url = 'http://open.baidu.com/static/calculator/calculator.html'
+weather_url = 'http://www.weather.com.cn'
 split_symbol = ["。", "?", ".", "_", "-", ":", "！", "？"]
 
 
@@ -24,24 +25,23 @@ def split_2_short_text(sentence):
     return sentence.split('\t')
 
 
+def keep_pos_words(query, tags=['n']):
+    result = []
+    words = postag(query)
+    for k in words:
+        # 只保留所需词性的词
+        if k.flag in tags:
+            result.append(k.word)
+    return result
+
+
 class Engine:
     def __init__(self, topk=10):
         self.name = 'engine'
         self.topk = topk
         self.contents = OrderedDict()
 
-    @staticmethod
-    def get_keywords(query):
-        keywords = []
-        words = postag(query)
-        for k in words:
-            # 只保留名词
-            if k.flag.__contains__("n"):
-                keywords.append(k.word)
-        return keywords
-
     def search(self, query):
-        r = []
         # 检索baidu
         r, baidu_left_text = self.search_baidu(query)
         if r:
@@ -118,6 +118,13 @@ class Engine:
                     answer.append(r.get_text().strip())
                     return answer, left_text
 
+            # 天气
+            if ('mu' in items.attrs) and i == 1 and items.attrs['mu'].__contains__(weather_url):
+                r = items.find(class_="op_weather4_twoicon_today")
+                if r:
+                    logger.debug("天气找到答案")
+                    answer.append(r.get_text().replace('\n', '').strip())
+                    return answer, left_text
             # 百度知道
             if ('mu' in items.attrs) and i == 1:
                 r = items.find(class_='op_best_answer_question_link')
@@ -213,8 +220,8 @@ class Engine:
         :return: list, string
         """
         answer = []
-        # 取核心词
-        keywords = self.get_keywords(query)
+        # 取名词为核心词
+        keywords = keep_pos_words(query)
         # 分句
         sentences = split_2_short_text(left_text.strip())
 
@@ -252,15 +259,3 @@ class Engine:
         # 找出最大词频
         sorted_list = sorted(target_dict.items(), key=lambda item: item[1], reverse=True)
         return sorted_list
-
-
-if __name__ == '__main__':
-    engine = Engine()
-    # ans = engine.search("貂蝉是谁")
-    # logger.debug(ans)
-    # ans = engine.search("西施是谁")
-    # logger.debug(ans)
-    ans = engine.search("你知道我是谁")
-    logger.debug(ans)
-    context = engine.contents
-    print(context)

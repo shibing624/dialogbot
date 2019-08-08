@@ -7,7 +7,7 @@
 from dialogbot import config
 from dialogbot.searchdialog.bot import SearchBot
 from dialogbot.seq2seqdialog.bot import Seq2SeqBot
-from dialogbot.utils.chinese_text import ch_count
+from dialogbot.utils.text_util import ch_count
 
 
 class Bot:

@@ -11,8 +11,8 @@ from dialogbot.searchdialog.internet import html_crawler
 from dialogbot.utils.logger import logger
 from dialogbot.utils.tokenizer import postag
 
-baidu_url_prefix = 'https://www.bing.com/search?q='
-bing_url_prefix = 'https://www.baidu.com/s?wd='
+bing_url_prefix = 'https://cn.bing.com/search?q='
+baidu_url_prefix = 'https://www.baidu.com/s?ie=UTF-88&wd='
 calendar_url = 'http://open.baidu.com/calendar'
 calculator_url = 'http://open.baidu.com/static/calculator/calculator.html'
 weather_url = 'http://www.weather.com.cn'
@@ -70,11 +70,12 @@ class Engine:
         answer = []
         left_text = ''
         # 抓取百度前10条的摘要
-        soup_baidu = html_crawler.get_html_baidu(bing_url_prefix + quote(query))
+        soup_baidu = html_crawler.get_html_baidu(baidu_url_prefix + quote(query))
         if not soup_baidu:
             return answer, left_text
         for i in range(1, self.topk):
             items = soup_baidu.find(id=i)
+            print(i, items)
             if not items:
                 logger.debug("百度找不到答案")
                 break

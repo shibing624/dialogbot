@@ -3,6 +3,8 @@
 @author:XuMing（xuming624@qq.com)
 @description: 
 """
+import sys
+sys.path.append("..")
 from dialogbot.searchdialog.internet.search_engine import Engine
 from dialogbot.utils.logger import logger
 

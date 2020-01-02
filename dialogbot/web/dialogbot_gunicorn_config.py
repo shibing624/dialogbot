@@ -23,7 +23,7 @@ loglevel = 'debug'
 
 reload = True
 debug = True
-daemon = False
+daemon = True
 bind="0.0.0.0:8820"
 
 errorlog = '%s/error.log' % pwd_path

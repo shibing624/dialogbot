@@ -71,16 +71,12 @@ Done!
 
 This should print:
 
-```console
+```python
 query: "亲 吃了吗？"
 
 answer: "吃了的，你好呀"
 ```
 
-
-## Demo
-
-http://www.borntowin.cn:8821
 
 ## Contact
 

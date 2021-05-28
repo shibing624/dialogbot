@@ -9,7 +9,6 @@ sys.path.append('..')
 from dialogbot import Bot
 
 if __name__ == '__main__':
-
     bot = Bot()
     msgs = ['这汉兰达车二手卖多少钱？',
             '北京天气?',

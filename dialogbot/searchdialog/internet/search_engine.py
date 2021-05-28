@@ -12,11 +12,11 @@ from dialogbot.searchdialog.internet import html_crawler
 from dialogbot.utils.log import logger
 from dialogbot.utils.tokenizer import postag
 
-baidu_url_prefix = 'https://www.bing.com/search?q='
+baidu_url_prefix = 'https://cn.bing.com/search?q='
 bing_url_prefix = 'https://www.baidu.com/s?wd='
 calendar_url = 'http://open.baidu.com/calendar'
 calculator_url = 'http://open.baidu.com/static/calculator/calculator.html'
-weather_url = 'http://www.weather.com.cn'
+weather_url = 'http://weathernew.pae.baidu.com'
 split_symbol = ["。", "?", ".", "_", "-", ":", "！", "？"]
 
 
@@ -184,10 +184,10 @@ class Engine:
         # 获取bing的摘要
         soup_bing = html_crawler.get_html_bing(bing_url_prefix + urllib.parse.quote(query))
         # 判断是否在Bing的知识图谱中
-        r = soup_bing.find(class_="bm_box")
+        r = soup_bing.find(class_="b_entityTP")
 
         if r:
-            r = r.find_all(class_="b_vList")
+            r = r.find_all(class_="b_subModule")
             if r and len(r) > 1:
                 r = r[1].find("li").get_text().strip()
                 if r:
@@ -195,7 +195,7 @@ class Engine:
                     logger.debug("Bing知识图谱找到答案")
                     return answer, left_text
         else:
-            r = soup_bing.find(id="b_results")
+            r = soup_bing.find(id="dict_ans")
             if r:
                 bing_list = r.find_all('li')
                 for bl in bing_list:

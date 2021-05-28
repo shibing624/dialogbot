@@ -14,7 +14,6 @@ pwd_path = os.path.abspath(os.path.dirname(__file__))
 
 class QuestionClassifier:
     def __init__(self):
-
         # 特征词路径
         self.disease_path = os.path.join(pwd_path, '../data/medical_dict/disease.txt')
         self.department_path = os.path.join(pwd_path, '../data/medical_dict/department.txt')

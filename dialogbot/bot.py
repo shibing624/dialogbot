@@ -32,7 +32,7 @@ class Bot:
         else:
             self.context = []
 
-    def answer(self, query, use_task=True):
+    def answer(self, query, use_task=False):
         """
         Dialog strategy: use sub-task to handle dialog firstly,
         if failed, use retrieval or generational func to handle it.
@@ -45,7 +45,7 @@ class Bot:
         if use_task:
             task_response = ''
 
-        # Search response.
+        # Search response
         if len(self.context) >= 3 and ch_count(query) <= 4:
             # user_msgs = self.context[::2][-3:]
             # msg = "<s>".join(user_msgs)
@@ -55,12 +55,13 @@ class Bot:
             mode = "qa"
         search_response, sim_score = self.search_bot.answer(query, mode=mode)
 
-        # Seq2seq response.
+        # Seq2seq response
         seq2seq_response = self.seq2seq_bot.answer(query)
 
-        response = {"task_response": task_response,
-                    "search_response": search_response,
-                    "seq2seq_response": seq2seq_response,
-                    }
+        response = search_response
+        details = {"search_response": search_response,
+                   "seq2seq_response": seq2seq_response,
+                   "task_response": task_response,
+                   }
         self.context.append(search_response)
-        return response
+        return response, details

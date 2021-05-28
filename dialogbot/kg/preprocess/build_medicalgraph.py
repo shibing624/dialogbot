@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 # File: MedicalGraph.py
-# Author: XuMing（xuming624@qq.com),lhy<lhy_in_blcu@126.com,https://huangyong.github.io>
+# Author: XuMing(xuming624@qq.com),lhy<lhy_in_blcu@126.com,https://huangyong.github.io>
 
 import json
 import os

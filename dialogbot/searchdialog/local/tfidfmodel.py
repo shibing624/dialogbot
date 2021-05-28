@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@author:XuMing（xuming624@qq.com)
+@author:XuMing(xuming624@qq.com)
 @description: 
 """
 
@@ -9,7 +9,7 @@ import time
 from gensim import corpora, models, similarities
 
 from dialogbot.reader.data_helper import load_corpus_file
-from dialogbot.utils.logger import logger
+from dialogbot.utils.log import logger
 
 
 class TfidfModel:

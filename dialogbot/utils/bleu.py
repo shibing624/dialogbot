@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@author:XuMing（xuming624@qq.com)
+@author:XuMing(xuming624@qq.com)
 @description: 
 """
 
@@ -72,9 +72,3 @@ if __name__ == "__main__":
     print(bleu_similarity(c, [c]))
     print(bleu_similarity(c, [c, t]))
 
-    import sys
-
-    candidate_file = sys.argv[1]
-    reference_file = sys.argv[2]
-    s = bleu(candidate_file, reference_file)
-    print(s)

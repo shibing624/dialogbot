@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-@author:XuMing（xuming624@qq.com)
+@author:XuMing(xuming624@qq.com)
 @description: 
 """
 
 from codecs import open
 
+import gensim
 import numpy as np
-from gensim import models
 
+from dialogbot.utils.log import logger
 from dialogbot.utils.tokenizer import Tokenizer
 
 PAD_TOKEN, GO_TOKEN, EOS_TOKEN, UNK_TOKEN = '<pad>', '<go>', '<eos>', '<unk>'
@@ -32,7 +33,7 @@ def load_dataset(vocab_path, train_path=None, vocab_size=0):
     :param vocab_size:
     :return: word2id, id2word, training_samples
     """
-    with open(vocab_path, "r", "utf-8") as rfd:
+    with open(vocab_path, "r", encoding="utf-8") as rfd:
         word2id = {PAD_TOKEN: PAD_ID,
                    GO_TOKEN: GO_ID,
                    EOS_TOKEN: EOS_ID,
@@ -44,7 +45,7 @@ def load_dataset(vocab_path, train_path=None, vocab_size=0):
         for line in vocab_data_user:
             items = line.split("\t")
             if len(items) != 2:
-                print('error', vocab_path, line)
+                logger.error('error file path: {}, line at: {}'.format(vocab_path, line))
                 continue
             word = items[0]
             word2id[word] = cnt
@@ -52,7 +53,7 @@ def load_dataset(vocab_path, train_path=None, vocab_size=0):
             cnt += 1
 
     if train_path:
-        with open(train_path, "r", "utf-8") as rfd:
+        with open(train_path, "r", encoding="utf-8") as rfd:
             data = rfd.read().splitlines()
             data = [line.split("\t") for line in data]
             training_samples = [[text2id(item[0], word2id),
@@ -60,7 +61,7 @@ def load_dataset(vocab_path, train_path=None, vocab_size=0):
             training_samples.sort(key=lambda x: len(x[0]))
             training_samples = [item for item in training_samples if
                                 (len(item[0]) >= 1 and len(item[1]) >= 1)]
-        print("Load train data from %s done." % train_path)
+        logger.debug("Load train data from %s done." % train_path)
         return word2id, id2word, training_samples
     else:
         return word2id, id2word
@@ -126,12 +127,12 @@ def corpus2enco(corpus, word2id):
 
 def dump_word_embeddings(word2id, emb_size, word2vec_path, embeddings_path):
     vocab_size = len(word2id)
-    word2vec = models.KeyedVectors.load_word2vec_format(
+    word2vec = gensim.models.KeyedVectors.load_word2vec_format(
         word2vec_path, binary=False)
     embeddings = np.random.randn(vocab_size, emb_size)
     for word, idx in word2id.items():
-        if word in word2vec:
-            embeddings[idx, :] = word2vec[word]
+        if word in word2vec.wv.key_to_index:
+            embeddings[idx, :] = word2vec.wv.key_to_index[word]
         else:
             embeddings[idx, :] = np.random.randn(emb_size)
     np.save(embeddings_path, embeddings)

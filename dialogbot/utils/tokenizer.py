@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-@author:XuMing（xuming624@qq.com)
+@author:XuMing(xuming624@qq.com)
 @description: 
 """
-import codecs
+
 import copy
 import logging
 import re
@@ -51,8 +51,8 @@ def segment_file(in_file, out_file, word_sep=' ', pos_sep='/', is_pos=True):
 
 
 def _load_words(file_path):
-    with codecs.open(file_path, "r", "utf-8") as rfd:
-        words_set = set(rfd.read().splitlines())
+    with open(file_path, "r", encoding="utf-8") as f:
+        words_set = set(f.read().splitlines())
     return words_set
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@author:XuMing（xuming624@qq.com)
+@author:XuMing(xuming624@qq.com)
 @description: 
 """
 import os
@@ -8,16 +8,6 @@ import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 pwd_path = os.path.abspath(os.path.dirname(__file__))
-
-# knowledge graph
-host = "127.0.0.1"
-kg_port = 7474
-user = "neo4j"
-password = "123456"
-answer_num_limit = 20
-# mongodb
-mongo_host = 'localhost'
-mongo_port = 27017
 
 # tokenize config file
 punctuations_path = os.path.join(pwd_path, "data/punctuations.txt")
@@ -30,7 +20,7 @@ log_file = os.path.join(pwd_path, 'output/log.txt')
 search_model = 'bm25'
 question_answer_path = os.path.join(pwd_path, 'data/chat/question_answer.tsv')
 context_response_path = os.path.join(pwd_path, 'data/taobao/context_response.txt')
-search_vocab_path =  os.path.join(pwd_path, 'data/chat/vocab.txt')
+search_vocab_path = os.path.join(pwd_path, 'data/chat/vocab.txt')
 
 # seq2seq dialog
 dialog_mode = 'single'
@@ -56,10 +46,12 @@ class Params:
     bidirectional_rnn = False
 
 
-class Web:
-    """
-    前端
-    """
-    host = "0.0.0.0"
-    port = "8820"
-    url = "http://" + host + ":" + port
+# knowledge graph
+host = "127.0.0.1"
+kg_port = 7474
+user = "neo4j"
+password = "123456"
+answer_num_limit = 20
+# mongodb
+mongo_host = 'localhost'
+mongo_port = 27017

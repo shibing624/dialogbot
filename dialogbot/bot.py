@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@author:XuMing（xuming624@qq.com)
+@author:XuMing(xuming624@qq.com)
 @description: chat bot main process.
 """
 
@@ -57,11 +57,8 @@ class Bot:
         # Seq2seq response.
         seq2seq_response = self.seq2seq_bot.answer(msg)
 
-        if task_response:
-            response = task_response
-        elif sim_score >= 1.0:
-            response = search_response
-        else:
-            response = seq2seq_response
-
+        response = {"task_response": task_response,
+                    "search_response": search_response,
+                    "seq2seq_response": seq2seq_response,
+                    }
         return response

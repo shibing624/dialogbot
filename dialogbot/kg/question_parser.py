@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # coding: utf-8
 # File: question_parser.py
-# Author: XuMing（xuming624@qq.com),lhy<lhy_in_blcu@126.com>
+# Author: XuMing(xuming624@qq.com),lhy<lhy_in_blcu@126.com>
 
-from dialogbot.utils.logger import logger
+from dialogbot.utils.log import logger
 
 
 class QuestionPaser:

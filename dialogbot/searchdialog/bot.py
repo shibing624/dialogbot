@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Author: XuMing <xuming624@qq.com>
+# Author: XuMing(xuming624@qq.com)
 # Brief: 
 import os
 from collections import deque
@@ -10,7 +10,7 @@ from .local.onehotmodel import OneHotModel
 from .local.tfidfmodel import TfidfModel
 from .. import config
 from ..reader.data_helper import load_dataset
-from ..utils.logger import logger
+from ..utils.log import logger
 from ..utils.tokenizer import Tokenizer
 
 
@@ -19,18 +19,19 @@ class SearchBot:
                  context_response_path=config.context_response_path,
                  vocab_path=config.search_vocab_path,
                  search_model="bm25",
-                 last_txt_len=100):
+                 last_txt_len=100,
+                 vocab_size=20000):
         self.last_txt = deque([], last_txt_len)
         self.search_model = search_model
 
         # search engine
-        self.engine = Engine()
+        self.internet_search_inst = Engine()
 
         # local text similarity
         if not os.path.exists(vocab_path):
             logger.error('file not found, file:%s, please run "python3 data/qa/process.py"' % vocab_path)
             raise ValueError('err. file not found, file:%s' % vocab_path)
-        self.word2id, _ = load_dataset(vocab_path, vocab_size=20000)
+        self.word2id, self.id2word = load_dataset(vocab_path, vocab_size=vocab_size)
 
         if search_model == "tfidf":
             self.qa_search_inst = TfidfModel(question_answer_path, word2id=self.word2id)
@@ -52,10 +53,10 @@ class SearchBot:
         """
         self.last_txt.append(query)
 
-        # search engine
-        engine_answers = self.engine.search(query)
-        if engine_answers:
-            response = engine_answers[0]
+        # internet search engine
+        internet_answers = self.internet_search_inst.search(query)
+        if internet_answers:
+            response = internet_answers[0]
             self.last_txt.append(response)
             return response, 2.0
 

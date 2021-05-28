@@ -1,27 +1,29 @@
 #!/usr/bin/env python3
 # coding: utf-8
 # File: question_classifier.py
-# Author: XuMing（xuming624@qq.com),lhy<lhy_in_blcu@126.com>
+# Author: XuMing(xuming624@qq.com),lhy<lhy_in_blcu@126.com>
 
-import ahocorasick
 import os
 from codecs import open
 
-from dialogbot.utils.logger import logger
+import ahocorasick
+
+from dialogbot.utils.log import logger
+pwd_path = os.path.abspath(os.path.dirname(__file__))
 
 
 class QuestionClassifier:
     def __init__(self):
-        cur_dir = os.path.abspath(os.path.dirname(__file__))
+
         # 特征词路径
-        self.disease_path = os.path.join(cur_dir, '../data/medical_dict/disease.txt')
-        self.department_path = os.path.join(cur_dir, '../data/medical_dict/department.txt')
-        self.check_path = os.path.join(cur_dir, '../data/medical_dict/check.txt')
-        self.drug_path = os.path.join(cur_dir, '../data/medical_dict/drug.txt')
-        self.food_path = os.path.join(cur_dir, '../data/medical_dict/food.txt')
-        self.producer_path = os.path.join(cur_dir, '../data/medical_dict/producer.txt')
-        self.symptom_path = os.path.join(cur_dir, '../data/medical_dict/symptom.txt')
-        self.deny_path = os.path.join(cur_dir, '../data/medical_dict/deny.txt')
+        self.disease_path = os.path.join(pwd_path, '../data/medical_dict/disease.txt')
+        self.department_path = os.path.join(pwd_path, '../data/medical_dict/department.txt')
+        self.check_path = os.path.join(pwd_path, '../data/medical_dict/check.txt')
+        self.drug_path = os.path.join(pwd_path, '../data/medical_dict/drug.txt')
+        self.food_path = os.path.join(pwd_path, '../data/medical_dict/food.txt')
+        self.producer_path = os.path.join(pwd_path, '../data/medical_dict/producer.txt')
+        self.symptom_path = os.path.join(pwd_path, '../data/medical_dict/symptom.txt')
+        self.deny_path = os.path.join(pwd_path, '../data/medical_dict/deny.txt')
         # 加载特征词
         self.disease_wds = [i.strip() for i in open(self.disease_path, encoding='utf-8') if i.strip()]
         self.department_wds = [i.strip() for i in open(self.department_path, encoding='utf-8') if i.strip()]
@@ -58,7 +60,7 @@ class QuestionClassifier:
         self.cure_qwds = ['治疗什么', '治啥', '治疗啥', '医治啥', '治愈啥', '主治啥', '主治什么', '有什么用', '有何用', '用处', '用途',
                           '有什么好处', '有什么益处', '有何益处', '用来', '用来做啥', '用来作甚', '需要', '要']
 
-        logger.info('kg model init finished.')
+        logger.debug('kg model init finished.')
 
     def classify(self, question):
         """

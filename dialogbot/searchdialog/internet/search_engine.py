@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-@author:XuMing（xuming624@qq.com)
+@author:XuMing(xuming624@qq.com)
 @description: 对百度、Bing 的搜索摘要进行答案的检索
 """
 
 from collections import OrderedDict
-from urllib.request import quote
+import urllib.request
+import urllib.parse
 
 from dialogbot.searchdialog.internet import html_crawler
-from dialogbot.utils.logger import logger
+from dialogbot.utils.log import logger
 from dialogbot.utils.tokenizer import postag
 
 baidu_url_prefix = 'https://www.bing.com/search?q='
@@ -70,7 +71,7 @@ class Engine:
         answer = []
         left_text = ''
         # 抓取百度前10条的摘要
-        soup_baidu = html_crawler.get_html_baidu(bing_url_prefix + quote(query))
+        soup_baidu = html_crawler.get_html_baidu(bing_url_prefix + urllib.parse.quote(query))
         if not soup_baidu:
             return answer, left_text
         for i in range(1, self.topk):
@@ -180,7 +181,7 @@ class Engine:
         answer = []
         left_text = ''
         # 获取bing的摘要
-        soup_bing = html_crawler.get_html_bing(bing_url_prefix + quote(query))
+        soup_bing = html_crawler.get_html_bing(bing_url_prefix + urllib.parse.quote(query))
         # 判断是否在Bing的知识图谱中
         r = soup_bing.find(class_="bm_box")
 

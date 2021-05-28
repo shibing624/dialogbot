@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-# Author: XuMing <xuming624@qq.com>
+# Author: XuMing(xuming624@qq.com)
 # Brief: 
 import time
 
 from dialogbot.reader.data_helper import load_corpus_file
-from dialogbot.utils.logger import logger
+from dialogbot.utils.log import logger
 
 
 class OneHotModel:

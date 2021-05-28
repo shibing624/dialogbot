@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-@author:XuMing（xuming624@qq.com),lhy<lhy_in_blcu@126.com>
+@author:XuMing(xuming624@qq.com),lhy<lhy_in_blcu@126.com>
 @description: 
 """
 
 from py2neo import Graph
 
 from dialogbot.config import host, kg_port, user, password, answer_num_limit
-from dialogbot.utils.logger import logger
+from dialogbot.utils.log import logger
 
 
 class AnswerSearcher:

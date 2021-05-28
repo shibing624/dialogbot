@@ -1,10 +1,9 @@
+colorlog
 jieba
-gensim
+gensim>=4.0.0
 pyahocorasick
 lxml
 pyemd
+tqdm
 nltk
 py2neo
-pymongo
-tqdm
-Flask

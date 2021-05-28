@@ -9,9 +9,7 @@
 # dialogbot
 dialogbot, provide complete dialogue model technology. Combining task-based dialogue model, search-based dialogue model and generative dialogue model, output the optimal dialogue response.
 
-Base on **semantic analysis(tensorflow)**, **knowledge graph(neo4j)** and **data mining(spider)**.
-
----
+Base on **semantic analysis(deep learning)**, **knowledge graph(neo4j)** and **data mining(spider)**.
 
 # Feature
 
@@ -64,23 +62,18 @@ import dialogbot import Bot
 bot = Bot()
 response = bot.answer('亲 吃了吗？')
 print(response)
-
 ```
 
 Done!
 
 This should print:
 
-```console
+```
 query: "亲 吃了吗？"
 
 answer: "吃了的，你好呀"
 ```
 
-
-## Demo
-
-http://www.borntowin.cn:8821
 
 ## Contact
 
@@ -97,7 +90,7 @@ tests for examples of how to call methods. Nearly all classes and methods are do
 the code should hopefully be easy.
 
 
-# reference
+# Reference
 
 - A Network-based End-to-End Trainable Task-oriented Dialogue System
 Wen T H, Vandyke D, Mrksic N, et al. A Network-based End-to-End Trainable Task-oriented Dialogue System[J]. 2016.
@@ -139,6 +132,6 @@ MILABOT 能够与人类就流行的闲聊话题进行语音和文本交流。该
 真实用户使用 A/B 测试对该系统进行评估，其性能大大优于竞争系统。由于其机器学习架构，该系统的性能在额外数据的帮助下还有可能继续提升。
 
 
-# [License](/LICENSE)
+# License
 
-The Apache License 2.0
+[The Apache License 2.0](/LICENSE)

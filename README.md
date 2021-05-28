@@ -1,4 +1,4 @@
-![alt text](docs/public/logo.svg)
+![alt text](docs/public/dialogbot.jpg)
 
 [![PyPI version](https://badge.fury.io/py/dialogbot.svg)](https://badge.fury.io/py/dialogbot)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)

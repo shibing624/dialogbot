@@ -15,7 +15,8 @@ from ..utils.tokenizer import Tokenizer
 
 
 class SearchBot:
-    def __init__(self, question_answer_path=config.question_answer_path,
+    def __init__(self,
+                 question_answer_path=config.question_answer_path,
                  context_response_path=config.context_response_path,
                  vocab_path=config.search_vocab_path,
                  search_model="bm25",
@@ -80,7 +81,9 @@ class SearchBot:
         response, score = answers[0], sim_items[0][1]
         logger.debug("search_model=%s, %s_search_sim_doc=%s, score=%.4f"
                      % (self.search_model, mode, "".join(docs[0]), score))
-        if score >= 1.0:
+        if (self.search_model == "tfidf" and score >= 0.7) or (
+                self.search_model == "onehot" and score >= 0.5) or (
+                self.search_model == "bm25" and score >= 1.0):
             self.last_txt.append(response)
             return response, score
 

@@ -7,6 +7,15 @@ import sys
 
 sys.path.append('..')
 from dialogbot.kg import question_parser
-handler = question_parser.QuestionPaser()
 
-print(handler)
+import unittest
+
+
+class MyTestCase(unittest.TestCase):
+    def test_something(self):
+        handler = question_parser.QuestionPaser()
+        print(handler)
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -79,6 +79,7 @@ class Engine:
             if not items:
                 logger.debug("百度找不到答案")
                 break
+            # Find result by internet
             # 判断是否有mu,如果第一个是百度知识图谱的 就直接命中答案
             if ('mu' in items.attrs) and i == 1:
                 r = items.find(class_='op_exactqa_s_answer')

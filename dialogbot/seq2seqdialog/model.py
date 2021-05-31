@@ -6,7 +6,7 @@
 from codecs import open
 
 import numpy as np
-import tensorflow as tf
+
 
 from dialogbot import config
 from dialogbot.reader.data_helper import load_dataset, sentence2enco
@@ -25,6 +25,7 @@ class Model:
 
     @staticmethod
     def load_model(model_dir_path, word2id):
+        import tensorflow as tf
         tf.reset_default_graph()
         sess = tf.Session()
         with tf.variable_scope("Model"):

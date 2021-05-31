@@ -6,7 +6,6 @@
 
 from dialogbot import config
 from dialogbot.searchdialog.bot import SearchBot
-from dialogbot.seq2seqdialog.bot import Seq2SeqBot
 from dialogbot.utils.text_util import ch_count
 
 
@@ -22,7 +21,9 @@ class Bot:
         self.search_bot = SearchBot(question_answer_path, context_response_path,
                                     vocab_path=vocab_path,
                                     search_model=search_model)
-        self.seq2seq_bot = Seq2SeqBot(vocab_path, seq2seq_model_path)
+        # from dialogbot.seq2seqdialog.bot import Seq2SeqBot
+        # self.seq2seq_bot = Seq2SeqBot(vocab_path, seq2seq_model_path)
+        self.seq2seq_bot = None
 
     def set_context(self, v):
         if isinstance(v, list):
@@ -32,36 +33,43 @@ class Bot:
         else:
             self.context = []
 
-    def answer(self, query, use_task=False):
+    def answer(self, query, use_search=True, use_gen=False,use_task=False):
         """
         Dialog strategy: use sub-task to handle dialog firstly,
         if failed, use retrieval or generational func to handle it.
         :param query: str, input query
-        :param use_task: bool,
-        :return: response
+        :param use_search: bool, weather or not use search bot, include local search and internet search
+        :param use_gen: bool, weather or not use seq2seq bot
+        :param use_task: bool, weather or not use task bot
+        :return: (response, details) str, []
         """
         self.context.append(query)
+        search_response = ''
+        gen_response = ''
         task_response = ''
+
         if use_task:
             task_response = ''
 
         # Search response
-        if len(self.context) >= 3 and ch_count(query) <= 4:
-            # user_msgs = self.context[::2][-3:]
-            # msg = "<s>".join(user_msgs)
-            # mode = "cr"
-            mode = "qa"
-        else:
-            mode = "qa"
-        search_response, sim_score = self.search_bot.answer(query, mode=mode)
+        if use_search:
+            if len(self.context) >= 3 and ch_count(query) <= 4:
+                # user_msgs = self.context[::2][-3:]
+                # msg = "<s>".join(user_msgs)
+                # mode = "cr"
+                mode = "qa"
+            else:
+                mode = "qa"
+            search_response, sim_score = self.search_bot.answer(query, mode=mode)
 
         # Seq2seq response
-        seq2seq_response = self.seq2seq_bot.answer(query)
+        if use_gen:
+            gen_response = self.seq2seq_bot.answer(query)
 
         response = search_response
         details = {"search_response": search_response,
-                   "seq2seq_response": seq2seq_response,
+                   "gen_response": gen_response,
                    "task_response": task_response,
                    }
-        self.context.append(search_response)
+        self.context.append(response)
         return response, details

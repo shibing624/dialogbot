@@ -10,7 +10,6 @@ from dialogbot.kg import question_parser
 
 import unittest
 
-
 class MyTestCase(unittest.TestCase):
     def test_something(self):
         handler = question_parser.QuestionPaser()

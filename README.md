@@ -1,4 +1,8 @@
-![alt text](docs/public/dialogbot.jpg)
+<p align="center">
+    <br>
+    <img src="docs/public/dialogbot.jpg" width="400"/>
+    <br>
+<p>
 
 [![PyPI version](https://badge.fury.io/py/dialogbot.svg)](https://badge.fury.io/py/dialogbot)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)

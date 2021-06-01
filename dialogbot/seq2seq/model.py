@@ -7,12 +7,11 @@ from codecs import open
 
 import numpy as np
 
-
 from dialogbot import config
 from dialogbot.reader.data_helper import load_dataset, sentence2enco
-from dialogbot.seq2seqdialog.seq2seq import Seq2SeqModel
 from dialogbot.utils.bleu import bleu
 from dialogbot.utils.log import logger
+from .seq2seq import Seq2SeqModel
 
 Params = config.Params
 Params.beam_search = True

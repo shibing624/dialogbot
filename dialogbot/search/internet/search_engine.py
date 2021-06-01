@@ -8,9 +8,9 @@ from collections import OrderedDict
 import urllib.request
 import urllib.parse
 
-from dialogbot.searchdialog.internet import html_crawler
-from dialogbot.utils.log import logger
-from dialogbot.utils.tokenizer import postag
+from . import html_crawler
+from ...utils.log import logger
+from ...utils.tokenizer import postag
 
 baidu_url_prefix = 'https://cn.bing.com/search?q='
 bing_url_prefix = 'https://www.baidu.com/s?wd='

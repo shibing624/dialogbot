@@ -42,9 +42,9 @@ import os
 
 import tensorflow as tf
 
-from dialogbot.taskdialog.babi_dialog import BABI_Dialog
-from dialogbot.taskdialog.interactive_utils import interactive_loop
-from dialogbot.taskdialog.memn2n_dialogue import MemN2N_Dialog
+from dialogbot.task.babi_dialog import BABI_Dialog
+from dialogbot.task.interactive_utils import interactive_loop
+from dialogbot.task.memn2n_dialogue import MemN2N_Dialog
 from dialogbot.utils.io import validate_parent_exists, validate
 
 # parse the command line arguments

@@ -5,7 +5,7 @@
 """
 
 from dialogbot import config
-from dialogbot.searchdialog.bot import SearchBot
+from dialogbot.search.searchbot import SearchBot
 from dialogbot.utils.text_util import ch_count
 
 

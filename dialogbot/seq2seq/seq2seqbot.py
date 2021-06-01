@@ -7,8 +7,8 @@
 import os
 from collections import deque
 
-from dialogbot.seq2seqdialog.model import Model
-from dialogbot.utils.log import logger
+from .model import Model
+from ..utils.log import logger
 
 
 class Seq2SeqBot:

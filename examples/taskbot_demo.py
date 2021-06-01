@@ -8,7 +8,7 @@ import sys
 
 sys.path.append('..')
 
-from dialogbot.taskdialog import infer
+from dialogbot.task import infer
 
 if __name__ == '__main__':
     q = '这个金额是否达到包邮条件?'

@@ -7,7 +7,7 @@
 import sys
 
 sys.path.append('..')
-from dialogbot.searchdialog.internet.search_engine import Engine
+from dialogbot.search.internet.search_engine import Engine
 
 if __name__ == '__main__':
     engine = Engine()

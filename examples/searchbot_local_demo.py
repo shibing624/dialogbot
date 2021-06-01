@@ -6,7 +6,7 @@
 import sys
 
 sys.path.append('..')
-from dialogbot.searchdialog.bot import SearchBot
+from dialogbot.search.searchbot import SearchBot
 
 if __name__ == '__main__':
     tfidfbot = SearchBot(question_answer_path='../dialogbot/data/taobao/question_answer.txt',

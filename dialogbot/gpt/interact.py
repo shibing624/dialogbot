@@ -7,7 +7,6 @@ refer https://github.com/yangjianxin1/GPT2-chitchat
 """
 import argparse
 import os
-from datetime import datetime
 
 import torch
 import torch.nn.functional as F
@@ -72,64 +71,81 @@ def top_k_top_p_filtering(logits, top_k=0, top_p=0.0, filter_value=-float('Inf')
     return logits
 
 
-def main():
+class Inference:
+    def __init__(self, model_dir, device="cpu", max_history_len=3, max_len=25, repetition_penalty=1.0, temperature=1.0,
+                 topk=8, topp=0.0):
+        self.device = device
+        vocab_path = os.path.join(model_dir, 'vocab.txt')
+        self.tokenizer = BertTokenizerFast(vocab_file=vocab_path, sep_token="[SEP]", pad_token="[PAD]",
+                                           cls_token="[CLS]")
+        model = GPT2LMHeadModel.from_pretrained(model_dir)
+        self.model = model.to(self.device)
+        self.model.eval()
+        # 存储聊天记录，每个utterance以token的id的形式进行存储
+        self.history = []
+        self.max_history_len = max_history_len
+        self.max_len = max_len
+        self.repetition_penalty = repetition_penalty
+        self.temperature = temperature
+        self.topk = topk
+        self.topp = topp
+
+    def predict(self, query):
+        text_ids = self.tokenizer.encode(query, add_special_tokens=False)
+        self.history.append(text_ids)
+        input_ids = [self.tokenizer.cls_token_id]  # 每个input以[CLS]为开头
+
+        for history_id, history_utr in enumerate(self.history[-self.max_history_len:]):
+            input_ids.extend(history_utr)
+            input_ids.append(self.tokenizer.sep_token_id)
+        input_ids = torch.tensor(input_ids).long().to(self.device)
+        input_ids = input_ids.unsqueeze(0)
+        response = []  # 根据context，生成的response
+        # 最多生成max_len个token
+        for _ in range(self.max_len):
+            outputs = self.model(input_ids=input_ids)
+            logits = outputs.logits
+            next_token_logits = logits[0, -1, :]
+            # 对于已生成的结果generated中的每个token添加一个重复惩罚项，降低其生成概率
+            for id in set(response):
+                next_token_logits[id] /= self.repetition_penalty
+            next_token_logits = next_token_logits / self.temperature
+            # 对于[UNK]的概率设为无穷小，也就是说模型的预测结果不可能是[UNK]这个token
+            next_token_logits[self.tokenizer.convert_tokens_to_ids('[UNK]')] = -float('Inf')
+            filtered_logits = top_k_top_p_filtering(next_token_logits, top_k=self.topk, top_p=self.topp)
+            # torch.multinomial表示从候选集合中无放回地进行抽取num_samples个元素，权重越高，抽到的几率越高，返回元素的下标
+            next_token = torch.multinomial(F.softmax(filtered_logits, dim=-1), num_samples=1)
+            if next_token == self.tokenizer.sep_token_id:  # 遇到[SEP]则表明response生成结束
+                break
+            response.append(next_token.item())
+            input_ids = torch.cat((input_ids, next_token.unsqueeze(0)), dim=1)
+        self.history.append(response)
+        response_tokens = self.tokenizer.convert_ids_to_tokens(response)
+        return "".join(response_tokens)
+
+
+def interact():
     args = set_args()
     # 当用户使用GPU,并且GPU可用时
     args.cuda = torch.cuda.is_available() and not args.no_cuda
     device = 'cuda' if args.cuda else 'cpu'
     logger.info('using device:{}'.format(device))
     os.environ["CUDA_VISIBLE_DEVICES"] = args.device
-    vocab_path = os.path.join(args.model_dir, 'vocab.txt')
-    tokenizer = BertTokenizerFast(vocab_file=vocab_path, sep_token="[SEP]", pad_token="[PAD]", cls_token="[CLS]")
-    model = GPT2LMHeadModel.from_pretrained(args.model_dir)
-    model = model.to(device)
-    model.eval()
-    # 存储聊天记录，每个utterance以token的id的形式进行存储
-    history = []
+    inference = Inference(args.model_dir, device, args.max_history_len, args.max_len, args.repetition_penalty,
+                          args.temperature)
     print('开始和chatbot聊天，输入q以退出')
 
     while True:
         try:
-            text = input("user:")
-            if text.strip() == 'q':
+            query = input("user:")
+            if query.strip() == 'q':
                 raise ValueError("exit")
-            # text = "你好"
-            text_ids = tokenizer.encode(text, add_special_tokens=False)
-            history.append(text_ids)
-            input_ids = [tokenizer.cls_token_id]  # 每个input以[CLS]为开头
-
-            for history_id, history_utr in enumerate(history[-args.max_history_len:]):
-                input_ids.extend(history_utr)
-                input_ids.append(tokenizer.sep_token_id)
-            input_ids = torch.tensor(input_ids).long().to(device)
-            input_ids = input_ids.unsqueeze(0)
-            response = []  # 根据context，生成的response
-            # 最多生成max_len个token
-            for _ in range(args.max_len):
-                outputs = model(input_ids=input_ids)
-                logits = outputs.logits
-                next_token_logits = logits[0, -1, :]
-                # 对于已生成的结果generated中的每个token添加一个重复惩罚项，降低其生成概率
-                for id in set(response):
-                    next_token_logits[id] /= args.repetition_penalty
-                next_token_logits = next_token_logits / args.temperature
-                # 对于[UNK]的概率设为无穷小，也就是说模型的预测结果不可能是[UNK]这个token
-                next_token_logits[tokenizer.convert_tokens_to_ids('[UNK]')] = -float('Inf')
-                filtered_logits = top_k_top_p_filtering(next_token_logits, top_k=args.topk, top_p=args.topp)
-                # torch.multinomial表示从候选集合中无放回地进行抽取num_samples个元素，权重越高，抽到的几率越高，返回元素的下标
-                next_token = torch.multinomial(F.softmax(filtered_logits, dim=-1), num_samples=1)
-                if next_token == tokenizer.sep_token_id:  # 遇到[SEP]则表明response生成结束
-                    break
-                response.append(next_token.item())
-                input_ids = torch.cat((input_ids, next_token.unsqueeze(0)), dim=1)
-                # his_text = tokenizer.convert_ids_to_tokens(curr_input_tensor.tolist())
-                # print("his_text:{}".format(his_text))
-            history.append(response)
-            text = tokenizer.convert_ids_to_tokens(response)
-            print("chatbot:" + "".join(text))
+            # query = "你好"
+            text = inference.predict(query)
+            print("chatbot:" + text)
         except ValueError:
             break
 
 
 if __name__ == '__main__':
-    main()
+    interact()

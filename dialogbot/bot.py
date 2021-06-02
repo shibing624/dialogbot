@@ -5,6 +5,7 @@
 """
 
 from dialogbot import config
+from dialogbot.gpt.gptbot import GPTBot
 from dialogbot.search.searchbot import SearchBot
 from dialogbot.utils.text_util import ch_count
 
@@ -15,15 +16,14 @@ class Bot:
                  search_model=config.search_model,
                  question_answer_path=config.question_answer_path,
                  context_response_path=config.context_response_path,
-                 seq2seq_model_path=config.seq2seq_model_path,
+                 gpt_model_path=config.gpt_model_path,
                  context=None):
         self.context = context if context else []
         self.search_bot = SearchBot(question_answer_path, context_response_path,
                                     vocab_path=vocab_path,
                                     search_model=search_model)
-        # from dialogbot.seq2seqdialog.bot import Seq2SeqBot
-        # self.seq2seq_bot = Seq2SeqBot(vocab_path, seq2seq_model_path)
-        self.seq2seq_bot = None
+
+        self.gpt_bot = GPTBot(gpt_model_path)
 
     def set_context(self, v):
         if isinstance(v, list):
@@ -33,7 +33,7 @@ class Bot:
         else:
             self.context = []
 
-    def answer(self, query, use_search=True, use_gen=False,use_task=False):
+    def answer(self, query, use_search=True, use_gen=False, use_task=False):
         """
         Dialog strategy: use sub-task to handle dialog firstly,
         if failed, use retrieval or generational func to handle it.
@@ -62,9 +62,9 @@ class Bot:
                 mode = "qa"
             search_response, sim_score = self.search_bot.answer(query, mode=mode)
 
-        # Seq2seq response
+        # GPT2 response
         if use_gen:
-            gen_response = self.seq2seq_bot.answer(query)
+            gen_response = self.gpt_bot.answer(query)
 
         response = search_response
         details = {"search_response": search_response,

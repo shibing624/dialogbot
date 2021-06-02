@@ -1,9 +1,3 @@
-# Datset
-
-# Reference
-
-https://github.com/liuhuanyong/PersonGraphDataSet
-
 # PersonGraphDataSet
 PersonGraphDataSet, nearly 10 thousand person2person relationship facts that build from extraction method, which can be applied to person kg search and inference applications。  人物图谱数据集，近十万的人物关系图谱事实数据库，通过人物关系抽取算法抽取+人工整理得出，可用于人物关系搜索、查询、人物关系多跳问答，以及人物关系推理等场景提供基础数据。
 
@@ -113,7 +107,13 @@ PersonGraphDataSet, nearly 10 thousand person2person relationship facts that bui
 3、基于本项目，可以支撑包括知识问答、多跳推理、图谱可视化、未知关系推理、数据回标、特征增强、人物推荐、人物建模等多种应用尝试和科学研究工作。
 4、本项目面向开放文本，采用人物关系抽取模型进行抽取形成，经人工矫正后，可以保证数据的质量。
 
-# 关于作者
+# 数据作者
 
-刘焕勇，中国科学院软件研究所，专注金融、情报两大领域，从事事件抽取、事件演化、情感分析、事理（知识）图谱、常识推理、语言资源构建与应用等研发工作。如有自然语言处理、知识图谱、事理图谱、社会计算、语言资源建设等问题或合作，可联系我：
-1、我的github项目介绍：https://liuhuanyong.github.io
+刘焕勇，中国科学院软件研究所，专注金融、情报两大领域，从事事件抽取、事件演化、情感分析、事理（知识）图谱、常识推理、语言资源构建与应
+用等研发工作。如有自然语言处理、知识图谱、事理图谱、社会计算、语言资源建设等问题或合作，
+可联系数据作者：https://liuhuanyong.github.io
+
+
+# Reference
+
+https://github.com/liuhuanyong/PersonGraphDataSet

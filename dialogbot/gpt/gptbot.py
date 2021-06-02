@@ -7,25 +7,35 @@
 import os
 from collections import deque
 
-from .interact import Model
-from ..utils.log import logger
+from dialogbot import config
+from dialogbot.gpt.interact import Inference
+from dialogbot.utils.log import logger
 
 
-class Seq2SeqBot:
-    def __init__(self, vocab_path,
-                 model_dir_path,
-                 last_txt_len=100):
+class GPTBot:
+    def __init__(self, model_dir=config.gpt_model_path, device="cpu",
+                 max_history_len=3, max_len=25, repetition_penalty=1.0, temperature=1.0,
+                 topk=8, topp=0.0, last_txt_len=100):
         self.last_txt = deque([], last_txt_len)
-        self.vocab_path = vocab_path
-        self.model_dir = model_dir_path
         self.model = None
+        self.model_dir = model_dir
+        self.device = device
+        self.max_history_len = max_history_len
+        self.max_len = max_len
+        self.repetition_penalty = repetition_penalty
+        self.temperature = temperature
+        self.topk = topk
+        self.topp = topp
 
     def init(self):
         if not self.model:
-            if os.path.exists(self.vocab_path) and os.path.exists(self.model_dir):
-                self.model = Model(vocab_path=self.vocab_path, model_dir_path=self.model_dir)
+            if os.path.exists(self.model_dir):
+                self.model = Inference(self.model_dir, self.device, max_history_len=self.max_history_len,
+                                       max_len=self.max_len, repetition_penalty=self.repetition_penalty,
+                                       temperature=self.temperature,
+                                       topk=self.topk, topp=self.topp)
             else:
-                logger.warning("Seq2Seq model not found. vocab: {}, model: {}".format(self.vocab_path, self.model_dir))
+                logger.warning("GPT model not found. model: {}".format(self.model_dir))
 
     def answer(self, query):
         self.init()
@@ -36,6 +46,6 @@ class Seq2SeqBot:
         logger.debug('-' * 20)
         logger.debug("init_query=%s" % query)
         response = self.model.predict(query)
-        logger.debug("seq2seq_response=%s" % response)
+        logger.debug("gpt_response=%s" % response)
         self.last_txt.append(response)
         return response

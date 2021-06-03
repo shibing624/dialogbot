@@ -51,9 +51,9 @@ dialogbot, provide complete dialogue model technology. Combining **search-based 
 
 # Feature
 
-## 问答型对话（Search Dialogue Bot）
+### 问答型对话（Search Dialogue Bot）
 
-### 本地检索问答
+#### 本地检索问答
 
 计算用户问句与问答库中问句的相似度，选择最相似的问句，给出其对应的答复。句子相似度计算包括以下方法：
 
@@ -62,19 +62,19 @@ dialogbot, provide complete dialogue model technology. Combining **search-based 
 - OneHot
 - Query Vector
 
-### 网络检索问答
+#### 网络检索问答
 
 对百度、Bing的搜索结果摘要进行答案的检索
 - 百度搜索，包括百度知识图谱、百度诗词、百度万年历、百度计算器、百度知道
 - 微软Bing搜索，包括bing知识图谱、bing网典
 
 
-## 任务型对话（Task Oriented Dialogue Bot）
+### 任务型对话（Task Oriented Dialogue Bot）
 
 - End to End Memory Networks(memn2n)
 - BABi dataset
 
-## 聊天型对话（Generative Dialogue Bot）
+### 聊天型对话（Generative Dialogue Bot）
 
 - GPT2 Model
 - Sequence To Sequence Model(seq2seq)
@@ -83,9 +83,9 @@ dialogbot, provide complete dialogue model technology. Combining **search-based 
 
 # Install
 
-## Requirements and Installation
+- Requirements and Installation
 
-The project is based on Tensorflow 1.12.0+ and Python 3.6+.
+The project is based on transformers 4.4.2+, torch 1.6.0+ and Python 3.6+.
 Then, simply do:
 
 ```
@@ -244,19 +244,14 @@ python interact.py --no_cuda --model_dir path_to_your_model
 |---------|--------|--------|
 |model_epoch40_50w | [百度网盘(提取码:aisq)](https://pan.baidu.com/s/11KZ3hU2_a2MtI_StXBUKYw) 或 [GoogleDrive](https://drive.google.com/drive/folders/18TG2sKkHOZz8YlP5t1Qo_NqnGx9ogNay?usp=sharing) |使用50w多轮对话语料训练了40个epoch，loss降到2.0左右。|
 
-- [Dataset](#Dataset)
-- [Todo](#Todo)
-- [Wechat Group](#wechat-group)
-- [Cite](#Cite)
-- [Contribute](#contribute)
-- [Reference](#reference)
 
 # Contact
 
-- 邮件我：[xuming(shibing624@126.com)](shibing624@126.com).
-- 微信我：加我*微信号：xuming624, 备注：个人名称-NLP* 进NLP交流群。
+- 邮件我：xuming: shibing624@126.com.
+- 微信我：
+加我*微信号：xuming624, 备注：个人名称-NLP* 进NLP交流群。
 
-      <img src="./docs/public/wechat.jpeg" width="200" />
+<img src="docs/public/wechat.jpeg" width="200" />
 
 
 # Cite

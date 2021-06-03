@@ -8,6 +8,7 @@
 
 # dialogbot
 dialogbot, provide complete dialogue model technology. Combining **search-based dialogue model**, **task-based dialogue model** and **generative dialogue model**, output the optimal dialogue response.
+
 对话机器人，基于问答型对话，任务型对话，聊天型对话等模型实现，支持网络检索问答，领域知识问答，任务引导问答，闲聊问答，开箱即用。
 
 
@@ -27,7 +28,8 @@ dialogbot, provide complete dialogue model technology. Combining **search-based 
 # Question
 
 人机对话系统一直是AI的重要方向，图灵测试以对话检测机器是否拥有高度的智能。
-如果构建人机对话系统（对话机器人）呢？
+
+如何构建人机对话系统或者对话机器人呢？
 
 
 # Solution
@@ -55,7 +57,9 @@ dialogbot, provide complete dialogue model technology. Combining **search-based 
 
 #### 本地检索问答
 
-计算用户问句与问答库中问句的相似度，选择最相似的问句，给出其对应的答复。句子相似度计算包括以下方法：
+计算用户问句与问答库中问句的相似度，选择最相似的问句，给出其对应的答复。
+
+句子相似度计算包括以下方法：
 
 - TFIDF
 - BM25
@@ -135,7 +139,7 @@ answer: "226cm"
 ### GPT2模型使用
 基于GPT2生成模型训练的聊天型对话模型。
 
-在[模型分享](#模型分享)中下载模型，将模型文件夹model_epoch40_50w下的文件放到对应model_epoch40_50w目录下：
+在[模型分享](#模型分享)中下载模型，将模型文件夹model_epoch40_50w下的文件放到自己指定目录`your_model_dir`下：
 ```
 model_epoch40_50w
 ├── config.json
@@ -149,7 +153,7 @@ model_epoch40_50w
 ```python
 import dialogbot import Bot
 
-bot = Bot()
+bot = Bot(gpt_model_path=your_model_dir)
 response = bot.answer('亲 你吃了吗？', use_gen=True, use_search=False, use_task=False)
 print(response)
 ```
@@ -209,6 +213,40 @@ python interact.py --no_cuda --model_dir path_to_your_model
 如果要使用GPU进行生成，则不要调用--no_cuda参数，并且通过--device gpu_id来指定使用哪块GPU。
 
 
+##### 问答示例
+- sample1
+```
+  user :在干嘛
+chatbot:睡觉
+  user :这么早就睡觉啦
+chatbot:嗯啊你也早点睡啊
+  user :我再玩一会儿手机
+chatbot:早点休息晚安
+  user :拜拜啦
+chatbot:晚安晚安
+  user :多喝热水
+chatbot:哈哈哈
+  user :多喝热水
+chatbot:好的咯
+```
+
+- sample2
+```
+  user :在吗
+chatbot:在
+  user :我不开心
+chatbot:怎么啦
+  user :最近好累啊
+chatbot:是挺累的
+  user :作业好多啊
+chatbot:还好还好
+  user :我觉得我快要挂科了
+chatbot:我也是啊，但是我觉得我快熬出头了
+  user :不说了，我还有好多作业没写
+chatbot:我也是啊好多啊
+  user :那先这样，下次再聊，再见了
+chatbot:好哒
+```
 
 # Dataset
 

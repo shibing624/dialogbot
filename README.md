@@ -7,32 +7,81 @@
 ![Python3](https://img.shields.io/badge/Python-3.X-red.svg)
 
 # dialogbot
-dialogbot, provide complete dialogue model technology. Combining **task-based dialogue model**, **search-based dialogue model** and **generative dialogue model**, output the optimal dialogue response.
-对话机器人，基于任务型对话，检索型对话，生成型对话等模型实现，支持一问一答，多轮问答，可用于网络检索问答，领域知识问答，任务引导问答，闲聊问答，开箱即用。
+dialogbot, provide complete dialogue model technology. Combining **search-based dialogue model**, **task-based dialogue model** and **generative dialogue model**, output the optimal dialogue response.
+对话机器人，基于问答型对话，任务型对话，聊天型对话等模型实现，支持网络检索问答，领域知识问答，任务引导问答，闲聊问答，开箱即用。
+
+
+
+**Guide**
+
+- [Question](#Question)
+- [Solution](#Solution)
+- [Feature](#Feature)
+- [Install](#install)
+- [Usage](#usage)
+- [Dataset](#Dataset)
+- [Contact](#Contact)
+- [Cite](#Cite)
+- [Reference](#reference)
+
+# Question
+
+人机对话系统一直是AI的重要方向，图灵测试以对话检测机器是否拥有高度的智能。
+如果构建人机对话系统（对话机器人）呢？
+
+
+# Solution
+
+对话系统经过三代的演变：
+
+1. 规则对话系统：垂直领域可以利用模板匹配方法的匹配问句和相应的答案。优点是内部逻辑透明，易于分析调试，缺点是高度依赖专家干预，
+缺少灵活性和可可拓展性。
+2. 统计对话系统：基于部分可见马尔科夫决策过程的统计对话系统，先对问句进行贝叶斯推断，维护每轮对话状态，再跟进对话状态进行对话策略的选择，
+从而生成自然语言回复。基本形成现代的对话系统框架，它避免了对专家的高度依赖，缺点是模型难以维护，可拓展性比较受限。
+3. 深度对话系统：基本延续了统计对话系统的框架，但各个模型采用深度网络模型。利用了深度模型强大的表征能力，语言分类和生成能力大幅提高，
+缺点是需要大量标注数据才能有效训练模型。
+
+对话系统分为三类：
+
+- 问答型对话：多是一问一答，用户提问，系统通过对问题解析和查找知识库返回正确答案，如搜索。
+- 任务型对话：指由任务驱动的多轮对话，机器需要通过理解、主动询问、澄清等方式确定用户目标，然后查找知识库返回结果，完成用户需求。
+如：机器人售电影票。
+- 聊天型对话：目标是产生有趣且富有信息量的自然答复使人机对话持续下去，如小度音响。
+
 
 # Feature
 
-### Retrieval Dialogue Bot
+## 问答型对话（Search Dialogue Bot）
 
-Compute questions similarity, use
+### 本地检索问答
+
+计算用户问句与问答库中问句的相似度，选择最相似的问句，给出其对应的答复。句子相似度计算包括以下方法：
 
 - TFIDF
 - BM25
 - OneHot
 - Query Vector
 
-### Goal Oriented Dialogue Bot
+### 网络检索问答
+
+对百度、Bing的搜索结果摘要进行答案的检索
+- 百度搜索，包括百度知识图谱、百度诗词、百度万年历、百度计算器、百度知道
+- 微软Bing搜索，包括bing知识图谱、bing网典
+
+
+## 任务型对话（Task Oriented Dialogue Bot）
 
 - End to End Memory Networks(memn2n)
 - BABi dataset
 
-### Generative Dialogue Bot
+## 聊天型对话（Generative Dialogue Bot）
 
+- GPT2 Model
 - Sequence To Sequence Model(seq2seq)
 - Taobao dataset
 
 
-# Quick Start
+# Install
 
 ## Requirements and Installation
 
@@ -51,39 +100,73 @@ cd dialogbot
 python3 setup.py install
 ```
 
-## Search Bot
+# Usage
+## 问答型对话（Search Bot）
 
-Let's run chat bot:
+示例[base_demo.py](examples/base_demo.py)
 
 ```python
 import dialogbot import Bot
 
 bot = Bot()
-response = bot.answer('亲 吃了吗？')
+response = bot.answer('姚明多高呀？')
 print(response)
 ```
 
-Done!
+output:
 
-This should print:
+```
+query: "姚明多高呀？"
+
+answer: "226cm"
+```
+
+## 任务型对话（Task Bot）
+
+示例[taskbot_demo.py](examples/taskbot_demo.py)
+
+
+
+
+
+
+## 聊天型对话（Generative Bot）
+
+### GPT2模型使用
+基于GPT2生成模型训练的聊天型对话模型。
+
+在[模型分享](#模型分享)中下载模型，将模型文件夹model_epoch40_50w下的文件放到对应model_epoch40_50w目录下：
+```
+model_epoch40_50w
+├── config.json
+├── pytorch_model.bin
+└── vocab.txt
+```
+
+示例[genbot_demo.py](examples/genbot_demo.py)
+
+
+```python
+import dialogbot import Bot
+
+bot = Bot()
+response = bot.answer('亲 你吃了吗？', use_gen=True, use_search=False, use_task=False)
+print(response)
+```
+
+output:
 
 ```
 query: "亲 吃了吗？"
 
-answer: "吃了的，你好呀"
+answer: "吃了"
 ```
 
 
-## GPT2 Generation Bot
-### Quick Run
-在[模型分享](#模型分享)中下载模型，将模型文件夹model_epoch40_50w的文件放到项目根目录下，执行如下命令，进行对话
-```
-python interact.py --no_cuda --model_dir model_epoch40_50w (使用cpu生成，速度相对较慢)
-或
-python interact.py --model_dir model_epoch40_50w --device 0 (指定0号GPU进行生成，速度相对较快)
-```
+### GPT2模型fine-tune
 
-### 数据预处理
+
+#### 数据预处理
 在项目根目录下创建data文件夹，将原始训练语料命名为train.txt，存放在该目录下。train.txt的格式如下，每段闲聊之间间隔一行，格式如下：
 ```
 真想找你一起去看电影
@@ -101,11 +184,12 @@ python interact.py --model_dir model_epoch40_50w --device 0 (指定0号GPU进行
 ```
 运行preprocess.py，对data/train.txt对话语料进行tokenize，然后进行序列化保存到data/train.pkl。train.pkl中序列化的对象的类型为List[List],记录对话列表中,每个对话包含的token。
 ```
+cd dialogbot/gpt/
 python preprocess.py --train_path data/train.txt --save_path data/train.pkl
 ```
 
 
-### 训练模型
+#### 训练模型
 运行train.py,使用预处理后的数据，对模型进行自回归训练，模型保存在根目录下的model文件夹中。
 
 在训练时，可以通过指定patience参数进行early stop。当patience=n时，若连续n个epoch，模型在验证集上的loss均没有下降，则进行early stop，停止训练。当patience=0时，不进行early stop。
@@ -116,7 +200,7 @@ python train.py --epochs 40 --batch_size 8 --device 0,1 --train_path data/train.
 ```
 更多的训练参数介绍，可直接看train.py中的set_args()函数中的参数说明
 
-### 预测模型（人机交互）
+#### 预测模型（人机交互）
 运行interact.py，使用训练好的模型，进行人机交互，输入q结束对话之后，聊天记录将保存到sample.txt文件中。
 ```
 python interact.py --no_cuda --model_dir path_to_your_model
@@ -125,7 +209,10 @@ python interact.py --no_cuda --model_dir path_to_your_model
 如果要使用GPU进行生成，则不要调用--no_cuda参数，并且通过--device gpu_id来指定使用哪块GPU。
 
 
-## 闲聊语料分享
+
+# Dataset
+
+### 闲聊语料分享
 |中文闲聊语料 | 数据集地址 |语料描述|
 |---------|--------|--------|
 |常见中文闲聊|[chinese_chatbot_corpus](https://github.com/codemayq/chinese_chatbot_corpus)|包含小黄鸡语料、豆瓣语料、电视剧对白语料、贴吧论坛回帖语料、微博语料、PTT八卦语料、青云语料等|
@@ -157,19 +244,47 @@ python interact.py --no_cuda --model_dir path_to_your_model
 |---------|--------|--------|
 |model_epoch40_50w | [百度网盘(提取码:aisq)](https://pan.baidu.com/s/11KZ3hU2_a2MtI_StXBUKYw) 或 [GoogleDrive](https://drive.google.com/drive/folders/18TG2sKkHOZz8YlP5t1Qo_NqnGx9ogNay?usp=sharing) |使用50w多轮对话语料训练了40个epoch，loss降到2.0左右。|
 
-## Contact
+- [Dataset](#Dataset)
+- [Todo](#Todo)
+- [Wechat Group](#wechat-group)
+- [Cite](#Cite)
+- [Contribute](#contribute)
+- [Reference](#reference)
 
-Please email your questions or comments to [xuming(shibing624)](http://www.borntowin.cn/).
+# Contact
 
-## Contributing
+- 邮件我：[xuming(shibing624@126.com)](shibing624@126.com).
+- 微信我：加我*微信号：xuming624, 备注：个人名称-NLP* 进NLP交流群。
 
-Thanks for your interest in contributing! There are many ways to get involved;
-start with our [contributor guidelines](CONTRIBUTING.md) and then
-check these [open issues](https://github.com/shibing624/dialogbot/issues) for specific tasks.
+      <img src="./docs/public/wechat.jpeg" width="200" />
 
-For contributors looking to get deeper into the API we suggest cloning the repository and checking out the unit
-tests for examples of how to call methods. Nearly all classes and methods are documented, so finding your way around
-the code should hopefully be easy.
+
+# Cite
+
+如果你在研究中使用了dialogbot，请按如下格式引用：
+
+```latex
+@software{dialogbot,
+  author = {Xu Ming},
+  title = {dialogbot: Dialogue Model Technology Tool},
+  year = {2021},
+  url = {https://github.com/shibing624/dialogbot},
+}
+```
+
+# License
+
+
+授权协议为 [The Apache License 2.0](/LICENSE)，可免费用做商业用途。请在产品说明中附加dialogbot的链接和授权协议。
+
+
+# Contribute
+项目代码还很粗糙，如果大家对代码有所改进，欢迎提交回本项目，在提交之前，注意以下两点：
+
+ - 在`tests`添加相应的单元测试
+ - 使用`python setup.py test`来运行所有单元测试，确保所有单测都是通过的
+
+之后即可提交PR。
 
 
 # Reference
@@ -213,7 +328,3 @@ MILABOT 能够与人类就流行的闲聊话题进行语音和文本交流。该
 通过将强化学习应用到众包数据和真实用户互动中进行训练，该系统学习从自身包含的一系列模型中选择合适的模型作为响应。
 真实用户使用 A/B 测试对该系统进行评估，其性能大大优于竞争系统。由于其机器学习架构，该系统的性能在额外数据的帮助下还有可能继续提升。
 
-
-# License
-
-[The Apache License 2.0](/LICENSE)

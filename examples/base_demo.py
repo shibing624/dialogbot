@@ -10,5 +10,5 @@ from dialogbot import Bot
 
 if __name__ == '__main__':
     bot = Bot()
-    response = bot.answer('亲 吃了吗？')
+    response = bot.answer('姚明多高呀？')
     print(response)

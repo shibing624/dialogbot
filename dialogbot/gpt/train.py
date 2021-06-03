@@ -9,6 +9,7 @@ import argparse
 import logging
 import os
 import pickle
+import sys
 from datetime import datetime
 from os.path import join
 
@@ -21,6 +22,7 @@ from torch.utils.data import Dataset, DataLoader
 from transformers import BertTokenizerFast
 from transformers import GPT2LMHeadModel, GPT2Config
 
+sys.path.append('../..')
 from dialogbot.gpt.earlystop import EarlyStopping
 
 

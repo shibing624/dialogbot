@@ -43,13 +43,12 @@ class Bot:
         :param use_task: bool, weather or not use task bot
         :return: (response, details) str, []
         """
-        self.context.append(query)
-        search_response = ''
-        gen_response = ''
-        task_response = ''
+        self.context.append({'user:': query})
+        response = dict()
 
         if use_task:
             task_response = ''
+            response['task_response'] = task_response
 
         # Search response
         if use_search:
@@ -61,15 +60,12 @@ class Bot:
             else:
                 mode = "qa"
             search_response, sim_score = self.search_bot.answer(query, mode=mode)
+            response['search_response'] = search_response
 
         # GPT2 response
         if use_gen:
             gen_response = self.gpt_bot.answer(query)
+            response['gen_response'] = gen_response
 
-        response = search_response
-        details = {"search_response": search_response,
-                   "gen_response": gen_response,
-                   "task_response": task_response,
-                   }
-        self.context.append(response)
-        return response, details
+        self.context.append({'bot:': response})
+        return response

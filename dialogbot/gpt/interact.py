@@ -7,12 +7,14 @@ refer https://github.com/yangjianxin1/GPT2-chitchat
 """
 import argparse
 import os
+import sys
 
 import torch
 import torch.nn.functional as F
 from transformers import BertTokenizerFast
 from transformers import GPT2LMHeadModel
 
+sys.path.append('../..')
 from dialogbot.utils.log import logger
 
 PAD = '[PAD]'

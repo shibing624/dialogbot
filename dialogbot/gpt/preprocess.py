@@ -6,11 +6,13 @@
 
 import argparse
 import pickle
+import sys
 
 import numpy as np
 from tqdm import tqdm
 from transformers import BertTokenizerFast
 
+sys.path.append('../..')
 from dialogbot.utils.log import logger
 
 

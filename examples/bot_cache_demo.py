@@ -34,7 +34,7 @@ class BotServer:
 
 if __name__ == '__main__':
     # Batch queries
-    server = BotServer(cache_path='')
+    server = BotServer()
     query_list = [
         "王者荣耀哪个英雄最秀",
         "姚明有多高？",

@@ -78,6 +78,8 @@ class Inference:
                  topk=8, topp=0.0):
         self.device = device
         vocab_path = os.path.join(model_dir, 'vocab.txt')
+        if not os.path.exists(vocab_path):
+            raise ValueError("vocab file not found, %s, please download gpt2 model." % vocab_path)
         self.tokenizer = BertTokenizerFast(vocab_file=vocab_path, sep_token="[SEP]", pad_token="[PAD]",
                                            cls_token="[CLS]")
         model = GPT2LMHeadModel.from_pretrained(model_dir)

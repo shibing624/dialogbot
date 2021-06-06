@@ -37,7 +37,7 @@ predict_result_path = os.path.join(pwd_path, 'output/predict_result.txt')
 # gpt dialog model
 gpt_model_dir = os.path.join(USER_DATA_DIR, 'gpt_models/model_epoch40_50w/')
 os.makedirs(gpt_model_dir, exist_ok=True)
-cache_path = os.path.join(USER_DATA_DIR, "cache.json")
+
 
 class Params:
     rnn_size = 256

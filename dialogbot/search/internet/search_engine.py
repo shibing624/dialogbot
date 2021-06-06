@@ -4,16 +4,16 @@
 @description: 对百度、Bing 的搜索摘要进行答案的检索
 """
 
-from collections import OrderedDict
-import urllib.request
 import urllib.parse
+import urllib.request
+from collections import OrderedDict
 
-from . import html_crawler
-from ...utils.log import logger
-from ...utils.tokenizer import postag
+from dialogbot.search.internet import html_crawler
+from dialogbot.utils.log import logger
+from dialogbot.utils.tokenizer import postag
 
-baidu_url_prefix = 'https://cn.bing.com/search?q='
-bing_url_prefix = 'https://www.baidu.com/s?wd='
+baidu_url_prefix = 'https://www.baidu.com/s?ie=UTF-8&wd='
+bing_url_prefix = 'https://cn.bing.com/search?q='
 calendar_url = 'http://open.baidu.com/calendar'
 calculator_url = 'http://open.baidu.com/static/calculator/calculator.html'
 weather_url = 'http://weathernew.pae.baidu.com'
@@ -71,7 +71,7 @@ class Engine:
         answer = []
         left_text = ''
         # 抓取百度前10条的摘要
-        soup_baidu = html_crawler.get_html_baidu(bing_url_prefix + urllib.parse.quote(query))
+        soup_baidu = html_crawler.get_html_baidu(baidu_url_prefix + urllib.parse.quote(query))
         if not soup_baidu:
             return answer, left_text
         for i in range(1, self.topk):

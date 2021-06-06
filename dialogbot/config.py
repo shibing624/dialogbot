@@ -9,6 +9,10 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 
+# -----用户目录，存储模型文件-----
+USER_DATA_DIR = os.path.expanduser('~/.dialogbot/datasets/')
+os.makedirs(USER_DATA_DIR, exist_ok=True)
+
 # tokenize config file
 punctuations_path = os.path.join(pwd_path, "data/punctuations.txt")
 stopwords_path = os.path.join(pwd_path, "data/stopwords.txt")
@@ -29,9 +33,11 @@ model_path = os.path.join(pwd_path, 'output/models')
 seq2seq_model_path = os.path.join(model_path, dialog_mode)
 predict_result_path = os.path.join(pwd_path, 'output/predict_result.txt')
 
-
+# -----深度模型文件路径 -----
 # gpt dialog model
-gpt_model_path = os.path.join(pwd_path, '../model_epoch40_50w/')
+gpt_model_dir = os.path.join(USER_DATA_DIR, 'gpt_models/model_epoch40_50w/')
+os.makedirs(gpt_model_dir, exist_ok=True)
+cache_path = os.path.join(USER_DATA_DIR, "cache.json")
 
 class Params:
     rnn_size = 256

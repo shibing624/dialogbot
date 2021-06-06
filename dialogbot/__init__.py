@@ -4,9 +4,10 @@
 @description: 
 """
 
-__version__ = "0.0.5"
-
 from .bot import Bot
 from .kg.bot import KGBot
 from .search.searchbot import SearchBot
-# from .seq2seqdialog.bot import Seq2SeqBot
+from .gpt.gptbot import GPTBot
+
+
+__version__ = "0.0.5"

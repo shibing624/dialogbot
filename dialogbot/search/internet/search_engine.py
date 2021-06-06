@@ -141,7 +141,7 @@ class Engine:
                         answer.append(r.get_text().strip().replace("展开全部", "").strip())
                         return answer, left_text
 
-            if items.find("h3"):
+            if items.find("h3") and items.find("h3").find("a"):
                 # 百度知道
                 if items.find("h3").find("a").get_text().__contains__("百度知道") and (i == 1 or i == 2):
                     url = items.find("h3").find("a")['href']

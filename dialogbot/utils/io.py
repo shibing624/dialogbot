@@ -285,30 +285,19 @@ def validate_boolean(arg):
     return arg.lower() == "true"
 
 
-def load_json_file(file_path):
-    """load a file into a json object"""
-    try:
-        with open(file_path) as small_file:
-            return json.load(small_file)
-    except OSError as e:
-        print(e)
-        print('trying to read file in blocks')
-        with open(file_path) as big_file:
-            json_string = ''
-            while True:
-                block = big_file.read(64 * (1 << 20))  # Read 64 MB at a time;
-                json_string = json_string + block
-                if not block:  # Reached EOF
-                    break
-            return json.loads(json_string)
+def load_json(json_path, encoding='utf-8'):
+    with open(json_path, mode='r', encoding=encoding) as json_file:
+        data = json.load(json_file)
+    return data
 
 
-def json_dumper(obj):
-    """for objects that have members that cant be serialized and implement toJson() method"""
-    try:
-        return obj.toJson()
-    except Exception:
-        return obj.__dict__
+def save_json(data, json_path, mode='w', encoding='utf-8'):
+    file_dir = os.path.dirname(os.path.abspath(json_path))
+    if not os.path.exists(file_dir):
+        print(file_dir)
+        os.makedirs(file_dir)
+    with open(json_path, mode=mode, encoding=encoding) as f:
+        f.write(json.dumps(data, ensure_ascii=False, indent=4))
 
 
 def load_files_from_path(dir_path, extension='txt'):
@@ -320,12 +309,6 @@ def load_files_from_path(dir_path, extension='txt'):
         with open(f) as fp:
             files_data.append(' '.join(map(str.strip, fp.readlines())))
     return files_data
-
-
-def create_folder(path):
-    if path:
-        if not os.path.exists(path):
-            os.makedirs(path)
 
 
 def download_unzip(url: str, sourcefile: str, unzipped_path: str or PathLike,

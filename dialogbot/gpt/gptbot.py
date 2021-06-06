@@ -13,7 +13,7 @@ from dialogbot.utils.log import logger
 
 
 class GPTBot:
-    def __init__(self, model_dir=config.gpt_model_path, device="cpu",
+    def __init__(self, model_dir=config.gpt_model_dir, device="cpu",
                  max_history_len=3, max_len=25, repetition_penalty=1.0, temperature=1.0,
                  topk=8, topp=0.0, last_txt_len=100):
         self.last_txt = deque([], last_txt_len)

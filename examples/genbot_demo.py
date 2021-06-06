@@ -13,8 +13,8 @@ from dialogbot import Bot
 
 if __name__ == '__main__':
     bot = Bot()
-    response, details = bot.answer('亲 你吃了吗？', use_gen=True, use_search=False, use_task=False)
-    print(response, details)
+    response = bot.answer('亲 你吃了吗？', use_gen=True, use_search=False, use_task=False)
+    print(response)
 
     # 具体的指定GPT2生成对话模型
     bot = GPTBot()

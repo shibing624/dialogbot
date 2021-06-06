@@ -19,7 +19,7 @@ class BotServer:
         self.cache_path = cache_path
         if os.path.exists(cache_path):
             self.cache = load_json(cache_path)
-        logger.info("use cache, cache file: %s" % cache_path)
+            logger.info("use cache, cache file: %s" % cache_path)
 
     def answer(self, query):
         if query in self.cache:
@@ -27,20 +27,22 @@ class BotServer:
         else:
             response = self.bot.answer(query)
             self.cache[query] = response
-            save_json(self.cache, self.cache_path)
-            logger.info("save cache.")
+            if self.cache_path:
+                save_json(self.cache, self.cache_path)
+                logger.info("save cache.")
         return response
 
 if __name__ == '__main__':
     # Batch queries
-    server = BotServer()
+    server = BotServer(cache_path='')
     query_list = [
+        "王者荣耀哪个英雄最秀",
         "姚明有多高？",
         "姚明老婆是谁",
         "北京天气",
-        "上海天气是谁",
+        "上海天气",
         "雅阁现在多少钱",
-        "王者荣耀哪个英雄最秀",
+        "王者荣耀哪个英雄最贵？",
         "百日咳什么症状？",
         "百日咳要治疗多久？",
         "百日咳不能吃啥？",

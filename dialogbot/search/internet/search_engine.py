@@ -74,6 +74,9 @@ class Engine:
         soup_baidu = html_crawler.get_html_baidu(baidu_url_prefix + urllib.parse.quote(query))
         if not soup_baidu:
             return answer, left_text
+        if soup_baidu.title.get_text().__contains__('百度安全验证'):
+            logger.warning("爬虫触发百度安全验证")
+            return answer, left_text
         for i in range(1, self.topk):
             items = soup_baidu.find(id=i)
             if not items:
@@ -125,7 +128,7 @@ class Engine:
                 r = items.find(class_="op_weather4_twoicon_today")
                 if r:
                     logger.debug("天气找到答案")
-                    answer.append(r.get_text().replace('\n', '').strip())
+                    answer.append(r.get_text().strip().replace("\n", "").replace(' ', '').strip())
                     return answer, left_text
             # 百度知道
             if ('mu' in items.attrs) and i == 1:
@@ -142,8 +145,8 @@ class Engine:
                         return answer, left_text
 
             if items.find("h3") and items.find("h3").find("a"):
-                # 百度知道
-                if items.find("h3").find("a").get_text().__contains__("百度知道") and (i == 1 or i == 2):
+                # 百度知道-页面
+                if items.find("h3").find("a").get_text().__contains__("百度知道"):
                     url = items.find("h3").find("a")['href']
                     if url:
                         zhidao_soup = html_crawler.get_html_zhidao(url)
@@ -159,7 +162,7 @@ class Engine:
                                 return answer, left_text
 
                 # 百度百科
-                if items.find("h3").find("a").get_text().__contains__("百度百科") and (i == 1 or i == 2):
+                if items.find("h3").find("a").get_text().__contains__("百度百科") and i <=5:
                     url = items.find("h3").find("a")['href']
                     if url:
                         logger.debug("百度百科找到答案")
@@ -188,7 +191,7 @@ class Engine:
 
         if r:
             r = r.find_all(class_="b_subModule")
-            if r and len(r) > 1:
+            if r and len(r) > 1 and r[1].find("li"):
                 r = r[1].find("li").get_text().strip()
                 if r:
                     answer.append(r)
@@ -200,7 +203,7 @@ class Engine:
                 bing_list = r.find_all('li')
                 for bl in bing_list:
                     temp = bl.get_text()
-                    if temp.__contains__(" - 必应网典"):
+                    if temp.__contains__("必应网典"):
                         logger.debug("查找Bing网典")
                         url = bl.find("h2").find("a")['href']
                         if url:
@@ -213,6 +216,8 @@ class Engine:
                                     answer.append(r)
                                     return answer, left_text
                 left_text += r.get_text()
+        if not answer:
+            logger.debug("Bing找不到答案")
         return answer, left_text
 
     def _search_other(self, query, left_text):

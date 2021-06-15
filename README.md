@@ -2,9 +2,11 @@
 
 [![PyPI version](https://badge.fury.io/py/dialogbot.svg)](https://badge.fury.io/py/dialogbot)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![License Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/deepmipt/DeepPavlov/blob/master/LICENSE)
-![Language](https://img.shields.io/badge/Language-Python-blue.svg)
-![Python3](https://img.shields.io/badge/Python-3.X-red.svg)
+[![GitHub contributors](https://img.shields.io/github/contributors/shibing624/dialogbot.svg)](https://github.com/shibing624/dialogbot/graphs/contributors)
+[![License Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![python_vesion](https://img.shields.io/badge/Python-3.5%2B-green.svg)](requirements.txt)
+[![GitHub issues](https://img.shields.io/github/issues/shibing624/dialogbot.svg)](https://github.com/shibing624/dialogbot/issues)
+[![Wechat Group](http://vlog.sfyc.ltd/wechat_everyday/wxgroup_logo.png?imageView2/0/w/60/h/20)](#Contact)
 
 # dialogbot
 dialogbot, provide complete dialogue model technology. Combining **search-based dialogue model**, **task-based dialogue model** and **generative dialogue model**, output the optimal dialogue response.
@@ -285,7 +287,8 @@ chatbot:好哒
 
 # Contact
 
-- 邮件我：xuming: shibing624@126.com.
+- Issue(建议)：[![GitHub issues](https://img.shields.io/github/issues/shibing624/dialogbot.svg)](https://github.com/shibing624/dialogbot/issues)
+- 邮件我：xuming: xuming624@qq.com
 - 微信我：
 加我*微信号：xuming624, 备注：个人名称-NLP* 进NLP交流群。
 

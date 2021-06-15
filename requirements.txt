@@ -1,8 +1,8 @@
 colorlog
 jieba
-transformers
-torch
-gensim>=4.0.0
+transformers>=4.4.2
+torch>=1.6.0
+gensim
 pyahocorasick
 lxml
 pyemd

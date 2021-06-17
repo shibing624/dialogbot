@@ -50,8 +50,8 @@ setup(
     package_dir={'dialogbot': 'dialogbot'},
     package_data={
         'dialogbot': ['*.*', 'LICENSE', 'README.*', 'data/*', 'data/medical_dict/*',
-                      'data/chat/*', 'data/taobao/*', 'kg/*', 'preprocess/*', 'reader/*', 'searchdialog/*',
-                      'seq2seqdialog/*', 'taskdialog/*', 'utils/*', 'web/*', 'web/static/*', 'web/templates/*'],
+                      'data/chat/*', 'data/taobao/*', 'kg/*', 'gpt/*', 'reader/*', 'search/*',
+                      'seq2seq/*', 'task/*', 'utils/*', 'web/*'],
     },
     test_suite='tests',
 )

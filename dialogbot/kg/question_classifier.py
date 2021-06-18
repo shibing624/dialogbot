@@ -6,9 +6,8 @@
 import os
 from codecs import open
 
-import ahocorasick
-
 from dialogbot.utils.log import logger
+
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -206,6 +205,7 @@ class QuestionClassifier:
         :param wordlist: 词表
         :return:
         """
+        import ahocorasick
         actree = ahocorasick.Automaton()
         for index, word in enumerate(wordlist):
             actree.add_word(word, (index, word))

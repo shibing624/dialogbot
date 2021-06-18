@@ -17,16 +17,13 @@ if sys.version_info < (3,):
 with open('README.md', 'r', encoding='utf-8') as f:
     readme = f.read()
 
-with open('LICENSE', 'r', encoding='utf-8') as f:
-    license = f.read()
-
 with open('requirements.txt', 'r', encoding='utf-8') as f:
     reqs = f.read()
 
 setup(
     name='dialogbot',
     version=__version__,
-    description='Dialog robot, ChatBot',
+    description='Dialog Robot, ChatBot',
     long_description=readme,
     long_description_content_type='text/markdown',
     author='XuMing',
@@ -49,7 +46,7 @@ setup(
     packages=find_packages(exclude=['tests']),
     package_dir={'dialogbot': 'dialogbot'},
     package_data={
-        'dialogbot': ['*.*', 'LICENSE', 'README.*', 'data/*', 'data/medical_dict/*',
+        'dialogbot': ['*.*', '../LICENSE', '../*.md', '../*.txt','data/*', 'data/medical_dict/*',
                       'data/chat/*', 'data/taobao/*', 'kg/*', 'gpt/*', 'reader/*', 'search/*',
                       'seq2seq/*', 'task/*', 'utils/*', 'web/*'],
     },

@@ -6,5 +6,5 @@ gensim
 lxml
 tqdm
 bs4
-py2neo
+#py2neo
 numpy

@@ -1,17 +1,18 @@
 ![alt text](docs/public/dialogbot.jpg)
 
 [![PyPI version](https://badge.fury.io/py/dialogbot.svg)](https://badge.fury.io/py/dialogbot)
+[![Downloads](https://pepy.tech/badge/dialogbot)](https://pepy.tech/project/dialogbot)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![GitHub contributors](https://img.shields.io/github/contributors/shibing624/dialogbot.svg)](https://github.com/shibing624/dialogbot/graphs/contributors)
 [![License Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
-[![python_vesion](https://img.shields.io/badge/Python-3.5%2B-green.svg)](requirements.txt)
+[![python_vesion](https://img.shields.io/badge/Python-3.7%2B-green.svg)](requirements.txt)
 [![GitHub issues](https://img.shields.io/github/issues/shibing624/dialogbot.svg)](https://github.com/shibing624/dialogbot/issues)
 [![Wechat Group](http://vlog.sfyc.ltd/wechat_everyday/wxgroup_logo.png?imageView2/0/w/60/h/20)](#Contact)
 
-# dialogbot
-dialogbot, provide complete dialogue model technology. Combining **search-based dialogue model**, **task-based dialogue model** and **generative dialogue model**, output the optimal dialogue response.
+# DialogBot
+Dialogbot, provide complete dialogue model technology. Combining **search-based dialogue model**, **task-based dialogue model** and **generative dialogue model**, output the optimal dialogue response.
 
-对话机器人，基于问答型对话，任务型对话，聊天型对话等模型实现，支持网络检索问答，领域知识问答，任务引导问答，闲聊问答，开箱即用。
+**dialogbot**实现了问答型对话，任务型对话，聊天型对话等多种对话机器人方案，支持网络检索问答，领域知识问答，任务引导问答，闲聊问答，开箱即用。
 
 
 
@@ -24,7 +25,6 @@ dialogbot, provide complete dialogue model technology. Combining **search-based 
 - [Usage](#usage)
 - [Dataset](#Dataset)
 - [Contact](#Contact)
-- [Cite](#Cite)
 - [Reference](#reference)
 
 # Question
@@ -93,18 +93,18 @@ http://42.193.145.218/product/dialogbot/
 
 # Install
 
-- Requirements and Installation
-
 The project is based on transformers 4.4.2+, torch 1.6.0+ and Python 3.6+.
 Then, simply do:
 
 ```
-pip3 install dialogbot
+pip3 install torch # conda install pytorch
+pip3 install -U dialogbot
 ```
 
 or
 
 ```
+pip3 install torch # conda install pytorch
 git clone https://github.com/shibing624/dialogbot.git
 cd dialogbot
 python3 setup.py install
@@ -113,10 +113,10 @@ python3 setup.py install
 # Usage
 ## 问答型对话（Search Bot）
 
-示例[base_demo.py](examples/base_demo.py)
+example: [examples/base_demo.py](examples/base_demo.py)
 
 ```python
-import dialogbot import Bot
+from dialogbot import Bot
 
 bot = Bot()
 response = bot.answer('姚明多高呀？')
@@ -127,15 +127,12 @@ output:
 
 ```
 query: "姚明多高呀？"
-
 answer: "226cm"
 ```
 
 ## 任务型对话（Task Bot）
 
-示例[taskbot_demo.py](examples/taskbot_demo.py)
-
-
+example: [examples/taskbot_demo.py](examples/taskbot_demo.py)
 
 
 
@@ -153,13 +150,13 @@ model_epoch40_50w
 └── vocab.txt
 ```
 
-示例[genbot_demo.py](examples/genbot_demo.py)
+example: [examples/genbot_demo.py](examples/genbot_demo.py)
 
 
 ```python
-import dialogbot import Bot
+from dialogbot import Bot
 
-bot = Bot(gpt_model_path=your_model_dir)
+bot = Bot()
 response = bot.answer('亲 你吃了吗？', use_gen=True, use_search=False, use_task=False)
 print(response)
 ```
@@ -168,13 +165,11 @@ output:
 
 ```
 query: "亲 吃了吗？"
-
 answer: "吃了"
 ```
 
 
 ### GPT2模型fine-tune
-
 
 #### 数据预处理
 在项目根目录下创建data文件夹，将原始训练语料命名为train.txt，存放在该目录下。train.txt的格式如下，每段闲聊之间间隔一行，格式如下：
@@ -298,7 +293,7 @@ chatbot:好哒
 <img src="docs/public/wechat.jpeg" width="200" />
 
 
-# Cite
+# Citation
 
 如果你在研究中使用了dialogbot，请按如下格式引用：
 
@@ -321,50 +316,27 @@ chatbot:好哒
 项目代码还很粗糙，如果大家对代码有所改进，欢迎提交回本项目，在提交之前，注意以下两点：
 
  - 在`tests`添加相应的单元测试
- - 使用`python setup.py test`来运行所有单元测试，确保所有单测都是通过的
+ - 使用`python -m pytest`来运行所有单元测试，确保所有单测都是通过的
 
 之后即可提交PR。
 
 
 # Reference
 
-- A Network-based End-to-End Trainable Task-oriented Dialogue System
-Wen T H, Vandyke D, Mrksic N, et al. A Network-based End-to-End Trainable Task-oriented Dialogue System[J]. 2016.
-当前构建一个诸如宾馆预订或技术支持服务的 task-oriented 的对话系统很难，主要是因为难以获取训练数据。现有两种方式解决问题：
-•	将这个问题看做是 partially observable Markov Decision Process (POMDP)，利用强化学习在线与真实用户交互。但是语言理解和语言生成模块仍然需要语料去训练。而且为了让 RL 能运作起来，state 和 action space 必须小心设计，这就限制了模型的表达能力。同时 rewad function 很难设计，运行时也难以衡量
-•	利用 seq2seq 来做，这又需要大量语料训练。同时，这类模型无法做到与数据库交互以及整合其他有用的信息，从而生成实用的相应。
-本文提出了平衡两种方法的策略。
+- Wen T H, Vandyke D, Mrksic N, et al. A Network-based End-to-End Trainable Task-oriented Dialogue System[J]. 2016.
 - How NOT To Evaluate Your Dialogue System: An Empirical Study of Unsupervised Evaluation Metrics for Dialogue Response Generation
 - A. Bordes, Y. Boureau, J. Weston. Learning End-to-End Goal-Oriented Dialog 2016
-- [chatbot-MemN2N-tensorflow](https://github.com/vyraun/chatbot-MemN2N-tensorflow)
-- End-to-End Reinforcement Learning of Dialogue Agents for Information Access
-2016年卡耐基梅隆大学研究团队利用深度强化学习进行对话状态追踪和管理
-
 - Zhao T, Eskenazi M. Towards End-to-End Learning for Dialog State Tracking and Management using Deep Reinforcement Learning [J]. arXiv preprint arXiv:1606.02560, 2016.
-2016年麻省理工大学研究团队提出层次化DQN模型，其代码采用Keras实现并开源[ code ]，该工作发表在NIPS2016上。
-
 - Kulkarni T D, Narasimhan K R, Saeedi A, et al. Hierarchical deep reinforcement learning: Integrating temporal abstraction and intrinsic motivation [J]. arXiv preprint arXiv:1604.06057, 2016.
 - BBQ-Networks: Efficient Exploration in Deep Reinforcement Learning for Task-Oriented Dialogue Systems
-AAAI2018 录用文章，将深度强化学习用于对话系统。BBQ network 这个名字很有意思，工作来自微软研究院和 CMU。
-提出了一种新的算法，可以显著提升对话系统中深度 Q 学习智能体的探索效率。我们的智能体通过汤普森采样（Thompson sampling）进行探索，可以从 Bayes-by-Backprop 神经网络中抽取蒙特卡洛样本。我们的算法的学习速度比 ε-greedy、波尔兹曼、bootstrapping 和基于内在奖励（intrinsic-reward）的方法等常用的探索策略快得多。此外，我们还表明：当 Q 学习可能失败时，只需将少数几个成功 episode 的经历叠加到重放缓冲（replay buffer）之上，就能使该 Q 学习可行。
 - Deep Reinforcement Learning with Double Q-Learning
-
 - Deep Attention Recurrent Q-Network
-
 - SimpleDS: A Simple Deep Reinforcement Learning Dialogue System
-
 - Deep Reinforcement Learning with a Natural Language Action Space
-
 - Integrating User and Agent Models: A Deep Task-Oriented Dialogue System
-
-- A Deep Reinforcement Learning Chatbot
-蒙特利尔算法研究实验室（MILA）为参与亚马逊 Alexa 大奖赛而开发的深度强化学习聊天机器人。
-MILABOT 能够与人类就流行的闲聊话题进行语音和文本交流。该系统包括一系列自然语言生成和检索模型，如模板模型、词袋模型、序列到序列神经网络和隐变量神经网络模型。
-通过将强化学习应用到众包数据和真实用户互动中进行训练，该系统学习从自身包含的一系列模型中选择合适的模型作为响应。
-真实用户使用 A/B 测试对该系统进行评估，其性能大大优于竞争系统。由于其机器学习架构，该系统的性能在额外数据的帮助下还有可能继续提升。
-
 - [The Curious Case of Neural Text Degeneration](https://arxiv.xilesou.top/pdf/1904.09751.pdf)
-- [transformers](https://github.com/huggingface/transformers)
-- [GPT2-Chinese](https://github.com/Morizeyao/GPT2-Chinese)
-- [DialoGPT:Large-Scale Generative Pre-training for Conversational Response Generation](https://arxiv.xilesou.top/pdf/1911.00536.pdf)
-- [GPT2-chitchat](https://github.com/yangjianxin1/GPT2-chitchat)
+- [DialoGPT: Large-Scale Generative Pre-training for Conversational Response Generation](https://arxiv.xilesou.top/pdf/1911.00536.pdf)
+- [vyraun/chatbot-MemN2N-tensorflow](https://github.com/vyraun/chatbot-MemN2N-tensorflow)
+- [huggingface/transformers](https://github.com/huggingface/transformers)
+- [Morizeyao/GPT2-Chinese](https://github.com/Morizeyao/GPT2-Chinese)
+- [yangjianxin1/GPT2-chitchat](https://github.com/yangjianxin1/GPT2-chitchat)

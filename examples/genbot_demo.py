@@ -8,7 +8,7 @@ import sys
 
 sys.path.append('..')
 
-from dialogbot.gpt.gptbot import GPTBot
+from dialogbot import GPTBot
 from dialogbot import Bot
 
 if __name__ == '__main__':

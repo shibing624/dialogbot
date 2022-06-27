@@ -1,12 +1,11 @@
 colorlog
 jieba
 transformers>=4.4.2
-torch>=1.6.0
 gensim
 lxml
 tqdm
-nltk
 bs4
-py2neo
 numpy
+py2neo
 pyahocorasick
+nltk

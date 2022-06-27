@@ -183,9 +183,9 @@ answer: "吃了"
 我亲两口
 讨厌人家拿小拳拳捶你胸口
 
-美女约嘛
-开好房等你了
-我来啦
+今天好点了吗？
+一天比一天严重
+吃药不管用，去打一针。别拖着
 ```
 运行preprocess.py，对data/train.txt对话语料进行tokenize，然后进行序列化保存到data/train.pkl。train.pkl中序列化的对象的类型为List[List],记录对话列表中,每个对话包含的token。
 ```

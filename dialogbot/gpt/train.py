@@ -3,7 +3,7 @@
 @author:XuMing(xuming624@qq.com)
 @description:
 
-https://github.com/yangjianxin1/GPT2-chitchat
+Modified on: https://github.com/yangjianxin1/GPT2-chitchat
 """
 import argparse
 import os
@@ -47,7 +47,7 @@ class MyDataset(Dataset):
 
 def set_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--device', default='3', type=str, help='设置使用哪些显卡')
+    parser.add_argument('--device', default='0', type=str, help='设置使用哪些显卡')
     parser.add_argument('--no_cuda', action='store_true', help='不使用GPU进行训练')
     parser.add_argument('--model_config', default='config/config.json', type=str,  help='设置模型参数')
     parser.add_argument('--train_path', default='data/train.pkl', type=str, help='训练集路径')
@@ -79,7 +79,7 @@ def collate_fn(batch):
     return input_ids, labels
 
 
-def load_dataset(logger, args):
+def load_dataset(args):
     """
     加载训练集和验证集
     """
@@ -90,7 +90,8 @@ def load_dataset(logger, args):
         input_list = pickle.load(f)
 
     # 划分训练集与验证集
-    val_num = len(input_list) * args.val_rate
+    val_num = int(len(input_list) * args.val_rate)
+    logger.info(f'data size: {len(input_list)}, val_num: {val_num}')
     input_list_train = input_list[val_num:]
     input_list_val = input_list[:val_num]
 
@@ -100,8 +101,7 @@ def load_dataset(logger, args):
     return train_dataset, val_dataset
 
 
-def train_epoch(model, train_dataloader, optimizer, scheduler, logger,
-                epoch, args):
+def train_epoch(model, train_dataloader, optimizer, scheduler, epoch, args):
     model.train()
     device = args.device
     ignore_index = args.ignore_index
@@ -157,11 +157,11 @@ def train_epoch(model, train_dataloader, optimizer, scheduler, logger,
 
         except RuntimeError as exception:
             if "out of memory" in str(exception):
-                logger.info("WARNING: ran out of memory")
+                logger.warning("WARNING: ran out of memory")
                 if hasattr(torch.cuda, 'empty_cache'):
                     torch.cuda.empty_cache()
             else:
-                logger.info(str(exception))
+                logger.error(str(exception))
                 raise exception
 
     # 记录当前epoch的平均loss与accuracy
@@ -184,7 +184,7 @@ def train_epoch(model, train_dataloader, optimizer, scheduler, logger,
     return epoch_mean_loss
 
 
-def validate_epoch(model, validate_dataloader, logger, epoch, args):
+def validate_epoch(model, validate_dataloader, epoch, args):
     logger.info("start validating")
     model.eval()
     device = args.device
@@ -214,15 +214,15 @@ def validate_epoch(model, validate_dataloader, logger, epoch, args):
             return epoch_mean_loss
     except RuntimeError as exception:
         if "out of memory" in str(exception):
-            logger.info("WARNING: ran out of memory")
+            logger.warning("WARNING: ran out of memory")
             if hasattr(torch.cuda, 'empty_cache'):
                 torch.cuda.empty_cache()
         else:
-            logger.info(str(exception))
+            logger.error(str(exception))
             raise exception
 
 
-def train(model, logger, train_dataset, validate_dataset, args):
+def train(tokenizer, model, train_dataset, validate_dataset, args):
     train_dataloader = DataLoader(
         train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, collate_fn=collate_fn,
         drop_last=True
@@ -232,7 +232,7 @@ def train(model, logger, train_dataset, validate_dataset, args):
     early_stopping = EarlyStopping(args.patience, verbose=True, save_path=args.save_model_path)
     t_total = len(train_dataloader) // args.gradient_accumulation_steps * args.epochs
     optimizer = transformers.AdamW(model.parameters(), lr=args.lr, eps=args.eps)
-    num_warmup_steps = t_total * args.warmup_steps_rate
+    num_warmup_steps = int(t_total * args.warmup_steps_rate)
     scheduler = transformers.get_linear_schedule_with_warmup(
         optimizer, num_warmup_steps=num_warmup_steps, num_training_steps=t_total
     )
@@ -248,16 +248,16 @@ def train(model, logger, train_dataset, validate_dataset, args):
         train_loss = train_epoch(
             model=model, train_dataloader=train_dataloader,
             optimizer=optimizer, scheduler=scheduler,
-            logger=logger, epoch=epoch, args=args)
+            epoch=epoch, args=args)
         train_losses.append(train_loss)
 
         # ========== validate ========== #
         validate_loss = validate_epoch(
             model=model, validate_dataloader=validate_dataloader,
-            logger=logger, epoch=epoch, args=args)
+            epoch=epoch, args=args)
         validate_losses.append(validate_loss)
 
-        # 保存当前困惑度最低的模型，困惑度低，模型的生成效果不一定会越好
+        # 保存当前困惑度最低的模型
         if validate_loss < best_val_loss:
             best_val_loss = validate_loss
             logger.info('saving current best model for epoch {}'.format(epoch + 1))
@@ -266,6 +266,7 @@ def train(model, logger, train_dataset, validate_dataset, args):
                 os.mkdir(model_path)
             model_to_save = model.module if hasattr(model, 'module') else model
             model_to_save.save_pretrained(model_path)
+            tokenizer.save_pretrained(model_path)
 
         #  如果patience=0,则不进行early stopping
         if args.patience == 0:
@@ -364,9 +365,8 @@ def main():
 
     # 加载训练集和验证集
     # ========= Loading Dataset ========= #
-    train_dataset, validate_dataset = load_dataset(logger, args)
-
-    train(model, logger, train_dataset, validate_dataset, args)
+    train_dataset, validate_dataset = load_dataset(args)
+    train(tokenizer, model, train_dataset, validate_dataset, args)
 
 
 if __name__ == '__main__':

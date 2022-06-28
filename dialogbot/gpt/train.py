@@ -346,7 +346,7 @@ def main():
     logger.info('using device:{}'.format(device))
 
     # 初始化tokenizer
-    tokenizer = BertTokenizerFast(args.pretrained_model)
+    tokenizer = BertTokenizerFast.from_pretrained(args.pretrained_model)
     args.sep_id = tokenizer.sep_token_id
     args.pad_id = tokenizer.pad_token_id
     args.cls_id = tokenizer.cls_token_id

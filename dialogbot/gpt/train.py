@@ -28,6 +28,7 @@ from dialogbot.gpt.earlystop import EarlyStopping
 
 class MyDataset(Dataset):
     """
+    GPT model dataset
     """
 
     def __init__(self, input_list, max_len):
@@ -54,9 +55,8 @@ def set_args():
     parser.add_argument('--log_path', default='data/train.log', type=str, help='训练日志存放位置')
     parser.add_argument('--log', default=True, help="是否记录日志")
     parser.add_argument('--ignore_index', default=-100, type=int, help='对于ignore_index的label token不计算梯度')
-    # parser.add_argument('--input_len', default=200, type=int, help='输入的长度')
     parser.add_argument('--epochs', default=100, type=int, help='训练的最大轮次')
-    parser.add_argument('--batch_size', default=4, type=int, help='训练的batch size')
+    parser.add_argument('--batch_size', default=16, type=int, help='训练的batch size')
     parser.add_argument('--gpu0_bsz', default=10, type=int, help='0号卡的batch size')
     parser.add_argument('--lr', default=2.6e-5, type=float, help='学习率')
     parser.add_argument('--eps', default=1.0e-09, type=float, help='衰减率')
@@ -65,12 +65,10 @@ def set_args():
     parser.add_argument('--max_grad_norm', default=2.0, type=float)
     parser.add_argument('--save_model_path', default='model', type=str, help='模型输出路径')
     parser.add_argument('--pretrained_model', default='uer/gpt2-distil-chinese-cluecorpussmall', type=str, help='预训练的模型的路径')
-    # parser.add_argument('--seed', type=int, default=None, help='设置种子用于生成随机数，以使得训练的结果是确定的')
     parser.add_argument('--num_workers', type=int, default=0, help="dataloader加载数据时使用的线程数量")
     parser.add_argument('--patience', type=int, default=0, help="用于early stopping,设为0时,不进行early stopping")
-    parser.add_argument('--warmup_steps', type=int, default=4000, help='warm up步数')
-    # parser.add_argument('--label_smoothing', default=True, action='store_true', help='是否进行标签平滑')
-    parser.add_argument('--val_num', type=int, default=8000, help='验证集大小')
+    parser.add_argument('--warmup_steps_rate', type=float, default=0.05, help='warm up步数')
+    parser.add_argument('--val_rate', type=float, default=0.1, help='验证集大小')
     args = parser.parse_args()
     return args
 
@@ -92,12 +90,9 @@ def load_dataset(logger, args):
         input_list = pickle.load(f)
 
     # 划分训练集与验证集
-    val_num = args.val_num
+    val_num = len(input_list) * args.val_rate
     input_list_train = input_list[val_num:]
     input_list_val = input_list[:val_num]
-    # test
-    # input_list_train = input_list_train[:24]
-    # input_list_val = input_list_val[:24]
 
     train_dataset = MyDataset(input_list_train, args.max_len)
     val_dataset = MyDataset(input_list_val, args.max_len)
@@ -109,8 +104,6 @@ def train_epoch(model, train_dataloader, optimizer, scheduler, logger,
                 epoch, args):
     model.train()
     device = args.device
-    # pad_id = args.pad_id
-    # sep_id = args.sep_id
     ignore_index = args.ignore_index
     epoch_start_time = datetime.now()
     total_loss = 0  # 记录下整个epoch的loss的总和
@@ -195,8 +188,6 @@ def validate_epoch(model, validate_dataloader, logger, epoch, args):
     logger.info("start validating")
     model.eval()
     device = args.device
-    # pad_id = args.pad_id
-    # sep_id = args.sep_id
     ignore_index = args.ignore_index
     epoch_start_time = datetime.now()
     total_loss = 0
@@ -241,11 +232,10 @@ def train(model, logger, train_dataset, validate_dataset, args):
     early_stopping = EarlyStopping(args.patience, verbose=True, save_path=args.save_model_path)
     t_total = len(train_dataloader) // args.gradient_accumulation_steps * args.epochs
     optimizer = transformers.AdamW(model.parameters(), lr=args.lr, eps=args.eps)
-    # scheduler = transformers.WarmupLinearSchedule(optimizer, warmup_steps=args.warmup_steps, t_total=t_total)
+    num_warmup_steps = t_total * args.warmup_steps_rate
     scheduler = transformers.get_linear_schedule_with_warmup(
-        optimizer, num_warmup_steps=args.warmup_steps, num_training_steps=t_total
+        optimizer, num_warmup_steps=num_warmup_steps, num_training_steps=t_total
     )
-
     logger.info('starting training')
 
     # 用于记录每个epoch训练和验证的loss
@@ -327,17 +317,9 @@ def calculate_acc(logit, labels, ignore_index=-100):
 def main():
     # 初始化参数
     args = set_args()
-
     # 设置使用哪些显卡进行训练
     os.environ["CUDA_VISIBLE_DEVICES"] = args.device
-
     args.cuda = not args.no_cuda
-
-    if args.batch_size < 2048 and args.warmup_steps <= 4000:
-        print('[Warning] The warmup steps may be not enough.\n'
-              '(sz_b, warmup) = (2048, 4000) is the official setting.\n'
-              'Using smaller batch w/o longer warmup may cause '
-              'the warmup stage ends with only little data trained.')
 
     # 当用户使用GPU,并且GPU可用时
     args.cuda = torch.cuda.is_available() and not args.no_cuda
@@ -368,7 +350,6 @@ def main():
     # 并行训练模型
     if args.cuda and torch.cuda.device_count() > 1:
         model = DataParallel(model).cuda()
-        # model = BalancedDataParallel(args.gpu0_bsz, model, dim=0).cuda()
         logger.info("use GPU {} to train".format(args.device))
 
     # 计算模型参数数量

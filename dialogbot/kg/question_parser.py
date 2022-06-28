@@ -3,7 +3,7 @@
 # File: question_parser.py
 # Author: XuMing(xuming624@qq.com),lhy<lhy_in_blcu@126.com>
 
-from dialogbot.utils.log import logger
+from loguru import logger
 
 
 class QuestionPaser:

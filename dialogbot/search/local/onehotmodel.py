@@ -2,9 +2,8 @@
 # Author: XuMing(xuming624@qq.com)
 # Brief: 
 import time
-
+from loguru import logger
 from dialogbot.reader.data_helper import load_corpus_file
-from dialogbot.utils.log import logger
 
 
 class OneHotModel:

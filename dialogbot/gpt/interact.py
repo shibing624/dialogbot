@@ -13,9 +13,7 @@ import torch
 import torch.nn.functional as F
 from transformers import BertTokenizerFast
 from transformers import GPT2LMHeadModel
-
-sys.path.append('../..')
-from dialogbot.utils.log import logger
+from loguru import logger
 
 PAD = '[PAD]'
 pad_id = 0

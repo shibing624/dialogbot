@@ -4,12 +4,13 @@
 @description: 
 """
 import os
+from loguru import logger
 import sys
 
 sys.path.append('..')
 from dialogbot import Bot
 from dialogbot.utils.io import save_json, load_json
-from dialogbot.utils.log import logger
+
 
 
 class BotServer:

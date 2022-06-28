@@ -1,6 +1,7 @@
+textgen
+transformers>=4.4.2
 loguru
 jieba
-transformers>=4.4.2
 gensim
 lxml
 tqdm

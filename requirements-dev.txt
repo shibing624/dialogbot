@@ -1,6 +1,7 @@
-colorlog
-jieba
+textgen
 transformers>=4.4.2
+loguru
+jieba
 gensim
 lxml
 tqdm

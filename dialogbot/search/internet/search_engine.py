@@ -7,9 +7,8 @@
 import urllib.parse
 import urllib.request
 from collections import OrderedDict
-
+from loguru import logger
 from dialogbot.search.internet import html_crawler
-from dialogbot.utils.log import logger
 from dialogbot.utils.tokenizer import postag
 
 baidu_url_prefix = 'https://www.baidu.com/s?ie=UTF-8&wd='

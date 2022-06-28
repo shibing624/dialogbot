@@ -11,9 +11,7 @@ import sys
 import numpy as np
 from tqdm import tqdm
 from transformers import BertTokenizerFast
-
-sys.path.append('../..')
-from dialogbot.utils.log import logger
+from loguru import logger
 
 
 def preprocess():
@@ -24,10 +22,11 @@ def preprocess():
     parser = argparse.ArgumentParser()
     parser.add_argument('--train_path', default='data/train.txt', type=str, help='训练日志存放位置')
     parser.add_argument('--save_path', default='data/train.pkl', type=str, help='tokenize的训练数据集')
+    parser.add_argument('--pretrained_model', default='uer/gpt2-distil-chinese-cluecorpussmall', type=str, help='预训练的模型的路径')
     args = parser.parse_args()
 
     # 初始化tokenizer
-    tokenizer = BertTokenizerFast.from_pretrained('bert-base-chinese')
+    tokenizer = BertTokenizerFast.from_pretrained(args.pretrained_model)
     sep_id = tokenizer.sep_token_id
     cls_id = tokenizer.cls_token_id
     logger.info("preprocessing data,data path:{}, save path:{}".format(args.train_path, args.save_path))

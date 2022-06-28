@@ -8,8 +8,7 @@ from codecs import open
 
 import gensim
 import numpy as np
-
-from dialogbot.utils.log import logger
+from loguru import logger
 from dialogbot.utils.tokenizer import Tokenizer
 
 PAD_TOKEN, GO_TOKEN, EOS_TOKEN, UNK_TOKEN = '<pad>', '<go>', '<eos>', '<unk>'

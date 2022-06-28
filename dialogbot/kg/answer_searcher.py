@@ -5,9 +5,8 @@
 """
 
 from py2neo import Graph
-
+from loguru import logger
 from dialogbot.config import host, kg_port, user, password, answer_num_limit
-from dialogbot.utils.log import logger
 
 
 class AnswerSearcher:

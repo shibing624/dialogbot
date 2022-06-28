@@ -6,10 +6,9 @@
 
 import os
 from collections import deque
-
+from loguru import logger
 from dialogbot import config
 from dialogbot.gpt.interact import Inference
-from dialogbot.utils.log import logger
 
 
 class GPTBot:

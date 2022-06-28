@@ -13,7 +13,7 @@ import jieba.analyse
 from jieba import posseg
 
 from dialogbot import config
-from dialogbot.utils.log import logger
+from loguru import logger
 
 jieba.default_logger.setLevel(logging.ERROR)
 

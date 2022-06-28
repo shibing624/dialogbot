@@ -5,8 +5,7 @@
 
 import os
 from codecs import open
-
-from dialogbot.utils.log import logger
+from loguru import logger
 
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 

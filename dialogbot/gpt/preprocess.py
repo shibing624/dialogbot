@@ -22,14 +22,12 @@ def preprocess():
     """
     # 设置参数
     parser = argparse.ArgumentParser()
-    parser.add_argument('--vocab_path', default='vocab/vocab.txt', type=str, required=False,
-                        help='词表路径')
-    parser.add_argument('--train_path', default='data/train.txt', type=str, required=False, help='训练日志存放位置')
-    parser.add_argument('--save_path', default='data/train.pkl', type=str, required=False, help='tokenize的训练数据集')
+    parser.add_argument('--train_path', default='data/train.txt', type=str, help='训练日志存放位置')
+    parser.add_argument('--save_path', default='data/train.pkl', type=str, help='tokenize的训练数据集')
     args = parser.parse_args()
 
     # 初始化tokenizer
-    tokenizer = BertTokenizerFast(vocab_file=args.vocab_path, sep_token="[SEP]", pad_token="[PAD]", cls_token="[CLS]")
+    tokenizer = BertTokenizerFast.from_pretrained('bert-base-chinese')
     sep_id = tokenizer.sep_token_id
     cls_id = tokenizer.cls_token_id
     logger.info("preprocessing data,data path:{}, save path:{}".format(args.train_path, args.save_path))

@@ -19,25 +19,6 @@ PAD = '[PAD]'
 pad_id = 0
 
 
-def set_args():
-    """
-    Sets up the arguments.
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--device', default='0', type=str, required=False, help='生成设备')
-    parser.add_argument('--temperature', default=1, type=float, required=False, help='生成的temperature')
-    parser.add_argument('--topk', default=8, type=int, required=False, help='最高k选1')
-    parser.add_argument('--topp', default=0, type=float, required=False, help='最高积累概率')
-    parser.add_argument('--log_path', default='interact.log', type=str, required=False, help='interact日志存放位置')
-    parser.add_argument('--model_dir', default='../../model_epoch40_50w/', type=str, required=False, help='对话模型文件夹路径')
-    parser.add_argument('--repetition_penalty', default=1.0, type=float, required=False,
-                        help="重复惩罚参数，若生成的对话重复性较高，可适当提高该参数")
-    parser.add_argument('--max_len', type=int, default=25, help='每个utterance的最大长度,超过指定长度则进行截断')
-    parser.add_argument('--max_history_len', type=int, default=3, help="dialogue history的最大长度")
-    parser.add_argument('--no_cuda', action='store_true', help='不使用GPU进行预测')
-    return parser.parse_args()
-
-
 def top_k_top_p_filtering(logits, top_k=0, top_p=0.0, filter_value=-float('Inf')):
     """ Filter a distribution of logits using top-k and/or nucleus (top-p) filtering
         Args:
@@ -124,6 +105,24 @@ class Inference:
         self.history.append(response)
         response_tokens = self.tokenizer.convert_ids_to_tokens(response)
         return "".join(response_tokens)
+
+
+def set_args():
+    """
+    Sets up the arguments.
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--device', default='0', type=str, help='生成设备')
+    parser.add_argument('--temperature', default=1, type=float, help='生成的temperature')
+    parser.add_argument('--topk', default=8, type=int, help='最高k选1')
+    parser.add_argument('--topp', default=0, type=float, help='最高积累概率')
+    parser.add_argument('--log_path', default='interact.log', type=str, help='interact日志存放位置')
+    parser.add_argument('--model_dir', default='./outputs/min_ppl_model/', type=str, help='对话模型文件夹路径')
+    parser.add_argument('--repetition_penalty', default=1.0, type=float, help="重复惩罚参数，若生成的对话重复性较高，可适当提高该参数")
+    parser.add_argument('--max_len', type=int, default=25, help='每个utterance的最大长度,超过指定长度则进行截断')
+    parser.add_argument('--max_history_len', type=int, default=3, help="dialogue history的最大长度")
+    parser.add_argument('--no_cuda', action='store_true', help='不使用GPU进行预测')
+    return parser.parse_args()
 
 
 def interact():

@@ -45,34 +45,6 @@ class MyDataset(Dataset):
         return len(self.input_list)
 
 
-def set_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--device', default='3', type=str, help='设置使用哪些显卡')
-    parser.add_argument('--no_cuda', action='store_true', help='不使用GPU进行训练')
-    parser.add_argument('--model_config', default='config/config.json', type=str,  help='设置模型参数')
-    parser.add_argument('--train_path', default='data/train.pkl', type=str, help='训练集路径')
-    parser.add_argument('--max_len', default=150, type=int, help='训练时，输入数据的最大长度')
-    parser.add_argument('--log_path', default='data/train.log', type=str, help='训练日志存放位置')
-    parser.add_argument('--log', default=True, help="是否记录日志")
-    parser.add_argument('--ignore_index', default=-100, type=int, help='对于ignore_index的label token不计算梯度')
-    parser.add_argument('--epochs', default=100, type=int, help='训练的最大轮次')
-    parser.add_argument('--batch_size', default=16, type=int, help='训练的batch size')
-    parser.add_argument('--gpu0_bsz', default=10, type=int, help='0号卡的batch size')
-    parser.add_argument('--lr', default=2.6e-5, type=float, help='学习率')
-    parser.add_argument('--eps', default=1.0e-09, type=float, help='衰减率')
-    parser.add_argument('--log_step', default=1, type=int, help='多少步汇报一次loss')
-    parser.add_argument('--gradient_accumulation_steps', default=4, type=int, help='梯度积累')
-    parser.add_argument('--max_grad_norm', default=2.0, type=float)
-    parser.add_argument('--save_model_path', default='model', type=str, help='模型输出路径')
-    parser.add_argument('--pretrained_model', default='uer/gpt2-distil-chinese-cluecorpussmall', type=str, help='预训练的模型的路径')
-    parser.add_argument('--num_workers', type=int, default=0, help="dataloader加载数据时使用的线程数量")
-    parser.add_argument('--patience', type=int, default=0, help="用于early stopping,设为0时,不进行early stopping")
-    parser.add_argument('--warmup_steps_rate', type=float, default=0.05, help='warm up步数')
-    parser.add_argument('--val_rate', type=float, default=0.1, help='验证集大小')
-    args = parser.parse_args()
-    return args
-
-
 def collate_fn(batch):
     input_ids = rnn_utils.pad_sequence(batch, batch_first=True, padding_value=0)
     labels = rnn_utils.pad_sequence(batch, batch_first=True, padding_value=-100)
@@ -312,6 +284,35 @@ def calculate_acc(logit, labels, ignore_index=-100):
     n_correct = logit.eq(labels).masked_select(non_pad_mask).sum().item()
     n_word = non_pad_mask.sum().item()
     return n_correct, n_word
+
+
+def set_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--device', default='3', type=str, help='设置使用哪些显卡')
+    parser.add_argument('--no_cuda', action='store_true', help='不使用GPU进行训练')
+    parser.add_argument('--model_config', default='config/config.json', type=str, help='设置模型参数')
+    parser.add_argument('--train_path', default='data/train.pkl', type=str, help='训练集路径')
+    parser.add_argument('--max_len', default=150, type=int, help='训练时，输入数据的最大长度')
+    parser.add_argument('--log_path', default='data/train.log', type=str, help='训练日志存放位置')
+    parser.add_argument('--log', default=True, help="是否记录日志")
+    parser.add_argument('--ignore_index', default=-100, type=int, help='对于ignore_index的label token不计算梯度')
+    parser.add_argument('--epochs', default=100, type=int, help='训练的最大轮次')
+    parser.add_argument('--batch_size', default=16, type=int, help='训练的batch size')
+    parser.add_argument('--gpu0_bsz', default=10, type=int, help='0号卡的batch size')
+    parser.add_argument('--lr', default=2.6e-5, type=float, help='学习率')
+    parser.add_argument('--eps', default=1.0e-09, type=float, help='衰减率')
+    parser.add_argument('--log_step', default=1, type=int, help='多少步汇报一次loss')
+    parser.add_argument('--gradient_accumulation_steps', default=4, type=int, help='梯度积累')
+    parser.add_argument('--max_grad_norm', default=2.0, type=float)
+    parser.add_argument('--save_model_path', default='./outputs/', type=str, help='模型输出路径')
+    parser.add_argument('--pretrained_model', default='uer/gpt2-distil-chinese-cluecorpussmall', type=str,
+                        help='预训练的模型的路径')
+    parser.add_argument('--num_workers', type=int, default=0, help="dataloader加载数据时使用的线程数量")
+    parser.add_argument('--patience', type=int, default=0, help="用于early stopping,设为0时,不进行early stopping")
+    parser.add_argument('--warmup_steps_rate', type=float, default=0.05, help='warm up步数')
+    parser.add_argument('--val_rate', type=float, default=0.1, help='验证集大小')
+    args = parser.parse_args()
+    return args
 
 
 def main():

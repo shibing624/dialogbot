@@ -3,7 +3,7 @@
 @author:XuMing(xuming624@qq.com)
 @description:
 
-refer https://github.com/yangjianxin1/GPT2-chitchat
+Modified on: https://github.com/yangjianxin1/GPT2-chitchat
 """
 import argparse
 import os

@@ -56,13 +56,9 @@ class Inference:
     def __init__(self, model_dir, device="cpu", max_history_len=3, max_len=25, repetition_penalty=1.0, temperature=1.0,
                  topk=8, topp=0.0):
         self.device = device
-        vocab_path = os.path.join(model_dir, 'vocab.txt')
-        if not os.path.exists(vocab_path):
-            raise ValueError("vocab file not found, %s, please download gpt2 model." % vocab_path)
-        self.tokenizer = BertTokenizerFast(vocab_file=vocab_path, sep_token="[SEP]", pad_token="[PAD]",
-                                           cls_token="[CLS]")
-        model = GPT2LMHeadModel.from_pretrained(model_dir)
-        self.model = model.to(self.device)
+        self.tokenizer = BertTokenizerFast.from_pretrained(model_dir)
+        self.model = GPT2LMHeadModel.from_pretrained(model_dir)
+        self.model.to(self.device)
         self.model.eval()
         # 存储聊天记录，每个utterance以token的id的形式进行存储
         self.history = []

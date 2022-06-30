@@ -12,7 +12,7 @@ import sys
 from datetime import datetime
 from os.path import join
 from loguru import logger
-
+from tqdm.auto import tqdm, trange
 import torch
 import torch.nn.functional as F
 import torch.nn.utils.rnn as rnn_utils
@@ -84,7 +84,13 @@ def train_epoch(model, train_dataloader, optimizer, scheduler, epoch, args):
     # epoch_total_num: 每个epoch中,output预测的word的总数量
     epoch_correct_num, epoch_total_num = 0, 0
 
-    for batch_idx, (input_ids, labels) in enumerate(train_dataloader):
+    batch_iterator = tqdm(
+        train_dataloader,
+        desc=f"Running Epoch {epoch} of {args.epochs}",
+        mininterval=0,
+    )
+    step_num = len(batch_iterator)
+    for batch_idx, (input_ids, labels) in enumerate(batch_iterator):
         # 捕获cuda out of memory exception
         try:
             input_ids = input_ids.to(device)
@@ -120,10 +126,11 @@ def train_epoch(model, train_dataloader, optimizer, scheduler, epoch, args):
                 optimizer.zero_grad()
 
             if (batch_idx + 1) % args.log_step == 0:
-                logger.info(
-                    "batch {} of epoch {}, loss {}, batch_acc {}, lr {}".format(
-                        batch_idx + 1, epoch + 1, loss.item() * args.gradient_accumulation_steps, batch_acc,
-                        scheduler.get_lr()))
+                batch_iterator.set_description(
+                    f"Epochs {epoch + 1}/{args.epochs}, Batchs {batch_idx + 1}/{step_num}, "
+                    f"Training Loss: {loss.item() * args.gradient_accumulation_steps:9.4f}, "
+                    f"Batch Acc {batch_acc}, lr {scheduler.get_lr()}"
+                )
 
             del input_ids, outputs
 
@@ -215,7 +222,8 @@ def train(tokenizer, model, train_dataset, validate_dataset, args):
     # 记录验证集的最小loss
     best_val_loss = 10000
     # 开始训练
-    for epoch in range(args.epochs):
+    train_iterator = trange(int(args.epochs), desc='Epoch', mininterval=0)
+    for epoch in train_iterator:
         # ========== train ========== #
         train_loss = train_epoch(
             model=model, train_dataloader=train_dataloader,
@@ -302,7 +310,7 @@ def set_args():
     parser.add_argument('--gpu0_bsz', default=10, type=int, help='0号卡的batch size')
     parser.add_argument('--lr', default=2.6e-5, type=float, help='学习率')
     parser.add_argument('--eps', default=1.0e-09, type=float, help='衰减率')
-    parser.add_argument('--log_step', default=1, type=int, help='多少步汇报一次loss')
+    parser.add_argument('--log_step', default=10, type=int, help='多少步汇报一次loss')
     parser.add_argument('--gradient_accumulation_steps', default=4, type=int, help='梯度积累')
     parser.add_argument('--max_grad_norm', default=2.0, type=float)
     parser.add_argument('--save_model_path', default='./outputs/', type=str, help='模型输出路径')

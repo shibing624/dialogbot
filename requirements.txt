@@ -1,5 +1,6 @@
 textgen
 transformers>=4.4.2
+tqdm
 loguru
 jieba
 gensim

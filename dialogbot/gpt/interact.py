@@ -108,7 +108,7 @@ def set_args():
     Sets up the arguments.
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('--device', default='0', type=str, help='生成设备')
+    parser.add_argument('--device', default='0', type=str, help='设备')
     parser.add_argument('--temperature', default=1, type=float, help='生成的temperature')
     parser.add_argument('--topk', default=8, type=int, help='最高k选1')
     parser.add_argument('--topp', default=0, type=float, help='最高积累概率')

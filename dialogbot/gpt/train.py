@@ -126,10 +126,11 @@ def train_epoch(model, train_dataloader, optimizer, scheduler, epoch, args):
                 optimizer.zero_grad()
 
             if (batch_idx + 1) % args.log_step == 0:
+                lr = scheduler.get_lr()[0]
                 batch_iterator.set_description(
                     f"Epochs {epoch + 1}/{args.epochs}, Batchs {batch_idx + 1}/{step_num}, "
                     f"Training Loss: {loss.item() * args.gradient_accumulation_steps:9.4f}, "
-                    f"Batch Acc {batch_acc}, lr {scheduler.get_lr()}"
+                    f"Batch Acc {batch_acc:9.4f}, lr {lr:9.4f}"
                 )
 
             del input_ids, outputs

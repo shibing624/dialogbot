@@ -11,7 +11,7 @@ from loguru import logger
 from dialogbot.search.internet import html_crawler
 from dialogbot.utils.tokenizer import postag
 
-baidu_url_prefix = 'https://www.baidu.com/s?ie=UTF-8&wd='
+baidu_url_prefix = 'https://www.baidu.com/s?ie=utf-8&wd='
 bing_url_prefix = 'https://cn.bing.com/search?q='
 calendar_url = 'http://open.baidu.com/calendar'
 calculator_url = 'http://open.baidu.com/static/calculator/calculator.html'

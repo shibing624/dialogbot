@@ -137,12 +137,13 @@ def dump_word_embeddings(word2id, emb_size, word2vec_path, embeddings_path):
     np.save(embeddings_path, embeddings)
 
 
-def load_corpus_file(corpus_file, word2id, size=-1):
+def load_corpus_file(corpus_file, word2id, size=None):
+    data_all = []
     with open(corpus_file, "r", encoding="utf-8") as rfd:
         data_all = rfd.readlines()
-        if size > 0:
-            data_all = data_all[: size]
-        data = [s.strip().split("\t") for s in data_all]
-        contexts = [[w for w in s.split() if w in word2id] for s, _ in data]
-        responses = [s.replace(" ", "") for _, s in data]
-        return contexts, responses
+    if size and size > 0:
+        data_all = data_all[:size]
+    data = [s.strip().split("\t") for s in data_all]
+    contexts = [[w for w in s.split() if w in word2id] for s, _ in data]
+    responses = [s.replace(" ", "") for _, s in data]
+    return contexts, responses

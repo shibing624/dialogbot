@@ -11,13 +11,14 @@ from dialogbot.utils.text_util import ch_count
 
 
 class Bot:
-    def __init__(self,
-                 vocab_path=config.vocab_path,
-                 search_model=config.search_model,
-                 question_answer_path=config.question_answer_path,
-                 context_response_path=config.context_response_path,
-                 context=None
-                 ):
+    def __init__(
+            self,
+            vocab_path=config.vocab_path,
+            search_model=config.search_model,
+            question_answer_path=config.question_answer_path,
+            context_response_path=config.context_response_path,
+            context=None
+    ):
         self.context = context if context else []
         self.search_bot = SearchBot(question_answer_path, context_response_path,
                                     vocab_path=vocab_path,
@@ -32,7 +33,7 @@ class Bot:
         else:
             self.context = []
 
-    def answer(self, query, use_search=True, use_gen=False, use_task=False):
+    def answer(self, query, use_search=True, use_gen=True, use_task=False):
         """
         Dialog strategy: use sub-task to handle dialog firstly,
         if failed, use retrieval or generational func to handle it.

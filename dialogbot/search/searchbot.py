@@ -100,3 +100,5 @@ class SearchBot:
             response, score = self.local_answer(query, mode=mode, filter_pattern=filter_pattern)
             self.last_txt.append(response)
             return response, score
+        logger.warning(f"no answer found. must use internet or local.")
+        return "", 0.0

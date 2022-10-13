@@ -32,11 +32,6 @@ model_path = os.path.join(pwd_path, 'output/models')
 seq2seq_model_path = os.path.join(model_path, dialog_mode)
 predict_result_path = os.path.join(pwd_path, 'output/predict_result.txt')
 
-# -----深度模型文件路径 -----
-# gpt dialog model
-gpt_model_dir = os.path.join(USER_DATA_DIR, 'gpt_models/model_epoch40_50w/')
-os.makedirs(gpt_model_dir, exist_ok=True)
-
 
 class Params:
     rnn_size = 256

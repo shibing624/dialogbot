@@ -16,14 +16,13 @@ class Bot:
                  search_model=config.search_model,
                  question_answer_path=config.question_answer_path,
                  context_response_path=config.context_response_path,
-                 gpt_model_dir=config.gpt_model_dir,
                  context=None
                  ):
         self.context = context if context else []
         self.search_bot = SearchBot(question_answer_path, context_response_path,
                                     vocab_path=vocab_path,
                                     search_model=search_model)
-        self.gpt_bot = GPTBot(gpt_model_dir)
+        self.gpt_bot = GPTBot()
 
     def set_context(self, v):
         if isinstance(v, list):

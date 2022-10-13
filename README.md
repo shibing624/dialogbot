@@ -142,13 +142,7 @@ example: [examples/taskbot_demo.py](examples/taskbot_demo.py)
 ### GPT2模型使用
 基于GPT2生成模型训练的聊天型对话模型。
 
-在[模型分享](#模型分享)中下载模型，将模型文件夹model_epoch40_50w下的文件放到自己指定目录`your_model_dir`下：
-```
-model_epoch40_50w
-├── config.json
-├── pytorch_model.bin
-└── vocab.txt
-```
+模型已经 release 到huggingface models：[shibing624/gpt2-dialogbot-base-chinese](https://huggingface.co/shibing624/gpt2-dialogbot-base-chinese) 
 
 example: [examples/genbot_demo.py](examples/genbot_demo.py)
 
@@ -281,7 +275,7 @@ chatbot:好哒
 
 |模型 | 共享地址 |模型描述|
 |---------|--------|--------|
-|model_epoch40_50w | [百度网盘(提取码:aisq)](https://pan.baidu.com/s/11KZ3hU2_a2MtI_StXBUKYw) 或 [GoogleDrive](https://drive.google.com/drive/folders/18TG2sKkHOZz8YlP5t1Qo_NqnGx9ogNay?usp=sharing) |使用50w多轮对话语料训练了40个epoch，loss降到2.0左右。|
+|model_epoch40_50w | [shibing624/gpt2-dialogbot-base-chinese](https://huggingface.co/shibing624/gpt2-dialogbot-base-chinese) 或 [百度网盘(提取码:aisq)](https://pan.baidu.com/s/11KZ3hU2_a2MtI_StXBUKYw) 或 [GoogleDrive](https://drive.google.com/drive/folders/18TG2sKkHOZz8YlP5t1Qo_NqnGx9ogNay?usp=sharing) |使用50w多轮对话语料训练了40个epoch，loss降到2.0左右。|
 
 
 # Contact

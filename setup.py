@@ -13,12 +13,9 @@ if sys.version_info < (3,):
 with open('README.md', 'r', encoding='utf-8') as f:
     readme = f.read()
 
-with open('requirements.txt', 'r', encoding='utf-8') as f:
-    reqs = f.read()
-
 setup(
     name='dialogbot',
-    version='0.1.1',
+    version='0.1.2',
     description='Dialog Robot, ChatBot',
     long_description=readme,
     long_description_content_type='text/markdown',
@@ -38,7 +35,17 @@ setup(
         'Topic :: Text Processing :: Linguistic',
     ],
     keywords='NLP,chatbot,dialogbot,dialogue,dialog',
-    install_requires=reqs.strip().split('\n'),
+    install_requires=[
+        'transformers',
+        'loguru',
+        'jieba',
+        'gensim',
+        'lxml',
+        'tqdm',
+        'bs4',
+        'numpy',
+        'nltk'
+    ],
     packages=find_packages(exclude=['tests']),
     package_dir={'dialogbot': 'dialogbot'},
     package_data={

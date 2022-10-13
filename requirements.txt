@@ -1,6 +1,4 @@
-textgen
 transformers>=4.4.2
-tqdm
 loguru
 jieba
 gensim
@@ -8,4 +6,4 @@ lxml
 tqdm
 bs4
 numpy
-py2neo
+nltk

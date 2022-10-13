@@ -4,7 +4,6 @@
 @description: 
 """
 
-from py2neo import Graph
 from loguru import logger
 from dialogbot.config import host, kg_port, user, password, answer_num_limit
 
@@ -12,11 +11,14 @@ from dialogbot.config import host, kg_port, user, password, answer_num_limit
 class AnswerSearcher:
     def __init__(self):
         try:
+            from py2neo import Graph
             self.g = Graph(
                 host=host,
                 http_port=kg_port,
                 user=user,
                 password=password)
+        except ImportError as e:
+            logger.error(f"py2neo import error: {e}, install with `pip install py2neo`")
         except Exception as e:
             logger.error(f'service down. please open neo4j service. {e}')
             raise ValueError(f'service down. please open neo4j service. {e}')

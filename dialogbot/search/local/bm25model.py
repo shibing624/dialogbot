@@ -4,7 +4,7 @@
 import time
 from loguru import logger
 from dialogbot.reader.data_helper import load_corpus_file
-from .rank_bm25 import BM25Okapi
+from dialogbot.search.local.rank_bm25 import BM25Okapi
 
 
 class BM25Model:

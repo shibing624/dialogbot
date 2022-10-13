@@ -204,7 +204,11 @@ class QuestionClassifier:
         :param wordlist: 词表
         :return:
         """
-        import ahocorasick
+        try:
+            import ahocorasick
+        except ImportError:
+            logger.error("ahocorasick module not found, please install it: `pip install pyahocorasick`")
+            raise ImportError("ahocorasick module is not installed, please install it by `pip install pyahocorasick`")
         actree = ahocorasick.Automaton()
         for index, word in enumerate(wordlist):
             actree.add_word(word, (index, word))

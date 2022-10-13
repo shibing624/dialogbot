@@ -18,7 +18,8 @@ class AnswerSearcher:
                 user=user,
                 password=password)
         except Exception as e:
-            logger.error('service down. please open neo4j service. %s' % e)
+            logger.error(f'service down. please open neo4j service. {e}')
+            raise ValueError(f'service down. please open neo4j service. {e}')
         self.num_limit = answer_num_limit
 
     def search(self, sqls):

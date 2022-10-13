@@ -6,13 +6,11 @@
 https://github.com/yangjianxin1/GPT2-chitchat
 """
 import numpy as np
-import torch
-from os.path import join
-import os
 
 
 class EarlyStopping:
     """Early stops the training if validation loss doesn't improve after a given patience."""
+
     def __init__(self, patience=7, verbose=False, delta=0, save_path="."):
         """
         Args:

@@ -19,8 +19,7 @@ import torch.nn.utils.rnn as rnn_utils
 import transformers
 from torch.nn import DataParallel
 from torch.utils.data import Dataset, DataLoader
-from transformers import BertTokenizerFast
-from transformers import GPT2LMHeadModel, GPT2Config
+from transformers import BertTokenizerFast, GPT2LMHeadModel, GPT2Config
 
 sys.path.append('../..')
 from dialogbot.gpt.earlystop import EarlyStopping

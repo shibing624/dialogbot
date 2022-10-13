@@ -23,7 +23,6 @@ class Bot:
         self.search_bot = SearchBot(question_answer_path, context_response_path,
                                     vocab_path=vocab_path,
                                     search_model=search_model)
-
         self.gpt_bot = GPTBot(gpt_model_dir)
 
     def set_context(self, v):

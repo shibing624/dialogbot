@@ -25,11 +25,11 @@ if __name__ == '__main__':
             '好的谢谢哦。',
             '好的谢了']
     for msg in msgs:
-        search_response, sim_score = tfidfbot.answer(msg)
+        search_response, sim_score = tfidfbot.answer(msg, use_internet=False, use_local=True)
         print('tfidfbot', msg, search_response, sim_score)
 
-        search_response, sim_score = onehotbot.answer(msg)
+        search_response, sim_score = onehotbot.answer(msg, use_internet=False, use_local=True)
         print('onehotbot', msg, search_response, sim_score)
 
-        search_response, sim_score = bm25bot.answer(msg)
+        search_response, sim_score = bm25bot.answer(msg, use_internet=False, use_local=True)
         print('bm25bot', msg, search_response, sim_score)

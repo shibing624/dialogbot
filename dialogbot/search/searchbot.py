@@ -4,13 +4,13 @@
 import os
 from collections import deque
 from loguru import logger
-from .internet.search_engine import Engine
-from .local.bm25model import BM25Model
-from .local.onehotmodel import OneHotModel
-from .local.tfidfmodel import TfidfModel
-from .. import config
-from ..reader.data_helper import load_dataset
-from ..utils.tokenizer import Tokenizer
+from dialogbot.search.internet.search_engine import Engine
+from dialogbot.search.local.bm25model import BM25Model
+from dialogbot.search.local.onehotmodel import OneHotModel
+from dialogbot.search.local.tfidfmodel import TfidfModel
+from dialogbot import config
+from dialogbot.reader.data_helper import load_dataset
+from dialogbot.utils.tokenizer import Tokenizer
 
 
 class SearchBot:
@@ -43,23 +43,7 @@ class SearchBot:
             self.qa_search_inst = OneHotModel(question_answer_path, word2id=self.word2id)
             self.cr_search_inst = OneHotModel(context_response_path, word2id=self.word2id)
 
-    def answer(self, query, mode="qa", filter_pattern=None):
-        """
-        Answer query by search mode
-        :param query: str,
-        :param mode: qa or cr, 单轮对话或者多轮对话
-        :param filter_pattern:
-        :return: response, score
-        """
-        self.last_txt.append(query)
-
-        # internet search engine
-        internet_answers = self.internet_search_inst.search(query)
-        if internet_answers:
-            response = internet_answers[0]
-            self.last_txt.append(response)
-            return response, 2.0
-
+    def local_answer(self, query, mode="qa", filter_pattern=None):
         original_tokens = Tokenizer.tokenize(query, filter_punctuations=True)
         tokens = [w for w in original_tokens if w in self.word2id]
         search_inst = self.qa_search_inst if mode == "qa" else self.cr_search_inst
@@ -83,10 +67,36 @@ class SearchBot:
         if (self.search_model == "tfidf" and score >= 0.7) or (
                 self.search_model == "onehot" and score >= 0.5) or (
                 self.search_model == "bm25" and score >= 1.0):
-            self.last_txt.append(response)
             return response, score
 
         response, score = "亲爱哒，还有什么小妹可以帮您呢~", 2.0
         logger.debug("search_response=%s" % response)
-        self.last_txt.append(response)
         return response, score
+
+    def internet_answer(self, query):
+        internet_answers = self.internet_search_inst.search(query)
+        if internet_answers:
+            response = internet_answers[0]
+            return response, 2.0
+        return "", 0.0
+
+    def answer(self, query, mode="qa", filter_pattern=None, use_internet=True, use_local=True):
+        """
+        Answer query by search mode
+        :param query: str,
+        :param mode: qa or cr, 单轮对话或者多轮对话
+        :param filter_pattern:
+        :param use_internet:
+        :param use_local:
+        :return: response, score
+        """
+        self.last_txt.append(query)
+        if use_internet:
+            response, score = self.internet_answer(query)
+            if response:
+                self.last_txt.append(response)
+                return response, score
+        if use_local:
+            response, score = self.local_answer(query, mode=mode, filter_pattern=filter_pattern)
+            self.last_txt.append(response)
+            return response, score

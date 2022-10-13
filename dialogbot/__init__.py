@@ -3,11 +3,9 @@
 @author:XuMing(xuming624@qq.com)
 @description: 
 """
+__version__ = "0.1.1"
 
-from .bot import Bot
-from .kg.bot import KGBot
-from .search.searchbot import SearchBot
-from .gpt.gptbot import GPTBot
-
-
-__version__ = "0.1.0"
+from dialogbot.bot import Bot
+from dialogbot.kg.bot import KGBot
+from dialogbot.search.searchbot import SearchBot
+from dialogbot.gpt.gptbot import GPTBot

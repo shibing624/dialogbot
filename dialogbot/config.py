@@ -10,7 +10,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 
 # -----用户目录，存储模型文件-----
-USER_DATA_DIR = os.path.expanduser('~/.dialogbot/datasets/')
+USER_DATA_DIR = os.path.expanduser('~/.cache/torch/shibing624')
 os.makedirs(USER_DATA_DIR, exist_ok=True)
 
 # tokenize config file
@@ -18,13 +18,12 @@ punctuations_path = os.path.join(pwd_path, "data/punctuations.txt")
 stopwords_path = os.path.join(pwd_path, "data/stopwords.txt")
 user_define_words_path = os.path.join(pwd_path, "data/user_define_words.txt")
 remove_words_path = os.path.join(pwd_path, "data/remove_words.txt")
-log_file = os.path.join(pwd_path, 'output/log.txt')
 
 # search dialog
 search_model = 'bm25'
-question_answer_path = os.path.join(pwd_path, 'data/chat/question_answer.tsv')
+question_answer_path = os.path.join(pwd_path, 'data/taobao/question_answer.txt')
 context_response_path = os.path.join(pwd_path, 'data/taobao/context_response.txt')
-search_vocab_path = os.path.join(pwd_path, 'data/chat/vocab.txt')
+search_vocab_path = os.path.join(pwd_path, 'data/taobao/vocab.txt')
 
 # seq2seq dialog
 dialog_mode = 'single'

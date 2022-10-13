@@ -7,57 +7,33 @@ Modified on: https://github.com/yangjianxin1/GPT2-chitchat
 """
 import argparse
 import os
-import sys
 
 import torch
 import torch.nn.functional as F
-from transformers import BertTokenizerFast
-from transformers import GPT2LMHeadModel
+from transformers import BertTokenizerFast, GPT2LMHeadModel
 from loguru import logger
 
 PAD = '[PAD]'
 pad_id = 0
 
-
-def top_k_top_p_filtering(logits, top_k=0, top_p=0.0, filter_value=-float('Inf')):
-    """ Filter a distribution of logits using top-k and/or nucleus (top-p) filtering
-        Args:
-            logits: logits distribution shape (vocab size)
-            top_k > 0: keep only top k tokens with highest probability (top-k filtering).
-            top_p > 0.0: keep the top tokens with cumulative probability >= top_p (nucleus filtering).
-                Nucleus filtering is described in Holtzman et al. (http://arxiv.org/abs/1904.09751)
-        From: https://gist.github.com/thomwolf/1a5a29f6962089e871b94cbd09daf317
-    """
-    assert logits.dim() == 1  # batch size 1 for now - could be updated for more but the code would be less clear
-    top_k = min(top_k, logits.size(-1))  # Safety check
-    if top_k > 0:
-        # Remove all tokens with a probability less than the last token of the top-k
-        # torch.topk()返回最后一维最大的top_k个元素，返回值为二维(values,indices)
-        # ...表示其他维度由计算机自行推断
-        indices_to_remove = logits < torch.topk(logits, top_k)[0][..., -1, None]
-        logits[indices_to_remove] = filter_value  # 对于topk之外的其他元素的logits值设为负无穷
-
-    if top_p > 0.0:
-        sorted_logits, sorted_indices = torch.sort(logits, descending=True)  # 对logits进行递减排序
-        cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
-
-        # Remove tokens with cumulative probability above the threshold
-        sorted_indices_to_remove = cumulative_probs > top_p
-        # Shift the indices to the right to keep also the first token above the threshold
-        sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
-        sorted_indices_to_remove[..., 0] = 0
-
-        indices_to_remove = sorted_indices[sorted_indices_to_remove]
-        logits[indices_to_remove] = filter_value
-    return logits
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 class Inference:
-    def __init__(self, model_dir, device="cpu", max_history_len=3, max_len=25, repetition_penalty=1.0, temperature=1.0,
-                 topk=8, topp=0.0):
+    def __init__(
+            self,
+            model_name_or_path,
+            device=device,
+            max_history_len=3,
+            max_len=25,
+            repetition_penalty=1.0,
+            temperature=1.0,
+            topk=8,
+            topp=0.0
+    ):
         self.device = device
-        self.tokenizer = BertTokenizerFast.from_pretrained(model_dir)
-        self.model = GPT2LMHeadModel.from_pretrained(model_dir)
+        self.tokenizer = BertTokenizerFast.from_pretrained(model_name_or_path)
+        self.model = GPT2LMHeadModel.from_pretrained(model_name_or_path)
         self.model.to(self.device)
         self.model.eval()
         # 存储聊天记录，每个utterance以token的id的形式进行存储
@@ -102,6 +78,38 @@ class Inference:
         response_tokens = self.tokenizer.convert_ids_to_tokens(response)
         return "".join(response_tokens)
 
+
+def top_k_top_p_filtering(logits, top_k=0, top_p=0.0, filter_value=-float('Inf')):
+    """ Filter a distribution of logits using top-k and/or nucleus (top-p) filtering
+        Args:
+            logits: logits distribution shape (vocab size)
+            top_k > 0: keep only top k tokens with highest probability (top-k filtering).
+            top_p > 0.0: keep the top tokens with cumulative probability >= top_p (nucleus filtering).
+                Nucleus filtering is described in Holtzman et al. (http://arxiv.org/abs/1904.09751)
+        From: https://gist.github.com/thomwolf/1a5a29f6962089e871b94cbd09daf317
+    """
+    assert logits.dim() == 1  # batch size 1 for now - could be updated for more but the code would be less clear
+    top_k = min(top_k, logits.size(-1))  # Safety check
+    if top_k > 0:
+        # Remove all tokens with a probability less than the last token of the top-k
+        # torch.topk()返回最后一维最大的top_k个元素，返回值为二维(values,indices)
+        # ...表示其他维度由计算机自行推断
+        indices_to_remove = logits < torch.topk(logits, top_k)[0][..., -1, None]
+        logits[indices_to_remove] = filter_value  # 对于topk之外的其他元素的logits值设为负无穷
+
+    if top_p > 0.0:
+        sorted_logits, sorted_indices = torch.sort(logits, descending=True)  # 对logits进行递减排序
+        cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
+
+        # Remove tokens with cumulative probability above the threshold
+        sorted_indices_to_remove = cumulative_probs > top_p
+        # Shift the indices to the right to keep also the first token above the threshold
+        sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+        sorted_indices_to_remove[..., 0] = 0
+
+        indices_to_remove = sorted_indices[sorted_indices_to_remove]
+        logits[indices_to_remove] = filter_value
+    return logits
 
 def set_args():
     """

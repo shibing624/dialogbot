@@ -12,9 +12,11 @@ from dialogbot.gpt.interact import Inference
 
 
 class GPTBot:
-    def __init__(self, model_dir=config.gpt_model_dir, device="cpu",
-                 max_history_len=3, max_len=25, repetition_penalty=1.0, temperature=1.0,
-                 topk=8, topp=0.0, last_txt_len=100):
+    def __init__(
+            self, model_dir=config.gpt_model_dir, device="cpu",
+            max_history_len=3, max_len=25, repetition_penalty=1.0, temperature=1.0,
+            topk=8, topp=0.0, last_txt_len=100
+    ):
         self.last_txt = deque([], last_txt_len)
         self.model = None
         self.model_dir = model_dir
@@ -29,10 +31,11 @@ class GPTBot:
     def init(self):
         if not self.model:
             if os.path.exists(self.model_dir):
-                self.model = Inference(self.model_dir, self.device, max_history_len=self.max_history_len,
-                                       max_len=self.max_len, repetition_penalty=self.repetition_penalty,
-                                       temperature=self.temperature,
-                                       topk=self.topk, topp=self.topp)
+                self.model = Inference(
+                    self.model_dir, self.device, max_history_len=self.max_history_len,
+                    max_len=self.max_len, repetition_penalty=self.repetition_penalty,
+                    temperature=self.temperature,
+                    topk=self.topk, topp=self.topp)
             else:
                 logger.warning("GPT model not found. model: {}".format(self.model_dir))
 

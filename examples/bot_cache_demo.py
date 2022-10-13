@@ -12,7 +12,6 @@ from dialogbot import Bot
 from dialogbot.utils.io import save_json, load_json
 
 
-
 class BotServer:
     def __init__(self, cache_path='cache.json'):
         self.bot = Bot()
@@ -32,6 +31,7 @@ class BotServer:
                 save_json(self.cache, self.cache_path)
                 logger.info("save cache.")
         return response
+
 
 if __name__ == '__main__':
     # Batch queries

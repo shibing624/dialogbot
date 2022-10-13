@@ -131,11 +131,6 @@ def set_args():
 
 def interact():
     args = set_args()
-    # 当用户使用GPU,并且GPU可用时
-    args.cuda = torch.cuda.is_available() and not args.no_cuda
-    device = 'cuda' if args.cuda else 'cpu'
-    logger.info('using device:{}'.format(device))
-    os.environ["CUDA_VISIBLE_DEVICES"] = args.device
     inference = Inference(args.model_dir, device, args.max_history_len, args.max_len, args.repetition_penalty,
                           args.temperature)
     print('开始和chatbot聊天，输入q以退出')

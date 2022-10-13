@@ -3,13 +3,9 @@
 @author:XuMing(xuming624@qq.com)
 @description: 
 """
-from __future__ import print_function
-
 import sys
 
 from setuptools import setup, find_packages
-
-from dialogbot import __version__
 
 if sys.version_info < (3,):
     sys.exit('Sorry, Python3 is required for dialogbot.')
@@ -22,7 +18,7 @@ with open('requirements.txt', 'r', encoding='utf-8') as f:
 
 setup(
     name='dialogbot',
-    version=__version__,
+    version='0.1.0',
     description='Dialog Robot, ChatBot',
     long_description=readme,
     long_description_content_type='text/markdown',
@@ -46,9 +42,9 @@ setup(
     packages=find_packages(exclude=['tests']),
     package_dir={'dialogbot': 'dialogbot'},
     package_data={
-        'dialogbot': ['*.*', '../LICENSE', '../*.md', '../*.txt','data/*', 'data/medical_dict/*',
-                      'data/chat/*', 'data/taobao/*', 'kg/*', 'gpt/*', 'reader/*', 'search/*',
-                      'seq2seq/*', 'task/*', 'utils/*', 'web/*'],
+        'dialogbot': ['*.*', '../LICENSE', '../*.md', '../*.txt',
+                      'data/*', 'data/medical_dict/*',
+                      'data/person_graph/*', 'data/taobao/*'],
     },
     test_suite='tests',
 )

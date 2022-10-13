@@ -3,12 +3,10 @@
 @author:XuMing(xuming624@qq.com)
 @description: chat bot main process.
 """
-import os
 
 from dialogbot import config
 from dialogbot.gpt.gptbot import GPTBot
 from dialogbot.search.searchbot import SearchBot
-
 from dialogbot.utils.text_util import ch_count
 
 

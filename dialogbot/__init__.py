@@ -10,4 +10,4 @@ from .search.searchbot import SearchBot
 from .gpt.gptbot import GPTBot
 
 
-__version__ = "0.0.7"
+__version__ = "0.1.0"

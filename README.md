@@ -91,6 +91,8 @@ Dialogbot, provide complete dialogue model technology. Combining **search-based 
 
 http://42.193.145.218/product/dialogbot/
 
+<img src="docs/public/jietu.png" width="400" />
+
 # Install
 
 The project is based on transformers 4.4.2+, torch 1.6.0+ and Python 3.6+.

@@ -12,9 +12,13 @@ class GPTBot:
     def __init__(
             self,
             model_name_or_path="shibing624/gpt2-dialogbot-base-chinese",
-            max_history_len=3, max_len=128,
-            repetition_penalty=1.0, temperature=1.0,
-            topk=8, topp=0.0, last_txt_len=100
+            max_history_len=3,
+            max_len=128,
+            repetition_penalty=1.0,
+            temperature=1.0,
+            topk=8,
+            topp=0.0,
+            last_txt_len=100
     ):
         self.last_txt = deque([], last_txt_len)
         self.model = Inference(

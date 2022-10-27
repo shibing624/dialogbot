@@ -17,13 +17,34 @@ class Bot:
             search_model=config.search_model,
             question_answer_path=config.question_answer_path,
             context_response_path=config.context_response_path,
-            context=None
+            context=None,
+            model_name_or_path="shibing624/gpt2-dialogbot-base-chinese",
+            max_history_len=3,
+            max_len=128,
+            repetition_penalty=1.0,
+            temperature=1.0,
+            topk=8,
+            topp=0.0,
+            last_txt_len=100
+
     ):
         self.context = context if context else []
-        self.search_bot = SearchBot(question_answer_path, context_response_path,
-                                    vocab_path=vocab_path,
-                                    search_model=search_model)
-        self.gpt_bot = GPTBot()
+        self.search_bot = SearchBot(
+            question_answer_path,
+            context_response_path,
+            vocab_path=vocab_path,
+            search_model=search_model
+        )
+        self.gpt_bot = GPTBot(
+            model_name_or_path=model_name_or_path,
+            max_history_len=max_history_len,
+            max_len=max_len,
+            repetition_penalty=repetition_penalty,
+            temperature=temperature,
+            topk=topk,
+            topp=topp,
+            last_txt_len=last_txt_len
+        )
 
     def set_context(self, v):
         if isinstance(v, list):

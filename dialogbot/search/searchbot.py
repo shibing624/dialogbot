@@ -14,13 +14,15 @@ from dialogbot.utils.tokenizer import Tokenizer
 
 
 class SearchBot:
-    def __init__(self,
-                 question_answer_path=config.question_answer_path,
-                 context_response_path=config.context_response_path,
-                 vocab_path=config.search_vocab_path,
-                 search_model="bm25",
-                 last_txt_len=100,
-                 vocab_size=20000):
+    def __init__(
+            self,
+            question_answer_path=config.question_answer_path,
+            context_response_path=config.context_response_path,
+            vocab_path=config.search_vocab_path,
+            search_model="bm25",
+            last_txt_len=100,
+            vocab_size=20000
+    ):
         self.last_txt = deque([], last_txt_len)
         self.search_model = search_model
 

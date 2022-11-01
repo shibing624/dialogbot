@@ -6,7 +6,6 @@
 
 from codecs import open
 
-import gensim
 import numpy as np
 from loguru import logger
 from dialogbot.utils.tokenizer import Tokenizer
@@ -122,19 +121,6 @@ def corpus2enco(corpus, word2id):
     corpus = [([word2id[w] for w in s.split()], []) for s in corpus]
     batch = create_batch([corpus])
     return batch
-
-
-def dump_word_embeddings(word2id, emb_size, word2vec_path, embeddings_path):
-    vocab_size = len(word2id)
-    word2vec = gensim.models.KeyedVectors.load_word2vec_format(
-        word2vec_path, binary=False)
-    embeddings = np.random.randn(vocab_size, emb_size)
-    for word, idx in word2id.items():
-        if word in word2vec.wv.key_to_index:
-            embeddings[idx, :] = word2vec.wv.key_to_index[word]
-        else:
-            embeddings[idx, :] = np.random.randn(emb_size)
-    np.save(embeddings_path, embeddings)
 
 
 def load_corpus_file(corpus_file, word2id, size=None):

@@ -49,7 +49,7 @@ setup(
     packages=find_packages(exclude=['tests']),
     package_dir={'dialogbot': 'dialogbot'},
     package_data={
-        'dialogbot': ['*.*', '../LICENSE', '../*.md', '../*.txt',
+        'dialogbot': ['*.*', '../*.md', '../*.txt',
                       'data/*', 'data/medical_dict/*',
                       'data/person_graph/*', 'data/taobao/*'],
     },

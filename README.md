@@ -88,8 +88,7 @@ Dialogbot, provide complete dialogue model technology. Combining **search-based 
 
 
 # Demo
-
-http://42.193.145.218/product/dialogbot/
+Official Demo: https://www.mulanai.com/product/dialogbot/
 
 <img src="docs/public/jietu.png" width="400" />
 

@@ -6,12 +6,10 @@
 Modified on: https://github.com/yangjianxin1/GPT2-chitchat
 """
 import argparse
-import os
 
 import torch
 import torch.nn.functional as F
 from transformers import BertTokenizerFast, GPT2LMHeadModel
-from loguru import logger
 
 PAD = '[PAD]'
 pad_id = 0

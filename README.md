@@ -114,7 +114,7 @@ python3 setup.py install
 # Usage
 ## 问答型对话（Search Bot）
 
-example: [examples/base_demo.py](examples/base_demo.py)
+example: [examples/bot_demo.py](examples/bot_demo.py)
 
 ```python
 from dialogbot import Bot
@@ -149,11 +149,10 @@ example: [examples/genbot_demo.py](examples/genbot_demo.py)
 
 
 ```python
-from dialogbot import Bot
-
-bot = Bot()
-response = bot.answer('亲 你吃了吗？', use_gen=True, use_search=False, use_task=False)
-print(response)
+from dialogbot import GPTBot
+bot = GPTBot()
+r = bot.answer('亲 你吃了吗？', use_history=False)
+print('gpt2', r)
 ```
 
 output:

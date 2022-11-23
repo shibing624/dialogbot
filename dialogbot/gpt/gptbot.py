@@ -31,11 +31,11 @@ class GPTBot:
             topp=topp
         )
 
-    def answer(self, query):
+    def answer(self, query, use_history=True):
         response = ''
         if not self.model:
             return response
         self.last_txt.append(query)
-        response = self.model.predict(query)
+        response = self.model.predict(query, use_history=use_history)
         self.last_txt.append(response)
         return response

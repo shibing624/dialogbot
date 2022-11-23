@@ -43,13 +43,16 @@ class Inference:
         self.topk = topk
         self.topp = topp
 
-    def predict(self, query):
+    def predict(self, query, use_history=True):
         text_ids = self.tokenizer.encode(query, add_special_tokens=False)
         self.history.append(text_ids)
         input_ids = [self.tokenizer.cls_token_id]  # 每个input以[CLS]为开头
-
-        for history_id, history_utr in enumerate(self.history[-self.max_history_len:]):
-            input_ids.extend(history_utr)
+        if use_history:
+            for history_id, history_utr in enumerate(self.history[-self.max_history_len:]):
+                input_ids.extend(history_utr)
+                input_ids.append(self.tokenizer.sep_token_id)
+        else:
+            input_ids.extend(text_ids)
             input_ids.append(self.tokenizer.sep_token_id)
         input_ids = torch.tensor(input_ids).long().to(self.device)
         input_ids = input_ids.unsqueeze(0)

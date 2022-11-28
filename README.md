@@ -292,11 +292,11 @@ chatbot:好哒
 如果你在研究中使用了dialogbot，请按如下格式引用：
 
 ```latex
-@software{dialogbot,
-  author = {Xu Ming},
-  title = {dialogbot: Dialogue Model Technology Tool},
-  year = {2021},
-  url = {https://github.com/shibing624/dialogbot},
+@misc{dialogbot,
+  title={dialogbot: Dialogue Model Technology Tool},
+  author={Xu Ming},
+  year={2021},
+  howpublished={\url{https://github.com/shibing624/dialogbot}},
 }
 ```
 

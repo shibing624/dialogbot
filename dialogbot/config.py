@@ -5,8 +5,6 @@
 """
 import os
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 
 # -----用户目录，存储模型文件-----

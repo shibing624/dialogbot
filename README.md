@@ -275,7 +275,7 @@ chatbot:好哒
 
 |模型 | 共享地址 |模型描述|
 |---------|--------|--------|
-|model_epoch40_50w | [shibing624/gpt2-dialogbot-base-chinese](https://huggingface.co/shibing624/gpt2-dialogbot-base-chinese) 或 [百度网盘(提取码:aisq)](https://pan.baidu.com/s/11KZ3hU2_a2MtI_StXBUKYw) 或 [GoogleDrive](https://drive.google.com/drive/folders/18TG2sKkHOZz8YlP5t1Qo_NqnGx9ogNay?usp=sharing) |使用50w多轮对话语料训练了40个epoch，loss降到2.0左右。|
+|model_epoch40_50w | [shibing624/gpt2-dialogbot-base-chinese](https://huggingface.co/shibing624/gpt2-dialogbot-base-chinese) 或 [百度网盘(提取码:taqh)](https://pan.baidu.com/s/1Ptuzq-4b_Mqxci464YHnRg?pwd=taqh) 或 [GoogleDrive](https://drive.google.com/drive/folders/18TG2sKkHOZz8YlP5t1Qo_NqnGx9ogNay?usp=sharing) |使用50w多轮对话语料训练了40个epoch，loss降到2.0左右。|
 
 
 # Contact

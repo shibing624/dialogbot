@@ -1,7 +1,7 @@
 ![alt text](docs/public/dialogbot.jpg)
 
 [![PyPI version](https://badge.fury.io/py/dialogbot.svg)](https://badge.fury.io/py/dialogbot)
-[![Downloads](https://pepy.tech/badge/dialogbot)](https://pepy.tech/project/dialogbot)
+[![Downloads](https://static.pepy.tech/badge/dialogbot)](https://pepy.tech/project/dialogbot)
 [![Contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![GitHub contributors](https://img.shields.io/github/contributors/shibing624/dialogbot.svg)](https://github.com/shibing624/dialogbot/graphs/contributors)
 [![License Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)

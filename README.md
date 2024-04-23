@@ -250,8 +250,49 @@ chatbot:好哒
 |---------|--------|--------|
 |常见中文闲聊|[chinese_chatbot_corpus](https://github.com/codemayq/chinese_chatbot_corpus)|包含小黄鸡语料、豆瓣语料、电视剧对白语料、贴吧论坛回帖语料、微博语料、PTT八卦语料、青云语料等|
 |50w中文闲聊语料 | [百度网盘【提取码:4g5e】](https://pan.baidu.com/s/1M87Zf9e8iBqqmfTkKBWBWA) 或 [GoogleDrive](https://drive.google.com/drive/folders/1QFRsftLNTR_D3T55mS_FocPEZI7khdST?usp=sharing) |包含50w个多轮对话的原始语料、预处理数据|
-|100w中文闲聊语料 | [百度网盘【提取码:s908】](https://pan.baidu.com/s/1TvCQgJWuOoK2f5D95nH3xg) 或 [GoogleDrive](https://drive.google.com/drive/folders/1NU4KLDRxdOGINwxoHGWfVOfP0wL05gyj?usp=sharing)|包含100w个多轮对话的原始语料、预处理数据|
+|100w中文闲聊语料 | [百度网盘【提取码:s908】](https://pan.baidu.com/s/1TvCQgJWuOoK2f5D95nH3xg) 或 [GoogleDrive](https://drive.google.com/drive/folders/1NU4KLDRxdOGINwxoHGWfVOfP0wL05gyj?usp=sharing)|包含100w个多轮对话的原始语料、预处理数据|  
 
+### 语料处理
+* 由于从数据集下载的语料无法直接用于训练。  
+* 现增加整合后的语料数据集以及对其进行处理。  
+* 可直接用于训练模型。
+具体步骤详见 [语料处理](https://github.com/WThirteen/chinese-chatbot-corpus)
+#### 使用方法
+* 1.从网盘下载语料集
+* 2.将数据集文件夹解压到
+将解压后的raw_chat_corpus文件夹放到当前目录下   
+目录结构为  
+```
+raw_chat_corpus
+-- language
+-- process_pipelines
+-- raw_chat_corpus
+---- chatterbot-1k
+---- douban-multiturn-100w
+---- ....
+-- main.py
+-- ...
+```
+
+然后修改 config.py 中的 raw_chat_corpus_root 变量 为自己的目录，再执行main.py 脚本即可
+```bash
+python main.py
+```
+每个来源的语料分别生成一个独立的*.tsv文件，都放在新生成的clean_chat_corpus文件夹下。  
+再使用clean_data.py  
+*clean_data.py*  
+得到 *clean_chat_corpus*文件夹后  
+修改clean_data.py下的config，更改读取数据的路径以及输出数据的路径。  
+```
+class Config():
+    # 读取文件路径
+    filename_in = "  "
+
+    # 保存文件路径 
+    filesname_out = "  "
+
+```
+可针对某一个语料数据集进行处理，可直接用于模型的训练。
 
 中文闲聊语料的内容样例如下:
 ```
